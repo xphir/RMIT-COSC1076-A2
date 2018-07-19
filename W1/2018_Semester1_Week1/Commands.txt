@@ -1,0 +1,13 @@
+pwd
+ls
+cd
+gcc
+gcc -ansi -pedantic -Wall -o main.exe main.c
+make
+
+mkdir
+rmdir
+rm
+cp
+
+./programName
