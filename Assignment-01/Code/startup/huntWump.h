@@ -13,6 +13,10 @@
 #define STUDENT_ID "<your student number>"
 #define STUDENT_EMAIL "<your email address>"
 
+void startMenu();
+void showStartMenu();
+void exitProgram();
+
 /**
  * Main menu option 2 - show your student information as per specification.
  *
@@ -20,5 +24,6 @@
  * them when printing.
  */
 void showStudentInformation();
+
 
 #endif
