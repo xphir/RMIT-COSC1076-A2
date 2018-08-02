@@ -38,11 +38,14 @@ void showStudentInformation() {
 #define EXTRA_SPACES (NEW_LINE_SPACE + NULL_SPACE)
 
 void startMenu() {
+    /*
+    char * result;
+    char line[INPUT_MAX_LENGTH + EXTRA_SPACES];
     int inputResult;
     int input[INPUT_MAX_LENGTH + EXTRA_SPACES];
 
     showStartMenu();
-    inputResult = getInput("Please enter your choice:", input, sizeof(input));
+    result = getInput("Please enter your choice:", input, sizeof(input));
     printf("\n%d\n", input);
    
 
@@ -60,7 +63,7 @@ void startMenu() {
                     return;
     };
 
-    /*
+    
     if(inputResult = 2) {
 
     } else {

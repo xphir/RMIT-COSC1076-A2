@@ -24,12 +24,28 @@ Board BOARD_2 =
 };
 
 void board_Load(Board board, Board boardToLoad) {
-   /* TODO */
+   int x, y;
+	for(x = 0; x < BOARD_HEIGHT; x++)
+	{ 
+		for(y = 0; y < BOARD_WIDTH; y++)
+		{
+			board[y][x] = boardToLoad[y][x];
+		}
+	}
 }
 
 Boolean board_PlacePlayer(Board board, Position position) {
    /* TODO */
-   return FALSE;
+	Cell c;
+
+   if(position.x < 0 || position.x >= BOARD_WIDTH || position.y < 0 || position.y >= BOARD_HEIGHT)
+   {
+   	return FALSE;
+   }
+
+	c = board[position.y][position.x]
+	if(c == board_WUMPUS || c== board_BATS || c == board_PIT)
+		return false;
 }
 
 
