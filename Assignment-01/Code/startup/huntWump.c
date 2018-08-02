@@ -13,11 +13,20 @@ int main()
     */
 
    /* TODO not provided */
+   showStudentInformation();
    printf("Good bye! \n\n");
-
+   
    return EXIT_SUCCESS;
 }
 
 void showStudentInformation() {
    /* TODO not provided */
+   printf(
+        "----------------------------------\n"
+        "Name: Elliot Schot\n"
+        "Student ID: S3530160\n"
+        "Email: S3530160@student.rmit.edu.au\n"
+        "----------------------------------\n"
+        "\n"
+		);
 }
