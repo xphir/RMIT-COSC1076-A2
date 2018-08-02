@@ -1,0 +1,3 @@
+language: cpp
+compiler: gcc
+script: gcc -Wall -std=c99 wumpus.c -o wumpus
