@@ -1,9 +1,4 @@
-/*
- * COSC1076 Assignment 1, Semester 2 2018
- * Student name  :
- * Student number:
- */
-#include "board.h"
+#include "test.h"
 
 Board BOARD_1 =
 {
@@ -23,48 +18,31 @@ Board BOARD_2 =
 	{ board_EMPTY,  board_WUMPUS, board_EMPTY,  board_EMPTY,  board_EMPTY},
 };
 
-void board_Load(Board board, Board boardToLoad) {
-   int x, y;
-	for(x = 0; x < BOARD_HEIGHT; x++)
-	{ 
-		for(y = 0; y < BOARD_WIDTH; y++)
-		{
-			board[y][x] = boardToLoad[y][x];
-		}
-	}
-	return board;
+int main()
+{
+ 	board_Display(BOARD_1);
+	return 0;
 }
 
-Boolean board_PlacePlayer(Board board, Position position) {
-	/* TODO */
-	/*
-	Cell c;
+/**
+ * Display the board according to the assignment specification. 
+ * Here is an example output:
 
-   if(position.x < 0 || position.x >= BOARD_WIDTH || position.y < 0 || position.y >= BOARD_HEIGHT)
-   {
-   	return FALSE;
-   }
-
-	c = board[position.y][position.x]
-	if(c == board_WUMPUS || c== board_BATS || c == board_PIT)
-		return false;
-		*/
-}
-
-
-PlayerMove board_MovePlayer(Board board, Position playerPosition, 
-			    Position nextPosition) {
-   /* TODO */
-   return board_PLAYER_MOVED;
-}
-
-ArrowHit board_FireArrow(Board board, Position position) {
-   /* TODO */
-   return board_ARROW_MISSED;
-}
-
+    0  1  2  3  4 
+   ----------------
+ 0 |**|##|  |  |  |
+   ---------------- 
+ 1 |  |  |  |  |  |
+   ----------------  
+ 2 |  |  |  |  |  |
+   ---------------- 
+ 3 |  |  |  |  |  |  
+   ----------------
+ 4 |  |  |  |  |  |
+   ---------------- 
+ */
 void board_Display(Board board) {
-int x, y;
+	int x, y;
 	/* Print x axis (top side) numbers */
 	printf("   ");
 	for ( y = 0; y < BOARD_WIDTH; ++y )
@@ -127,12 +105,4 @@ int x, y;
 	}
 
 	putchar(10);
-}
-
-void board_DisplayWarnings(Board board, Position position){
-   /* TODO */
-}
-
-int main() {
-
 }
