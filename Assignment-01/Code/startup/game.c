@@ -14,22 +14,18 @@ void game_PlayGame(){
 	game_DisplayOptions();
 
 	readInput(&input, 2, stdin);
-	game_AttemptLoadCommand(&board);
-	/*
 	if (game_AttemptLoadCommand(&board))
 	{
 		
-		if (game_AttemptInitCommand(board, player) )
+		if (game_AttemptInitCommand(&board, &player) )
 		{
-			game_Hunt(board, player);
+			/* game_Hunt(board, player); */
 		}
 		
 		
 	}
-	*/
-	printf("Test1\n");
+	printf("Set Cell Value %d\n",board[1][1]);
 	board_Display(board);
-	printf("Test2\n");
 }
 
 /* DONE */
@@ -124,4 +120,50 @@ Boolean game_CommandLoad(char * loadSelection, Board * board)
 		return FALSE;
 	}
 	*/
+}
+
+Boolean game_AttemptInitCommand(Board * board, Player * player)
+{
+  	char input;
+  	int selectionInt;
+	char *promptMessage;
+ 
+	promptMessage = "At this stage of the program, only two commands are acceptable: \ninit <x>,<y> \nquit \n\n";
+	do
+	{
+		while (TRUE)
+		{
+		getInput(promptMessage, &input, 52);
+		if ( !strcmp(&input, "quit") )
+			return FALSE;
+		if ( !strncmp(&input, "init", 4) )
+			break;
+		printInvalidInput();
+		}
+		selectionInt = game_CommandInit(&input, board, player);
+	}
+	while ( selectionInt != 1 );
+	return TRUE;
+}
+
+Boolean game_CommandInit(char * input, Board * board, Player * player){
+  	Boolean placePlayerResult;
+	Boolean result;
+	Position selectedPosition;
+
+	selectedPosition.x = 1;
+	selectedPosition.y = 1;
+
+	placePlayerResult = board_PlacePlayer(board, selectedPosition);
+	if ( placePlayerResult )
+	{
+		player_Initialise(player, selectedPosition);
+	}
+	else
+	{
+		printf("Unable to place player at that position. \n");
+	}
+	result = placePlayerResult;
+	return result;
+	/* TODO REST */
 }

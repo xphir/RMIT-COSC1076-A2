@@ -49,9 +49,9 @@ Boolean board_Load(Board * board, Board * boardToLoad) {
 	return TRUE;
 }
 
-Boolean board_PlacePlayer(Board board, Position position) {
+Boolean board_PlacePlayer(Board * board, Position position) {
 	/* TODO */
-	Cell c;
+	Cell *c;
 	c = board[position.y][position.x];
 
 	
@@ -59,13 +59,16 @@ Boolean board_PlacePlayer(Board board, Position position) {
 	{
 		return FALSE;
 	} 
-	else if(c == board_WUMPUS || c== board_BATS || c == board_PIT) 	/* Check if selection is in a hazard */
+	else if(*c == board_WUMPUS || *c == board_BATS || *c == board_PIT) 	/* Check if selection is in a hazard */
 	{
 		return FALSE;
 	}
 	else
 	{
-		c = board_PLAYER;
+		*board[position.y][position.x] =  board_PLAYER;
+		printf("Position %d,%d\n",position.x,position.y);
+		printf("C Value %d\n",board_PLAYER);
+		printf("Interal Set Cell Value %d\n",*board[position.y][position.x]);
 		return TRUE;
 	}
 	

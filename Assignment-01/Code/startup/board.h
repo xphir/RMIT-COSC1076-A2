@@ -67,7 +67,7 @@ Boolean board_Load(Board * board, Board * boardToLoad);
  * Return TRUE when the cell at the position is successfully set to 
  * board_PLAYER.
  */
-Boolean board_PlacePlayer(Board board, Position position);
+Boolean board_PlacePlayer(Board * board, Position position);
 
 /**
  * Try to move the player from the existing position to
