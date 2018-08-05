@@ -23,18 +23,30 @@ Board BOARD_2 =
 	{ board_EMPTY,  board_WUMPUS, board_EMPTY,  board_EMPTY,  board_EMPTY},
 };
 
-Boolean board_Load(Board board, Board boardToLoad) {
-	int x, y;
-	Boolean result;
+Boolean board_Load(Board * board, Board * boardToLoad) {
+	memcpy(board, *boardToLoad, sizeof(*boardToLoad));
+
+	/*
+
+	int x;
+	int y;
 	for(x = 0; x < BOARD_HEIGHT; x++)
 	{ 
 		for(y = 0; y < BOARD_WIDTH; y++)
 		{
 			board[y][x] = boardToLoad[y][x];
-			result = TRUE;
 		}
 	}
-	return result;
+
+	for(int i = 0; i<BOARD_HEIGHT; i++)
+  	{
+    	for(int j = 0; j < BOARD_WIDTH; j++)
+    	{
+      		board[i][j] = boardToLoad[i][j];
+    	}
+  	}
+	*/
+	return TRUE;
 }
 
 Boolean board_PlacePlayer(Board board, Position position) {
@@ -75,19 +87,19 @@ void board_Display(Board board) {
 int x, y;
 	/* Print x axis (top side) numbers */
 	printf("   ");
-	for ( y = 0; y < BOARD_WIDTH; ++y )
+	for ( y = 0; y < BOARD_HEIGHT; ++y )
 	{
 		printf("%d  ", y);
 	}
 		
 	putchar(10);
 
-	for ( x = 0; x < BOARD_HEIGHT; ++x )
+	for ( x = 0; x < BOARD_WIDTH; ++x )
 	{
 
 		/* Print line split */
 		printf("  -");
-		for ( y = 0; y < BOARD_WIDTH; ++y )
+		for ( y = 0; y < BOARD_HEIGHT; ++y )
 		{
 			printf("---");
 		}
@@ -95,7 +107,7 @@ int x, y;
 		/* Print y axis (left side) numbers */
 		printf("\n%d ", x);
 
-		for ( y = 0; y < BOARD_WIDTH; ++y )
+		for ( y = 0; y < BOARD_HEIGHT; ++y )
 		{
 			putchar(124);
 			/* Check what type of cell it is */
@@ -129,7 +141,7 @@ int x, y;
 	}
 	printf("  -");
 
-	for ( x = 0; x < BOARD_HEIGHT; ++x )
+	for ( x = 0; x < BOARD_WIDTH; ++x )
 	{
 		printf("---");
 	}

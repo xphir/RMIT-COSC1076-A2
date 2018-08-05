@@ -12,16 +12,24 @@ void game_PlayGame(){
 
 	srand(0);
 	game_DisplayOptions();
+
 	readInput(&input, 2, stdin);
-	
-	if (game_AttemptLoadCommand(board))
+	game_AttemptLoadCommand(&board);
+	/*
+	if (game_AttemptLoadCommand(&board))
 	{
-		if (game_AttemptInitCommand(&board, &player) )
+		
+		if (game_AttemptInitCommand(board, player) )
 		{
-			game_Hunt(&board, &player);
+			game_Hunt(board, player);
 		}
 		
+		
 	}
+	*/
+	printf("Test1\n");
+	board_Display(board);
+	printf("Test2\n");
 }
 
 /* DONE */
@@ -44,8 +52,38 @@ int game_DisplayOptions(){
     );
 }
 
+Boolean game_AttemptLoadCommand(Board * board){
+	char input;
+	char *promptMessage;
 
-Boolean game_CommandLoad(char *loadSelection, Board * board)
+	promptMessage = "At this stage of the program, only two commands are acceptable: \nload <g> \nquit \n\n";
+	while (TRUE)
+	{
+		while (TRUE)
+		{
+			getInput(promptMessage, &input, 52);
+			putchar(10);
+			if ( !strcmp(&input, "quit") )
+				return FALSE;
+			if ( !strncmp(&input, "load", 4) )
+				break;
+			printInvalidInput();
+		}
+		/*break;*/
+		
+		if (game_CommandLoad(&input, board))
+		{
+			break;
+		}
+		
+		printInvalidInput();
+	}
+
+	puts("Board successfully loaded\n");
+	return TRUE;
+}
+
+Boolean game_CommandLoad(char * loadSelection, Board * board)
 {
 	board_Load(board, &BOARD_1);
 	return TRUE;
@@ -86,117 +124,4 @@ Boolean game_CommandLoad(char *loadSelection, Board * board)
 		return FALSE;
 	}
 	*/
-}
-
-Boolean game_AttemptLoadCommand(Board * board){
-	char input;
-	const char *promptMessage;
-
-
-	promptMessage = "At this stage of the program, only two commands are acceptable: \nload <g> \nquit \n\n";
-	while (TRUE)
-	{
-		while (TRUE)
-		{
-			getInput(promptMessage, &input, 52);
-			putchar(10);
-			if ( !strcmp(&input, "quit") )
-				return FALSE;
-			if ( !strncmp(&input, "load", 4uLL) )
-				break;
-			printInvalidInput();
-		}
-		if (game_CommandLoad(&input, a1) == 1 )
-		{
-			break;
-		}
-		printInvalidInput();
-	}
-
-	puts("Board successfully loaded\n");
-	return TRUE;
-
-  /*
-  while (TRUE)
-  {
-    while (TRUE)
-    {
-      getInput(promptMessage, &input, 52);
-      putchar(10);
-      if ( !strcmp(&input, "quit") )
-        return FALSE;
-      if ( !strncmp(&input, "load", 4uLL) )
-        break;
-      printInvalidInput();
-    }
-    if (game_CommandLoad(&input, a1) == 1 )
-      break;
-    printInvalidInput();
-  }
-  puts("Board successfully loaded\n");
-  return TRUE;
-  */
-}
-
-Boolean game_AttemptInitCommand(Board * board, Player * player)
-{
-  char s1;
-  int selectionInt;
-  const char *v5;
- 
-  v5 = "At this stage of the program, only two commands are acceptable: \ninit <x>,<y> \nquit \n\n";
-  do
-  {
-    while (TRUE)
-    {
-      getInput((__int64)v5, &s1, 52);
-      if ( !strcmp(&s1, "quit") )
-        return FALSE;
-      if ( !strncmp(&s1, "init", 4uLL) )
-        break;
-      printInvalidInput();
-    }
-    selectionInt = game_CommandInit(&s1, a1, a2);
-  }
-  while ( selectionInt != 1 );
-  return TRUE;
-}
-
-/* To fix type */
-Boolean game_CommandInit(char *input, Board * board, Player * player){
-
-  	Boolean placePlayerResult;
-	Boolean result;
-	Position selectedPosition;
-
-	selectedPosition.x = 1;
-	selectedPosition.y = 1;
-
-	placePlayerResult = board_PlacePlayer(board, selectedPosition);
-	if ( placePlayerResult )
-	{
-		player_Initialise(player, selectedPosition);
-	}
-	else
-	{
-		printf("Unable to place player at that position. \n");
-	}
-	result = placePlayerResult;
-
-	/* TODO REST */
-}
-
-/* To fix type */
-void game_CommandShoot(){
-
-}
-
-/* To fix type */
-void game_AttemptMoveCommand(){
-
-}
-
-/* To fix type */
-void game_Hunt(Board * board, Player * player){
-	printf("GAME HUNT\n");
 }
