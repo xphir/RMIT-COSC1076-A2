@@ -57,7 +57,7 @@ typedef enum arrowHit
 /**
  * Load the board - set all the cells in board to those present in boardToLoad.
  */
-void board_Load(Board board, Board boardToLoad);
+Boolean board_Load(Board board, Board boardToLoad);
 
 /**
  * Try to set the cell at the provided position to board_PLAYER.

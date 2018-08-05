@@ -13,22 +13,24 @@ int main()
     */
 
    /* TODO not provided */
+    test();
 
-   startMenu();
    
    /* return EXIT_SUCCESS; */
    return 0;
 }
 
-void showStudentInformation() {
-   /* TODO not provided */
-   printf(
+int showStudentInformation() {
+   return printf(
         "----------------------------------\n"
-        "Name: Elliot Schot\n"
-        "Student ID: S3530160\n"
-        "Email: S3530160@student.rmit.edu.au\n"
+        "Name: %s\n"
+        "Student ID: %s\n"
+        "Email: %s\n"
         "----------------------------------\n"
-        "\n"
+        "\n", 
+        "Elliot Schot", 
+        "S3530160", 
+        "S3530160@student.rmit.edu.au"
 		);
 }
 
@@ -80,10 +82,88 @@ void showStartMenu(){
         "2. Show student information\n"
         "3. Quit\n"
         "\n"
+        "Please enter your choice: "
 		);
 }
 
 void exitProgram(){
     printf("Good bye! \n\n");
     exit(0);
+}
+
+void gameDisplayOptions(){
+    printf(
+    "You can use the following commands to play the game: \n"
+	"\n"
+	"load <g> \n"
+	" g: number of the game board to load (either 1 or 2)\n"
+	"init <x>,<y>\n"
+	" x: horizontal position of the player on the board (between 0 & 4) \n"
+	" y: vertical position of the player on the board (between 0 & 4) \n"
+	"north (or n) \n"
+	"south (or s) \n"
+	"east (or e) \n"
+	"west (or w) \n"
+	"quit \n"
+	"\n"
+	"Press enter to continue... "
+    );
+}
+
+void test()
+{
+    char *inputEndPtr;
+    char input;
+    int inputInt;
+    int readResult;
+    Boolean ongoing;
+
+    enableWindowsCompatibility();
+    ongoing = TRUE;
+    while (ongoing)
+    {
+        showStartMenu();
+        readResult = readInput(&input, 3, stdin);
+        /*
+        printf("Read Result: %d\n",readResult);
+        printf("Input Char: %s\n", &input);
+        */
+        putchar(10);
+        if ( readResult == ReadInputResultSuccess )
+        {
+            inputInt = strtol(&input, &inputEndPtr, 10);
+            /*
+            printf("Input Int: %d\n",inputInt);
+            printf("inputEndPtr Int: %s\n",inputEndPtr);
+            */
+            
+            if ( /* inputEndPtr == &input || *inputEndPtr  || */ inputInt <= 0 || inputInt > 3 )
+            {
+                printInvalidInput();
+            }
+            else if ( inputInt == 2 )
+            {
+                showStudentInformation();
+            }
+            else if ( inputInt == 3 )
+            {
+                ongoing = FALSE;
+            }
+            else
+            {
+                if ( inputInt != 1 )
+                {
+                    assert(0);
+                }
+                /* printf("Play The Game!"); */
+                game_PlayGame();
+            }
+        }
+        else
+        {
+            printInvalidInput();
+        }
+    }
+    puts("Good bye! \n");
+    exit(EXIT_SUCCESS);
 }

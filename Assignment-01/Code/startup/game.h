@@ -36,6 +36,17 @@
  * Note that if you don't break this function up it could become pretty big...
  * and marks are allocated to good coding practices.
  */
+
+int game_DisplayOptions();
+Boolean game_CommandLoad(char *loadSelection, Board board);
+Boolean game_AttemptLoadCommand(Board board);
+Boolean game_AttemptInitCommand(Board board, Player player);
+Boolean game_CommandInit(char *input, Board board, Player player);
+
+void game_PlayGame();
+void game_CommandShoot();
+void game_AttemptMoveCommand();
+void game_Hunt();
 void game_PlayGame();
 
 /* TODO not provided */

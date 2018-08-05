@@ -23,32 +23,40 @@ Board BOARD_2 =
 	{ board_EMPTY,  board_WUMPUS, board_EMPTY,  board_EMPTY,  board_EMPTY},
 };
 
-void board_Load(Board board, Board boardToLoad) {
-   int x, y;
+Boolean board_Load(Board board, Board boardToLoad) {
+	int x, y;
+	Boolean result;
 	for(x = 0; x < BOARD_HEIGHT; x++)
 	{ 
 		for(y = 0; y < BOARD_WIDTH; y++)
 		{
 			board[y][x] = boardToLoad[y][x];
+			result = TRUE;
 		}
 	}
-	return board;
+	return result;
 }
 
 Boolean board_PlacePlayer(Board board, Position position) {
 	/* TODO */
-	/*
 	Cell c;
+	c = board[position.y][position.x];
 
-   if(position.x < 0 || position.x >= BOARD_WIDTH || position.y < 0 || position.y >= BOARD_HEIGHT)
-   {
-   	return FALSE;
-   }
-
-	c = board[position.y][position.x]
-	if(c == board_WUMPUS || c== board_BATS || c == board_PIT)
-		return false;
-		*/
+	
+	if(position.x < 0 || position.x >= BOARD_WIDTH || position.y < 0 || position.y >= BOARD_HEIGHT) /* Check if selection is out of bounds */
+	{
+		return FALSE;
+	} 
+	else if(c == board_WUMPUS || c== board_BATS || c == board_PIT) 	/* Check if selection is in a hazard */
+	{
+		return FALSE;
+	}
+	else
+	{
+		c = board_PLAYER;
+		return TRUE;
+	}
+	
 }
 
 
@@ -131,8 +139,4 @@ int x, y;
 
 void board_DisplayWarnings(Board board, Position position){
    /* TODO */
-}
-
-int main() {
-
 }

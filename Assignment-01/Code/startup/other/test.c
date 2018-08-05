@@ -24,23 +24,6 @@ int main()
 	return 0;
 }
 
-/**
- * Display the board according to the assignment specification. 
- * Here is an example output:
-
-    0  1  2  3  4 
-   ----------------
- 0 |**|##|  |  |  |
-   ---------------- 
- 1 |  |  |  |  |  |
-   ----------------  
- 2 |  |  |  |  |  |
-   ---------------- 
- 3 |  |  |  |  |  |  
-   ----------------
- 4 |  |  |  |  |  |
-   ---------------- 
- */
 void board_Display(Board board) {
 	int x, y;
 	/* Print x axis (top side) numbers */
