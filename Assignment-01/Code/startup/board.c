@@ -24,19 +24,15 @@ Board BOARD_2 =
 
 void board_Load(Board board, Board boardToLoad)
 {
-	memcpy(board, boardToLoad, sizeof(*boardToLoad));
-
-	/*
 	int x;
 	int y;
-	for(x = 0; x < BOARD_HEIGHT; x++)
-	{ 
-		for(y = 0; y < BOARD_WIDTH; y++)
+	for (x = 0; x < BOARD_HEIGHT; x++)
+	{
+		for (y = 0; y < BOARD_WIDTH; y++)
 		{
 			board[y][x] = boardToLoad[y][x];
 		}
 	}
-	*/
 }
 
 Boolean board_PlacePlayer(Board board, Position position)
@@ -63,8 +59,39 @@ Boolean board_PlacePlayer(Board board, Position position)
 PlayerMove board_MovePlayer(Board board, Position playerPosition,
 							Position nextPosition)
 {
-	/* TODO */
-	return board_PLAYER_MOVED;
+	PlayerMove move;
+
+	if (nextPosition.x >= 0 && nextPosition.x <= BOARD_WIDTH && nextPosition.y >= 0 && nextPosition.y <= BOARD_HEIGHT)
+	{
+		switch (board[nextPosition.y][nextPosition.x])
+		{
+		case board_EMPTY:
+		case board_TRAVERSED:
+			board[playerPosition.y][playerPosition.x] = board_TRAVERSED;
+			board[nextPosition.y][nextPosition.x] = board_PLAYER;
+			move = board_PLAYER_MOVED;
+			break;
+		case board_BATS:
+			board[playerPosition.y][playerPosition.x] = board_TRAVERSED;
+			move = board_BAT_CELL;
+			break;
+		case board_PIT:
+		case board_WUMPUS:
+			move = board_PLAYER_KILLED;
+			break;
+		case board_PLAYER:
+			printf(PLAYER_OUTPUT);
+			break;
+		default:
+			assert(0);
+			break;
+		}
+	}
+	else
+	{
+		move = board_OUTSIDE_BOUNDS;
+	}
+	return move;
 }
 
 ArrowHit board_FireArrow(Board board, Position position)
@@ -102,25 +129,25 @@ void board_Display(Board board)
 		{
 			putchar(124);
 			/* Check what type of cell it is */
-			switch (board[x][y])
+			switch (board[y][x])
 			{
-			case 0: /* board_EMPTY */
-				printf("EE");
+			case board_EMPTY:
+				printf("EE"); /* DEBUG TO REMOVE */
+				break;		  /* DEBUG TO REMOVE */
+			case board_BATS:
+				printf("BB"); /* DEBUG TO REMOVE */
+				break;		  /* DEBUG TO REMOVE */
+			case board_PIT:
+				printf("PT"); /* DEBUG TO REMOVE */
+				break;		  /* DEBUG TO REMOVE */
+			case board_WUMPUS:
+				printf(EMPTY_OUTPUT);
 				break;
-			case 2: /* board_BATS */
-				printf("BB");
+			case board_TRAVERSED:
+				printf(TRAVERSED_OUTPUT);
 				break;
-			case 3: /* board_PIT */
-				printf("PT");
-				break;
-			case 4: /* board_WUMPUS */
-				printf("  ");
-				break;
-			case 1: /* board_TRAVERSED */
-				printf("**");
-				break;
-			case 5: /* board_PLAYER */
-				printf("##");
+			case board_PLAYER:
+				printf(PLAYER_OUTPUT);
 				break;
 			default:
 				assert(0);
@@ -141,5 +168,47 @@ void board_Display(Board board)
 
 void board_DisplayWarnings(Board board, Position position)
 {
-	/* TODO */
+	Boolean breeze;
+	Boolean flapping;
+	Boolean wumpus;
+	int x, y;
+
+	wumpus = FALSE;
+	flapping = FALSE;
+	breeze = FALSE;
+
+	for (x = position.x - 1; position.x + 1 >= x; ++x)
+	{
+		for (y = position.y - 1; position.y + 1 >= y; ++y)
+		{
+			if (x >= 0 && x <= 4 && y >= 0 && y <= 4)
+			{
+				switch (board[y][x])
+				{
+				case board_BATS:
+					flapping = TRUE;
+					break;
+				case board_PIT:
+					breeze = TRUE;
+					break;
+				case board_WUMPUS:
+					wumpus = TRUE;
+					break;
+				case board_EMPTY:
+				case board_TRAVERSED:
+				case board_PLAYER:
+					continue;
+				default:
+					assert(0);
+				}
+			}
+		}
+	}
+	if (breeze)
+		printf("You feel a breeze! ", position);
+	if (flapping)
+		printf("You hear flapping! ", position);
+	if (wumpus)
+		printf("You smell a wumpus!", position);
+	putchar(10);
 }

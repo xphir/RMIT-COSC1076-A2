@@ -80,7 +80,7 @@ Boolean game_AttemptLoadCommand(Board board)
 
 Boolean game_CommandLoad(char *loadSelection, Board board)
 {
-	Boolean result;
+	Boolean moveResult;
 	char *endptr;
 	char *nptr;
 	int selectedBoard;
@@ -92,7 +92,7 @@ Boolean game_CommandLoad(char *loadSelection, Board board)
 		selectedBoard = strtol(nptr, &endptr, 10);
 		if (nptr == endptr || *endptr || selectedBoard <= 0 || selectedBoard > BOARD_AMMOUNT)
 		{
-			result = FALSE;
+			moveResult = FALSE;
 		}
 		else
 		{
@@ -106,15 +106,15 @@ Boolean game_CommandLoad(char *loadSelection, Board board)
 					assert(0);
 				board_Load(board, BOARD_2);
 			}
-			result = TRUE;
+			moveResult = TRUE;
 		}
 	}
 	else
 	{
-		result = FALSE;
+		moveResult = FALSE;
 	}
 
-	return result;
+	return moveResult;
 }
 
 Boolean game_AttemptInitCommand(Board board, Player player)
@@ -142,8 +142,8 @@ Boolean game_AttemptInitCommand(Board board, Player player)
 
 Boolean game_CommandInit(char *input, Board board, Player player)
 {
-	Boolean placePlayerResult;
-	Boolean result;
+	Boolean placePlayermoveResult;
+	Boolean moveResult;
 	Position selectedPosition;
 	Player localPlayer;
 	char *endptr;
@@ -167,7 +167,7 @@ Boolean game_CommandInit(char *input, Board board, Player player)
 			printf("Debug Print 2.2: %s, %s, %d, %d\n", nptr, endptr, selectedPosition.x, BOARD_WIDTH);
 			printf("Debug Print 2.3: Exit 1\n");
 			printInvalidInput();
-			result = FALSE;
+			moveResult = FALSE;
 		}
 		else
 		{
@@ -181,38 +181,38 @@ Boolean game_CommandInit(char *input, Board board, Player player)
 				{
 					printf("Debug Print 3.1: Exit 1\n");
 					printInvalidInput();
-					result = FALSE;
+					moveResult = FALSE;
 				}
 				else
 				{
 					printf("Debug Print 4: Placing Player\n");
-					placePlayerResult = board_PlacePlayer(board, selectedPosition);
-					if (placePlayerResult)
+					placePlayermoveResult = board_PlacePlayer(board, selectedPosition);
+					if (placePlayermoveResult)
 					{
-						printf("Debug Print 4.1: Placing Player Result: %d\n", placePlayerResult);
+						printf("Debug Print 4.1: Placing Player moveResult: %d\n", placePlayermoveResult);
 						player_Initialise(&localPlayer, selectedPosition);
 					}
 					else
 					{
 						printf("Unable to place player at position x: %d, y: %d \n", selectedPosition.x, selectedPosition.y);
 					}
-					result = placePlayerResult;
+					moveResult = placePlayermoveResult;
 				}
 			}
 			else
 			{
 				printf("Debug Print 5: Exit 1\n");
 				printInvalidInput();
-				result = FALSE;
+				moveResult = FALSE;
 			}
 		}
 	}
 	else
 	{
 		printInvalidInput();
-		result = FALSE;
+		moveResult = FALSE;
 	}
-	return result;
+	return moveResult;
 }
 
 void game_Hunt(Board board, Player player)
@@ -275,13 +275,127 @@ void game_Hunt(Board board, Player player)
 }
 
 /* TODO */
-Boolean game_AttemptMoveCommand(Board board, Player player, Direction direction)
+PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction direction)
 {
-	return TRUE;
+	Position nextPosition;
+	Position nextPositionCopy;
+	Position batDragPosition;
+	PlayerMove moveType;
+	Direction directionCopy;
+	PlayerMove moveResult;
+	char *message;
+
+	directionCopy = direction;
+	do
+	{
+		printf("Current Position: x = %d, y = %d\n", player.position.x, player.position.y);
+		nextPosition = player_GetNextPosition(player.position, directionCopy);
+		printf("Next Position: x = %d, y = %d\n", nextPosition.x, nextPosition.y);
+		nextPositionCopy = nextPosition;
+		moveType = board_MovePlayer(board, player.position, nextPosition);
+		printf("Move Type: %d\n", moveType);
+		moveResult = moveType;
+		if (moveType == board_PLAYER_KILLED)
+		{
+			message = "Player killed!";
+		}
+		else if (moveType == board_PLAYER_MOVED)
+		{
+			message = "Player moved.";
+			player.position = nextPositionCopy;
+		}
+		else if (moveType == board_BAT_CELL)
+		{
+			message = "Bat cell!";
+			do
+			{
+				batDragPosition.x = rand() % 5;
+				batDragPosition.y = rand() % 5;
+			} while (!board_PlacePlayer(board, batDragPosition));
+			player.position = batDragPosition;
+			moveResult = board_PLAYER_MOVED;
+		}
+		else if (moveType == board_OUTSIDE_BOUNDS)
+		{
+			message = "Unable to moveType - outside bounds.";
+		}
+		else
+		{
+			assert(0);
+		}
+	} while (moveResult && moveResult != board_PLAYER_KILLED && moveResult != board_OUTSIDE_BOUNDS);
+	printf("%s \n\n", message);
+	return moveResult != board_PLAYER_KILLED;
 }
 
 /* TODO */
-Boolean game_CommandShoot(char *input, Board board, Player player)
+Boolean game_CommandShoot(char *inputTODO, Board board, Player player)
 {
-	return TRUE;
+	Boolean result;
+	Position arrowTarget;
+	ArrowHit arrowResult;
+	Player currentPlayer;
+	char *inputTok;
+	Direction arrowDirection;
+
+	currentPlayer = player;
+	result = FALSE;
+	strtok(inputTODO, " ");
+	inputTok = strtok(NULL, " ");
+	if (!inputTok)
+	{
+		printInvalidInput();
+		return FALSE;
+	}
+	if (!strcmp(inputTok, "north") || !strcmp(inputTok, "n"))
+	{
+		arrowDirection = player_NORTH;
+	}
+	else if (!strcmp(inputTok, "south") || !strcmp(inputTok, "s"))
+	{
+		arrowDirection = player_SOUTH;
+	}
+	else if (!strcmp(inputTok, "east") || !strcmp(inputTok, "e"))
+	{
+		arrowDirection = player_EAST;
+	}
+	else if (!strcmp(inputTok, "west") || !strcmp(inputTok, "w"))
+	{
+		arrowDirection = player_WEST;
+	}
+	else
+	{
+		printInvalidInput();
+		return FALSE;
+	}
+	if (currentPlayer.numArrows)
+	{
+		arrowTarget = player_GetNextPosition(currentPlayer.position, arrowDirection);
+		arrowResult = board_FireArrow(board, arrowTarget);
+		if (arrowResult == board_WUMPUS_KILLED)
+		{
+			--currentPlayer.numArrows;
+			puts("You killed the Wumpus!\n");
+			result = TRUE;
+		}
+		else if (arrowResult == board_ARROW_MISSED)
+		{
+			--currentPlayer.numArrows;
+			printf("Missed. You now have %d arrows\n\n", currentPlayer.numArrows);
+		}
+		else if (arrowResult == board_ARROW_OUTSIDE_BOUNDS)
+		{
+			puts("Unable to fire arrow in that direction. \n");
+		}
+		else
+		{
+			assert(0);
+		}
+	}
+	else
+	{
+		puts("You don't have any arrows to fire.\n");
+		result = FALSE;
+	}
+	return result;
 }
