@@ -34,13 +34,11 @@ typedef struct player
  * huntWump.
  */
 
-
 /**
  * Initialise the player - set the player position to the provided value
  * and set the number of arrows to INIT_ARROW_COUNT.
  */
-void player_Initialise(Player * player, Position position);
-
+void player_Initialise(Player *player, Position position);
 
 /**
  * Gets the new position as if the player moved from the player's
@@ -55,6 +53,6 @@ Position player_GetNextPosition(Position position, Direction direction);
 /**
  * Set the player's position to the provided position. 
  */
-void player_UpdatePosition(Player * player, Position position);
+void player_UpdatePosition(Player *player, Position position);
 
 #endif

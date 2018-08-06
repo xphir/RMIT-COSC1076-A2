@@ -27,5 +27,4 @@ int showStudentInformation();
 void test();
 void gameDisplayOptions();
 
-
 #endif

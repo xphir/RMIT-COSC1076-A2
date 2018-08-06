@@ -8,23 +8,24 @@
 void readRestOfLine()
 {
 	int ch;
-	while(ch = getc(stdin), ch != EOF && ch != '\n')
-	{ } /* Gobble each character. */
+	while (ch = getc(stdin), ch != EOF && ch != '\n')
+	{
+	} /* Gobble each character. */
 
 	/* Reset the error status of the stream. */
 	clearerr(stdin);
 }
 
-ReadInputResult readInput(char * str, int num, FILE * stream)
+ReadInputResult readInput(char *str, int num, FILE *stream)
 {
-	char * result;
+	char *result;
 
 	result = fgets(str, num, stream);
-	if(result == NULL)
+	if (result == NULL)
 	{
 		return ReadInputResultNull;
 	}
-	else if(str[strlen(str) - 1] != '\n')
+	else if (str[strlen(str) - 1] != '\n')
 	{
 		readRestOfLine();
 		return ReadInputResultOverflow;
@@ -36,17 +37,17 @@ ReadInputResult readInput(char * str, int num, FILE * stream)
 	}
 }
 
-ReadInputResult getInput(char * prompt, char * input, int inputSize)
+ReadInputResult getInput(char *prompt, char *input, int inputSize)
 {
 	ReadInputResult readInputResult;
 
-	while(TRUE)
+	while (TRUE)
 	{
 		printf("%s", prompt);
 		readInputResult = readInput(input, inputSize, stdin);
 		printf("\n");
 
-		if(readInputResult != ReadInputResultSuccess)
+		if (readInputResult != ReadInputResultSuccess)
 		{
 			printInvalidInput();
 			continue;

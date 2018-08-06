@@ -18,10 +18,10 @@
 
 typedef enum cell
 {
-	board_EMPTY,		
+	board_EMPTY,
 	board_TRAVERSED, /* an empty cell player has previously visited */
-	board_BATS,		
-	board_PIT,		
+	board_BATS,
+	board_PIT,
 	board_WUMPUS,
 	board_PLAYER
 } Cell;
@@ -57,7 +57,7 @@ typedef enum arrowHit
 /**
  * Load the board - set all the cells in board to those present in boardToLoad.
  */
-Boolean board_Load(Board * board, Board * boardToLoad);
+Boolean board_Load(Board *board, Board *boardToLoad);
 
 /**
  * Try to set the cell at the provided position to board_PLAYER.
@@ -67,7 +67,7 @@ Boolean board_Load(Board * board, Board * boardToLoad);
  * Return TRUE when the cell at the position is successfully set to 
  * board_PLAYER.
  */
-Boolean board_PlacePlayer(Board * board, Position position);
+Boolean board_PlacePlayer(Board *board, Position position);
 
 /**
  * Try to move the player from the existing position to
@@ -119,6 +119,6 @@ void board_Display(Board board);
 /**
  * Display the board warnings according to the assignment specification. 
  */
-void board_DisplayWarnings(Board board, Position positon); 
+void board_DisplayWarnings(Board board, Position positon);
 
 #endif

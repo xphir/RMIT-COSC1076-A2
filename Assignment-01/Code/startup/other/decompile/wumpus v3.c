@@ -6,7 +6,6 @@
 
 #include <defs.h>
 
-
 //-------------------------------------------------------------------------
 // Function declarations
 
@@ -62,17 +61,16 @@ void term_proc();
 //-------------------------------------------------------------------------
 // Data declarations
 
-char byte_402062 = '\0'; // idb
-__int64 (__fastcall *_frame_dummy_init_array_entry[2])() = { &frame_dummy, &_do_global_dtors_aux }; // weak
-__int64 (__fastcall *_do_global_dtors_aux_fini_array_entry)() = &_do_global_dtors_aux; // weak
-_UNKNOWN BOARD_1; // weak
-_UNKNOWN BOARD_2; // weak
-FILE *stdout; // idb
-_IO_FILE *stdin; // idb
-FILE *stderr; // idb
-char completed_6354; // weak
+char byte_402062 = '\0';                                                                         // idb
+__int64(__fastcall *_frame_dummy_init_array_entry[2])() = {&frame_dummy, &_do_global_dtors_aux}; // weak
+__int64(__fastcall *_do_global_dtors_aux_fini_array_entry)() = &_do_global_dtors_aux;            // weak
+_UNKNOWN BOARD_1;                                                                                // weak
+_UNKNOWN BOARD_2;                                                                                // weak
+FILE *stdout;                                                                                    // idb
+_IO_FILE *stdin;                                                                                 // idb
+FILE *stderr;                                                                                    // idb
+char completed_6354;                                                                             // weak
 // extern _UNKNOWN _gmon_start__; weak
-
 
 //----- (00000000004007C0) ----------------------------------------------------
 int init_proc()
@@ -80,7 +78,7 @@ int init_proc()
   void *v0; // rax@1
 
   v0 = &_gmon_start__;
-  if ( &_gmon_start__ )
+  if (&_gmon_start__)
     LODWORD(v0) = __gmon_start__();
   return (unsigned __int64)v0;
 }
@@ -106,7 +104,7 @@ signed int _do_global_dtors_aux()
 {
   signed int result; // eax@2
 
-  if ( !completed_6354 )
+  if (!completed_6354)
   {
     result = deregister_tm_clones();
     completed_6354 = 1;
@@ -126,12 +124,12 @@ int frame_dummy()
 __int64 __fastcall board_Load(__int64 a1, __int64 a2)
 {
   __int64 result; // rax@3
-  signed int i; // [sp+18h] [bp-8h]@1
-  signed int j; // [sp+1Ch] [bp-4h]@2
+  signed int i;   // [sp+18h] [bp-8h]@1
+  signed int j;   // [sp+1Ch] [bp-4h]@2
 
-  for ( i = 0; i <= 4; ++i )
+  for (i = 0; i <= 4; ++i)
   {
-    for ( j = 0; j <= 4; ++j )
+    for (j = 0; j <= 4; ++j)
     {
       result = j;
       *(_DWORD *)(20LL * i + a1 + 4LL * j) = *(_DWORD *)(a2 + 20LL * i + 4LL * j);
@@ -145,12 +143,7 @@ signed __int64 __fastcall board_PlacePlayer(__int64 a1, __int64 a2)
 {
   signed __int64 result; // rax@7
 
-  if ( (signed int)a2 < 0
-    || (signed int)a2 > 4
-    || SHIDWORD(a2) < 0
-    || SHIDWORD(a2) > 4
-    || *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2)
-    && *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) != 1 )
+  if ((signed int)a2 < 0 || (signed int)a2 > 4 || SHIDWORD(a2) < 0 || SHIDWORD(a2) > 4 || *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) && *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) != 1)
   {
     result = 0LL;
   }
@@ -167,27 +160,27 @@ signed __int64 __fastcall board_MovePlayer(__int64 a1, __int64 a2, __int64 a3)
 {
   signed __int64 result; // rax@5
 
-  if ( SHIDWORD(a3) >= 0 && SHIDWORD(a3) <= 4 && (signed int)a3 >= 0 && (signed int)a3 <= 4 )
+  if (SHIDWORD(a3) >= 0 && SHIDWORD(a3) <= 4 && (signed int)a3 >= 0 && (signed int)a3 <= 4)
   {
-    switch ( *(_DWORD *)(a1 + 20LL * SHIDWORD(a3) + 4LL * (signed int)a3) )
+    switch (*(_DWORD *)(a1 + 20LL * SHIDWORD(a3) + 4LL * (signed int)a3))
     {
-      case 0:
-      case 1:
-        *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) = 1;
-        *(_DWORD *)(a1 + 20LL * SHIDWORD(a3) + 4LL * (signed int)a3) = 5;
-        result = 0LL;
-        break;
-      case 2:
-        *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) = 1;
-        result = 2LL;
-        break;
-      case 3:
-      case 4:
-        result = 1LL;
-        break;
-      default:
-        __assert_fail("FALSE", "board.c", 0x49u, "board_MovePlayer");
-        return result;
+    case 0:
+    case 1:
+      *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) = 1;
+      *(_DWORD *)(a1 + 20LL * SHIDWORD(a3) + 4LL * (signed int)a3) = 5;
+      result = 0LL;
+      break;
+    case 2:
+      *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2) = 1;
+      result = 2LL;
+      break;
+    case 3:
+    case 4:
+      result = 1LL;
+      break;
+    default:
+      __assert_fail("FALSE", "board.c", 0x49u, "board_MovePlayer");
+      return result;
     }
   }
   else
@@ -201,18 +194,18 @@ signed __int64 __fastcall board_MovePlayer(__int64 a1, __int64 a2, __int64 a3)
 signed __int64 __fastcall board_FireArrow(__int64 a1, __int64 a2)
 {
   signed __int64 result; // rax@5
-  unsigned int v3; // eax@6
+  unsigned int v3;       // eax@6
 
-  if ( SHIDWORD(a2) >= 0 && SHIDWORD(a2) <= 4 && (signed int)a2 >= 0 && (signed int)a2 <= 4 )
+  if (SHIDWORD(a2) >= 0 && SHIDWORD(a2) <= 4 && (signed int)a2 >= 0 && (signed int)a2 <= 4)
   {
     v3 = *(_DWORD *)(a1 + 20LL * SHIDWORD(a2) + 4LL * (signed int)a2);
-    if ( v3 <= 3 )
+    if (v3 <= 3)
     {
       result = 0LL;
     }
     else
     {
-      if ( v3 != 4 )
+      if (v3 != 4)
         __assert_fail("FALSE", "board.c", 0x5Fu, "board_FireArrow");
       result = 1LL;
     }
@@ -227,7 +220,7 @@ signed __int64 __fastcall board_FireArrow(__int64 a1, __int64 a2)
 //----- (0000000000400CDA) ----------------------------------------------------
 int __fastcall board_Display(__int64 a1)
 {
-  int result; // eax@21
+  int result;   // eax@21
   signed int j; // [sp+18h] [bp-8h]@4
   signed int i; // [sp+1Ch] [bp-4h]@1
   signed int k; // [sp+1Ch] [bp-4h]@5
@@ -235,41 +228,41 @@ int __fastcall board_Display(__int64 a1)
   signed int m; // [sp+1Ch] [bp-4h]@18
 
   printf("   ");
-  for ( i = 0; i <= 4; ++i )
+  for (i = 0; i <= 4; ++i)
     printf("%d  ", (unsigned int)i);
   putchar(10);
-  for ( j = 0; j <= 4; ++j )
+  for (j = 0; j <= 4; ++j)
   {
     printf("  -");
-    for ( k = 0; k <= 4; ++k )
+    for (k = 0; k <= 4; ++k)
       printf("---");
     printf("\n%d ", (unsigned int)j);
-    for ( l = 0; l <= 4; ++l )
+    for (l = 0; l <= 4; ++l)
     {
       putchar(124);
-      switch ( *(_DWORD *)(a1 + 20LL * j + 4LL * l) )
+      switch (*(_DWORD *)(a1 + 20LL * j + 4LL * l))
       {
-        case 0:
-        case 2:
-        case 3:
-        case 4:
-          printf("  ");
-          break;
-        case 1:
-          printf("**");
-          break;
-        case 5:
-          printf("##");
-          break;
-        default:
-          __assert_fail("FALSE", "board.c", 0x83u, "board_Display");
-          return result;
+      case 0:
+      case 2:
+      case 3:
+      case 4:
+        printf("  ");
+        break;
+      case 1:
+        printf("**");
+        break;
+      case 5:
+        printf("##");
+        break;
+      default:
+        __assert_fail("FALSE", "board.c", 0x83u, "board_Display");
+        return result;
       }
     }
     puts("|");
   }
   printf("  -");
-  for ( m = 0; m <= 4; ++m )
+  for (m = 0; m <= 4; ++m)
     printf("---");
   return putchar(10);
 }
@@ -277,51 +270,51 @@ int __fastcall board_Display(__int64 a1)
 //----- (0000000000400E73) ----------------------------------------------------
 int __fastcall board_DisplayWarnings(__int64 a1, __int64 a2)
 {
-  int result; // eax@22
-  __int64 v3; // [sp+0h] [bp-30h]@1
+  int result;    // eax@22
+  __int64 v3;    // [sp+0h] [bp-30h]@1
   signed int v4; // [sp+1Ch] [bp-14h]@1
   signed int v5; // [sp+20h] [bp-10h]@1
   signed int v6; // [sp+24h] [bp-Ch]@1
-  int j; // [sp+28h] [bp-8h]@2
-  int i; // [sp+2Ch] [bp-4h]@1
+  int j;         // [sp+28h] [bp-8h]@2
+  int i;         // [sp+2Ch] [bp-4h]@1
 
   v3 = a2;
   v6 = 0;
   v5 = 0;
   v4 = 0;
-  for ( i = a2 - 1; (signed int)a2 + 1 >= i; ++i )
+  for (i = a2 - 1; (signed int)a2 + 1 >= i; ++i)
   {
-    for ( j = HIDWORD(a2) - 1; HIDWORD(a2) + 1 >= j; ++j )
+    for (j = HIDWORD(a2) - 1; HIDWORD(a2) + 1 >= j; ++j)
     {
-      if ( i >= 0 && i <= 4 && j >= 0 && j <= 4 )
+      if (i >= 0 && i <= 4 && j >= 0 && j <= 4)
       {
-        switch ( *(_DWORD *)(a1 + 20LL * j + 4LL * i) )
+        switch (*(_DWORD *)(a1 + 20LL * j + 4LL * i))
         {
-          case 3:
-            v4 = 1;
-            break;
-          case 2:
-            v5 = 1;
-            break;
-          case 4:
-            v6 = 1;
-            break;
-          case 0:
-          case 1:
-          case 5:
-            continue;
-          default:
-            __assert_fail("FALSE", "board.c", 0xA5u, "board_DisplayWarnings");
-            return result;
+        case 3:
+          v4 = 1;
+          break;
+        case 2:
+          v5 = 1;
+          break;
+        case 4:
+          v6 = 1;
+          break;
+        case 0:
+        case 1:
+        case 5:
+          continue;
+        default:
+          __assert_fail("FALSE", "board.c", 0xA5u, "board_DisplayWarnings");
+          return result;
         }
       }
     }
   }
-  if ( v4 )
+  if (v4)
     printf("You feel a breeze! ", a2);
-  if ( v5 )
+  if (v5)
     printf("You hear flapping! ", v3);
-  if ( v6 )
+  if (v6)
     printf("You smell a wumpus!", v3);
   return putchar(10);
 }
@@ -335,23 +328,23 @@ int game_DisplayOptions()
 //----- (0000000000400FBE) ----------------------------------------------------
 signed __int64 __fastcall game_AttemptLoadCommand(__int64 a1)
 {
-  char s1; // [sp+10h] [bp-40h]@2
+  char s1;        // [sp+10h] [bp-40h]@2
   const char *v3; // [sp+48h] [bp-8h]@1
 
   v3 = "At this stage of the program, only two commands are acceptable: \nload <g> \nquit \n\n";
-  while ( 1 )
+  while (1)
   {
-    while ( 1 )
+    while (1)
     {
       getInput((__int64)v3, &s1, 52);
       putchar(10);
-      if ( !strcmp(&s1, "quit") )
+      if (!strcmp(&s1, "quit"))
         return 0LL;
-      if ( !strncmp(&s1, "load", 4uLL) )
+      if (!strncmp(&s1, "load", 4uLL))
         break;
       printInvalidInput();
     }
-    if ( (unsigned int)game_CommandLoad(&s1, a1) == 1 )
+    if ((unsigned int)game_CommandLoad(&s1, a1) == 1)
       break;
     printInvalidInput();
   }
@@ -363,28 +356,28 @@ signed __int64 __fastcall game_AttemptLoadCommand(__int64 a1)
 signed __int64 __fastcall game_CommandLoad(char *a1, __int64 a2)
 {
   signed __int64 result; // rax@2
-  char *endptr; // [sp+18h] [bp-18h]@3
-  int v4; // [sp+24h] [bp-Ch]@3
-  char *nptr; // [sp+28h] [bp-8h]@1
+  char *endptr;          // [sp+18h] [bp-18h]@3
+  int v4;                // [sp+24h] [bp-Ch]@3
+  char *nptr;            // [sp+28h] [bp-8h]@1
 
   strtok(a1, " ");
   nptr = strtok(0LL, &byte_402062);
-  if ( nptr )
+  if (nptr)
   {
     v4 = strtol(nptr, &endptr, 10);
-    if ( nptr == endptr || *endptr || v4 <= 0 || v4 > 2 )
+    if (nptr == endptr || *endptr || v4 <= 0 || v4 > 2)
     {
       result = 0LL;
     }
     else
     {
-      if ( v4 == 1 )
+      if (v4 == 1)
       {
         board_Load(a2, (__int64)&BOARD_1);
       }
       else
       {
-        if ( v4 != 2 )
+        if (v4 != 2)
           __assert_fail("FALSE", "game.c", 0x4Bu, "game_CommandLoad");
         board_Load(a2, (__int64)&BOARD_2);
       }
@@ -401,20 +394,20 @@ signed __int64 __fastcall game_CommandLoad(char *a1, __int64 a2)
 //----- (0000000000401150) ----------------------------------------------------
 __int64 __fastcall game_CommandInit(char *a1, __int64 a2, __int64 a3)
 {
-  __int64 result; // rax@2
-  __int64 v4; // [sp+8h] [bp-48h]@1
-  char *endptr; // [sp+28h] [bp-28h]@3
-  __int64 v6; // [sp+30h] [bp-20h]@3
+  __int64 result;  // rax@2
+  __int64 v4;      // [sp+8h] [bp-48h]@1
+  char *endptr;    // [sp+28h] [bp-28h]@3
+  __int64 v6;      // [sp+30h] [bp-20h]@3
   unsigned int v7; // [sp+44h] [bp-Ch]@15
-  char *nptr; // [sp+48h] [bp-8h]@1
+  char *nptr;      // [sp+48h] [bp-8h]@1
 
   v4 = a3;
   strtok(a1, " ");
   nptr = strtok(0LL, ",");
-  if ( nptr )
+  if (nptr)
   {
     LODWORD(v6) = strtol(nptr, &endptr, 10);
-    if ( nptr == endptr || *endptr || (signed int)v6 < 0 || (signed int)v6 > 4 )
+    if (nptr == endptr || *endptr || (signed int)v6 < 0 || (signed int)v6 > 4)
     {
       printInvalidInput();
       result = 0LL;
@@ -422,10 +415,10 @@ __int64 __fastcall game_CommandInit(char *a1, __int64 a2, __int64 a3)
     else
     {
       nptr = strtok(0LL, ",");
-      if ( nptr )
+      if (nptr)
       {
         HIDWORD(v6) = strtol(nptr, &endptr, 10);
-        if ( nptr == endptr || *endptr || SHIDWORD(v6) < 0 || SHIDWORD(v6) > 4 )
+        if (nptr == endptr || *endptr || SHIDWORD(v6) < 0 || SHIDWORD(v6) > 4)
         {
           printInvalidInput();
           result = 0LL;
@@ -433,7 +426,7 @@ __int64 __fastcall game_CommandInit(char *a1, __int64 a2, __int64 a3)
         else
         {
           v7 = board_PlacePlayer(a2, v6);
-          if ( v7 )
+          if (v7)
             player_Initialise(v4, v6);
           else
             puts("Unable to place player at that position. \n");
@@ -458,86 +451,85 @@ __int64 __fastcall game_CommandInit(char *a1, __int64 a2, __int64 a3)
 //----- (00000000004012B4) ----------------------------------------------------
 signed __int64 __fastcall game_AttemptInitCommand(__int64 a1, __int64 a2)
 {
-  char s1; // [sp+10h] [bp-40h]@2
-  int v4; // [sp+44h] [bp-Ch]@5
+  char s1;        // [sp+10h] [bp-40h]@2
+  int v4;         // [sp+44h] [bp-Ch]@5
   const char *v5; // [sp+48h] [bp-8h]@1
 
   v5 = "At this stage of the program, only two commands are acceptable: \ninit <x>,<y> \nquit \n\n";
   do
   {
-    while ( 1 )
+    while (1)
     {
       getInput((__int64)v5, &s1, 52);
-      if ( !strcmp(&s1, "quit") )
+      if (!strcmp(&s1, "quit"))
         return 0LL;
-      if ( !strncmp(&s1, "init", 4uLL) )
+      if (!strncmp(&s1, "init", 4uLL))
         break;
       printInvalidInput();
     }
     v4 = game_CommandInit(&s1, a1, a2);
-  }
-  while ( v4 != 1 );
+  } while (v4 != 1);
   return 1LL;
 }
 
 //----- (0000000000401357) ----------------------------------------------------
 __int64 __fastcall game_CommandShoot(char *a1, __int64 a2, __int64 a3)
 {
-  __int64 result; // rax@2
-  __int64 v4; // rax@18
+  __int64 result;  // rax@2
+  __int64 v4;      // rax@18
   unsigned int v5; // eax@18
-  __int64 v6; // [sp+8h] [bp-38h]@1
-  const char *s1; // [sp+30h] [bp-10h]@1
+  __int64 v6;      // [sp+8h] [bp-38h]@1
+  const char *s1;  // [sp+30h] [bp-10h]@1
   unsigned int v8; // [sp+38h] [bp-8h]@5
-  signed int v9; // [sp+3Ch] [bp-4h]@1
+  signed int v9;   // [sp+3Ch] [bp-4h]@1
 
   v6 = a3;
   v9 = 0;
   strtok(a1, " ");
   s1 = strtok(0LL, " ");
-  if ( !s1 )
+  if (!s1)
   {
     printInvalidInput();
     return 0LL;
   }
-  if ( !strcmp(s1, "north") || !strcmp(s1, "n") )
+  if (!strcmp(s1, "north") || !strcmp(s1, "n"))
   {
     v8 = 0;
   }
-  else if ( !strcmp(s1, "south") || !strcmp(s1, "s") )
+  else if (!strcmp(s1, "south") || !strcmp(s1, "s"))
   {
     v8 = 2;
   }
-  else if ( !strcmp(s1, "east") || !strcmp(s1, "e") )
+  else if (!strcmp(s1, "east") || !strcmp(s1, "e"))
   {
     v8 = 1;
   }
   else
   {
-    if ( strcmp(s1, "west") && strcmp(s1, "w") )
+    if (strcmp(s1, "west") && strcmp(s1, "w"))
     {
       printInvalidInput();
       return 0LL;
     }
     v8 = 3;
   }
-  if ( *(_DWORD *)(v6 + 8) )
+  if (*(_DWORD *)(v6 + 8))
   {
     v4 = player_GetNextPosition(*(_QWORD *)v6, v8);
     v5 = board_FireArrow(a2, v4);
-    if ( v5 == 1 )
+    if (v5 == 1)
     {
       puts("You killed the Wumpus!\n");
       --*(_DWORD *)(v6 + 8);
       v9 = 1;
     }
-    else if ( v5 < 1 )
+    else if (v5 < 1)
     {
       printf("Missed. You now have %d arrows\n\n", --*(_DWORD *)(v6 + 8));
     }
     else
     {
-      if ( v5 != 2 )
+      if (v5 != 2)
         __assert_fail("FALSE", "game.c", 0xC9u, "game_CommandShoot");
       puts("Unable to fire arrow in that direction. \n");
     }
@@ -554,11 +546,11 @@ __int64 __fastcall game_CommandShoot(char *a1, __int64 a2, __int64 a3)
 //----- (0000000000401569) ----------------------------------------------------
 __int64 __fastcall game_AttemptMoveCommand(__int64 a1, __int64 a2, unsigned int a3)
 {
-  __int64 v3; // rax@2
+  __int64 v3;      // rax@2
   unsigned int v4; // eax@2
   unsigned int v6; // [sp+Ch] [bp-34h]@1
-  __int64 v7; // [sp+20h] [bp-20h]@2
-  __int64 v8; // [sp+20h] [bp-20h]@11
+  __int64 v7;      // [sp+20h] [bp-20h]@2
+  __int64 v8;      // [sp+20h] [bp-20h]@11
   unsigned int v9; // [sp+34h] [bp-Ch]@2
   const char *v10; // [sp+38h] [bp-8h]@7
 
@@ -569,37 +561,35 @@ __int64 __fastcall game_AttemptMoveCommand(__int64 a1, __int64 a2, unsigned int 
     v7 = v3;
     v4 = board_MovePlayer(a1, *(_QWORD *)a2, v3);
     v9 = v4;
-    if ( v4 == 1 )
+    if (v4 == 1)
     {
       v10 = "Player killed!";
     }
-    else if ( v4 < 1 )
+    else if (v4 < 1)
     {
       v10 = "Player moved.";
       *(_DWORD *)a2 = v7;
       *(_DWORD *)(a2 + 4) = HIDWORD(v7);
     }
-    else if ( v4 == 2 )
+    else if (v4 == 2)
     {
       v10 = "Bat cell!";
       do
       {
         LODWORD(v8) = rand() % 5;
         HIDWORD(v8) = rand() % 5;
-      }
-      while ( !(unsigned int)board_PlacePlayer(a1, v8) );
+      } while (!(unsigned int)board_PlacePlayer(a1, v8));
       *(_DWORD *)a2 = v8;
       *(_DWORD *)(a2 + 4) = HIDWORD(v8);
       v9 = 0;
     }
     else
     {
-      if ( v4 != 3 )
+      if (v4 != 3)
         __assert_fail("FALSE", "game.c", 0xEFu, "game_AttemptMoveCommand");
       v10 = "Unable to move - outside bounds.";
     }
-  }
-  while ( v9 && v9 != 1 && v9 != 3 );
+  } while (v9 && v9 != 1 && v9 != 3);
   printf("%s \n\n", v10);
   return v9 != 1;
 }
@@ -607,13 +597,13 @@ __int64 __fastcall game_AttemptMoveCommand(__int64 a1, __int64 a2, unsigned int 
 //----- (00000000004016E3) ----------------------------------------------------
 void __fastcall game_Hunt(__int64 a1, __int64 *a2)
 {
-  char s1; // [sp+10h] [bp-50h]@2
-  const char *v3; // [sp+50h] [bp-10h]@2
+  char s1;         // [sp+10h] [bp-50h]@2
+  const char *v3;  // [sp+50h] [bp-10h]@2
   unsigned int v4; // [sp+58h] [bp-8h]@4
-  int v5; // [sp+5Ch] [bp-4h]@1
+  int v5;          // [sp+5Ch] [bp-4h]@1
 
   v5 = 1;
-  while ( v5 )
+  while (v5)
   {
     v3 = "At this stage of the program, only three commands are acceptable: \n"
          " <direction> \n"
@@ -626,34 +616,34 @@ void __fastcall game_Hunt(__int64 a1, __int64 *a2)
     board_DisplayWarnings(a1, *a2);
     putchar(10);
     getInput((__int64)v3, &s1, 52);
-    if ( !strcmp(&s1, "north") || !strcmp(&s1, "n") )
+    if (!strcmp(&s1, "north") || !strcmp(&s1, "n"))
     {
       v4 = 0;
       goto LABEL_19;
     }
-    if ( !strcmp(&s1, "south") || !strcmp(&s1, "s") )
+    if (!strcmp(&s1, "south") || !strcmp(&s1, "s"))
     {
       v4 = 2;
       goto LABEL_19;
     }
-    if ( !strcmp(&s1, "east") || !strcmp(&s1, "e") )
+    if (!strcmp(&s1, "east") || !strcmp(&s1, "e"))
     {
       v4 = 1;
       goto LABEL_19;
     }
-    if ( !strcmp(&s1, "west") || !strcmp(&s1, "w") )
+    if (!strcmp(&s1, "west") || !strcmp(&s1, "w"))
     {
       v4 = 3;
-LABEL_19:
+    LABEL_19:
       v5 = game_AttemptMoveCommand(a1, (__int64)a2, v4);
     }
-    else if ( !strncmp(&s1, "shoot", 5uLL) )
+    else if (!strncmp(&s1, "shoot", 5uLL))
     {
       v5 = (unsigned __int64)game_CommandShoot(&s1, a1, (__int64)a2) == 0;
     }
     else
     {
-      if ( !strcmp(&s1, "quit") )
+      if (!strcmp(&s1, "quit"))
       {
         v5 = 0;
         return;
@@ -673,9 +663,9 @@ void game_PlayGame()
   srand(0);
   game_DisplayOptions();
   readInput(&v0, 2, stdin);
-  if ( (unsigned int)game_AttemptLoadCommand((__int64)&v2) )
+  if ((unsigned int)game_AttemptLoadCommand((__int64)&v2))
   {
-    if ( (unsigned int)game_AttemptInitCommand((__int64)&v2, (__int64)&v1) )
+    if ((unsigned int)game_AttemptInitCommand((__int64)&v2, (__int64)&v1))
       game_Hunt((__int64)&v2, (__int64 *)&v1);
   }
 }
@@ -690,8 +680,7 @@ void readRestOfLine()
   {
     v1 = _IO_getc(stdin);
     v0 = v1 != -1 && v1 != 10;
-  }
-  while ( v0 );
+  } while (v0);
   clearerr(stdin);
 }
 
@@ -700,9 +689,9 @@ signed __int64 __fastcall readInput(const char *a1, int a2, FILE *a3)
 {
   signed __int64 result; // rax@2
 
-  if ( fgets((char *)a1, a2, a3) )
+  if (fgets((char *)a1, a2, a3))
   {
-    if ( a1[strlen(a1) - 1] == 10 )
+    if (a1[strlen(a1) - 1] == 10)
     {
       a1[strlen(a1) - 1] = 0;
       result = 2LL;
@@ -727,12 +716,12 @@ signed __int64 __fastcall getInput(__int64 a1, const char *a2, int a3)
   int v5; // [sp+Ch] [bp-24h]@1
 
   v5 = a3;
-  while ( 1 )
+  while (1)
   {
     printf("%s", a1);
     v3 = readInput(a2, v5, stdin);
     putchar(10);
-    if ( v3 == 2 )
+    if (v3 == 2)
       break;
     printInvalidInput();
   }
@@ -756,36 +745,36 @@ void enableWindowsCompatibility()
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
   char *endptr; // [sp+8h] [bp-18h]@4
-  char nptr; // [sp+10h] [bp-10h]@2
-  int v6; // [sp+14h] [bp-Ch]@4
-  int v7; // [sp+18h] [bp-8h]@2
-  int v8; // [sp+1Ch] [bp-4h]@1
+  char nptr;    // [sp+10h] [bp-10h]@2
+  int v6;       // [sp+14h] [bp-Ch]@4
+  int v7;       // [sp+18h] [bp-8h]@2
+  int v8;       // [sp+1Ch] [bp-4h]@1
 
   enableWindowsCompatibility();
   v8 = 1;
-  while ( v8 )
+  while (v8)
   {
     printf("Welcome to Hunt the Wumpus\n-------------------------- \n1. Play Game \n2. Show student information \n3. Quit \n\nPlease enter your choice: ");
     v7 = readInput(&nptr, 3, stdin);
     putchar(10);
-    if ( v7 == 2 )
+    if (v7 == 2)
     {
       v6 = strtol(&nptr, &endptr, 10);
-      if ( endptr == &nptr || *endptr || v6 <= 0 || v6 > 3 )
+      if (endptr == &nptr || *endptr || v6 <= 0 || v6 > 3)
       {
         printInvalidInput();
       }
-      else if ( v6 == 2 )
+      else if (v6 == 2)
       {
         showStudentInformation();
       }
-      else if ( v6 == 3 )
+      else if (v6 == 3)
       {
         v8 = 0;
       }
       else
       {
-        if ( v6 != 1 )
+        if (v6 != 1)
           __assert_fail("FALSE", "huntWump.c", 0x39u, "main");
         game_PlayGame();
       }
@@ -803,15 +792,15 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 int showStudentInformation()
 {
   return printf(
-           "----------------------------------- \n"
-           "Name: %s \n"
-           "Student ID: %s \n"
-           "Email: %s \n"
-           "----------------------------------- \n"
-           "\n",
-           "<your full name>",
-           "<your student number>",
-           "<your email address>");
+      "----------------------------------- \n"
+      "Name: %s \n"
+      "Student ID: %s \n"
+      "Email: %s \n"
+      "----------------------------------- \n"
+      "\n",
+      "<your full name>",
+      "<your student number>",
+      "<your email address>");
 }
 
 //----- (0000000000401BD2) ----------------------------------------------------
@@ -831,21 +820,21 @@ __int64 __fastcall player_GetNextPosition(__int64 a1, unsigned int a2)
   __int64 v3; // [sp+0h] [bp-10h]@1
 
   v3 = a1;
-  if ( a2 == 1 )
+  if (a2 == 1)
   {
     LODWORD(v3) = a1 + 1;
   }
-  else if ( a2 < 1 )
+  else if (a2 < 1)
   {
     HIDWORD(v3) = HIDWORD(a1) - 1;
   }
-  else if ( a2 == 2 )
+  else if (a2 == 2)
   {
     HIDWORD(v3) = HIDWORD(a1) + 1;
   }
   else
   {
-    if ( a2 != 3 )
+    if (a2 != 3)
       __assert_fail("FALSE", "player.c", 0x1Du, "player_GetNextPosition");
     LODWORD(v3) = a1 - 1;
   }
@@ -865,19 +854,19 @@ _QWORD *__fastcall player_UpdatePosition(_QWORD *a1, __int64 a2)
 //----- (0000000000401C90) ----------------------------------------------------
 void __fastcall _libc_csu_init(unsigned int a1, __int64 a2, __int64 a3)
 {
-  __int64 v3; // r13@1
-  __int64 v4; // rbx@1
+  __int64 v3;        // r13@1
+  __int64 v4;        // rbx@1
   signed __int64 v5; // rbp@1
 
   v3 = a3;
   v4 = 0LL;
   v5 = &_do_global_dtors_aux_fini_array_entry - _frame_dummy_init_array_entry;
   init_proc();
-  if ( v5 )
+  if (v5)
   {
     do
-      ((void (__fastcall *)(_QWORD, __int64, __int64))_frame_dummy_init_array_entry[v4++])(a1, a2, v3);
-    while ( v4 != v5 );
+      ((void(__fastcall *)(_QWORD, __int64, __int64))_frame_dummy_init_array_entry[v4++])(a1, a2, v3);
+    while (v4 != v5);
   }
 }
 // 602E10: using guessed type __int64 (__fastcall *_frame_dummy_init_array_entry[2])();
