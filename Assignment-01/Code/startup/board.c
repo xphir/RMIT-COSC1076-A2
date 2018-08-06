@@ -205,10 +205,10 @@ void board_DisplayWarnings(Board board, Position position)
 		}
 	}
 	if (breeze)
-		printf("You feel a breeze! ", position);
+		printf("You feel a breeze! DEBUG: x = %d, y = %d", position.x, position.y);
 	if (flapping)
-		printf("You hear flapping! ", position);
+		printf("You hear flapping! DEBUG: x = %d, y = %d", position.x, position.y);
 	if (wumpus)
-		printf("You smell a wumpus!", position);
+		printf("You smell a wumpus! DEBUG: x = %d, y = %d", position.x, position.y);
 	putchar(10);
 }
