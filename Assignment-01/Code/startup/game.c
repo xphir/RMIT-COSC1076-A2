@@ -81,45 +81,40 @@ Boolean game_AttemptLoadCommand(Board *board)
 
 Boolean game_CommandLoad(char *loadSelection, Board *board)
 {
-	board_Load(board, &BOARD_1);
-	return TRUE;
-
-	/*
+	Boolean result;
 	char *endptr;
-	char *selectionTok;
-	int selectionInt;
+	char *nptr;
+	int selectedBoard;
 
 	strtok(loadSelection, " ");
-	selectionTok = strtok(0LL, &byte_402062);
-	if (selectionTok)
+	nptr = strtok(NULL, "\0");
+	if (nptr)
 	{
-		selectionInt = strtol(selectionTok, &endptr, 10);
-		if ( selectionTok == endptr || *endptr || selectionInt <= 0 || selectionInt > 2 )
+		selectedBoard = strtol(nptr, &endptr, 10);
+		if (nptr == endptr || *endptr || selectedBoard <= 0 || selectedBoard > BOARD_AMMOUNT)
 		{
-		return TRUE;
+			result = FALSE;
 		}
 		else
 		{
-		if ( selectionInt == 1 )
-		{
-			board_Load(board, &BOARD_1);
-		}
-		else
-		{
-			if ( selectionInt != 2 )
+			if (selectedBoard == 1)
 			{
-				assert(0);
+				board_Load(board, &BOARD_1);
 			}
-			board_Load(board, &BOARD_2);
-		}
-		return TRUE;
+			else
+			{
+				if (selectedBoard != 2)
+					assert(0);
+				board_Load(board, &BOARD_2);
+			}
+			result = TRUE;
 		}
 	}
 	else
 	{
-		return FALSE;
+		result = FALSE;
 	}
-	*/
+	return result;
 }
 
 Boolean game_AttemptInitCommand(Board *board, Player *player)

@@ -11,6 +11,7 @@
 
 #define BOARD_WIDTH 5
 #define BOARD_HEIGHT 5
+#define BOARD_AMMOUNT 2
 
 #define NUM_PITS 4
 #define NUM_BATS 3
