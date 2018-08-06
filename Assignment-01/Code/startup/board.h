@@ -58,7 +58,7 @@ typedef enum arrowHit
 /**
  * Load the board - set all the cells in board to those present in boardToLoad.
  */
-Boolean board_Load(Board *board, Board *boardToLoad);
+void board_Load(Board board, Board boardToLoad);
 
 /**
  * Try to set the cell at the provided position to board_PLAYER.
@@ -68,7 +68,7 @@ Boolean board_Load(Board *board, Board *boardToLoad);
  * Return TRUE when the cell at the position is successfully set to 
  * board_PLAYER.
  */
-Boolean board_PlacePlayer(Board *board, Position position);
+Boolean board_PlacePlayer(Board board, Position position);
 
 /**
  * Try to move the player from the existing position to

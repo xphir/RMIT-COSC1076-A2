@@ -37,17 +37,20 @@
  * and marks are allocated to good coding practices.
  */
 
-int game_DisplayOptions();
-Boolean game_CommandLoad(char *loadSelection, Board *board);
-Boolean game_AttemptLoadCommand(Board *board);
-Boolean game_AttemptInitCommand(Board *board, Player *player);
-Boolean game_CommandInit(char *input, Board *board, Player *player);
+void game_PlayGame();
 
-void game_PlayGame();
-void game_CommandShoot();
-void game_AttemptMoveCommand();
-void game_Hunt();
-void game_PlayGame();
+void game_DisplayOptions();
+
+Boolean game_AttemptLoadCommand(Board board);
+Boolean game_AttemptInitCommand(Board board, Player player);
+
+Boolean game_CommandLoad(char *loadSelection, Board board);
+Boolean game_CommandInit(char *input, Board board, Player player);
+
+Boolean game_AttemptMoveCommand(Board board, Player player, Direction direction);
+Boolean game_CommandShoot(char *input, Board board, Player player);
+
+void game_Hunt(Board board, Player player);
 
 /* TODO not provided */
 

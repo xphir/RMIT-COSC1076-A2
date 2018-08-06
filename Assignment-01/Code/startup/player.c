@@ -7,26 +7,40 @@
 
 void player_Initialise(Player *player, Position position)
 {
-    /* TODO
-
-    int result;
-
-    * player = position;
-    result = player;
-    *(player + 8) = 5;
-
-    return result;
-    */
+    player->position = position;
+    player->numArrows = INIT_ARROW_COUNT;
+    return;
 }
 
 Position player_GetNextPosition(Position position, Direction direction)
 {
-    Position newPosition;
+    Position nextPosition;
+    nextPosition = position;
 
-    return newPosition;
+    if (direction == player_NORTH)
+    {
+        nextPosition.y = position.y - 1;
+    }
+    else if (direction == player_EAST)
+    {
+        nextPosition.x = position.x + 1;
+    }
+    else if (direction == player_SOUTH)
+    {
+        nextPosition.y = position.y + 1;
+    }
+    else if (direction == player_WEST)
+    {
+        nextPosition.x = position.x - 1;
+    }
+    else
+    {
+        assert(0);
+    }
+    return nextPosition;
 }
 
 void player_UpdatePosition(Player *player, Position position)
 {
-    /* TODO */
+    player->position = position;
 }

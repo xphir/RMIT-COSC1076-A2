@@ -19,9 +19,9 @@ int main()
     return 0;
 }
 
-int showStudentInformation()
+void showStudentInformation()
 {
-    return printf(
+    printf(
         "----------------------------------\n"
         "Name: %s\n"
         "Student ID: %s\n"

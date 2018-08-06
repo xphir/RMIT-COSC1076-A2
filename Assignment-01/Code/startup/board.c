@@ -22,12 +22,11 @@ Board BOARD_2 =
 		{board_EMPTY, board_WUMPUS, board_EMPTY, board_EMPTY, board_EMPTY},
 };
 
-Boolean board_Load(Board *board, Board *boardToLoad)
+void board_Load(Board board, Board boardToLoad)
 {
-	memcpy(board, *boardToLoad, sizeof(*boardToLoad));
+	memcpy(board, boardToLoad, sizeof(*boardToLoad));
 
 	/*
-
 	int x;
 	int y;
 	for(x = 0; x < BOARD_HEIGHT; x++)
@@ -37,38 +36,26 @@ Boolean board_Load(Board *board, Board *boardToLoad)
 			board[y][x] = boardToLoad[y][x];
 		}
 	}
-
-	for(int i = 0; i<BOARD_HEIGHT; i++)
-  	{
-    	for(int j = 0; j < BOARD_WIDTH; j++)
-    	{
-      		board[i][j] = boardToLoad[i][j];
-    	}
-  	}
 	*/
-	return TRUE;
 }
 
-Boolean board_PlacePlayer(Board *board, Position position)
+Boolean board_PlacePlayer(Board board, Position position)
 {
 	/* TODO */
-	Cell *c;
+	Cell c;
 	c = board[position.y][position.x];
 
 	if (position.x < 0 || position.x >= BOARD_WIDTH || position.y < 0 || position.y >= BOARD_HEIGHT) /* Check if selection is out of bounds */
 	{
 		return FALSE;
 	}
-	else if (*c == board_WUMPUS || *c == board_BATS || *c == board_PIT) /* Check if selection is in a hazard */
+	else if (c == board_WUMPUS || c == board_BATS || c == board_PIT) /* Check if selection is in a hazard */
 	{
 		return FALSE;
 	}
 	else
 	{
-		*board[position.y][position.x] = board_PLAYER;
-		printf("Position %d,%d\n", position.x, position.y);
-		printf("C Value %d\n", board_PLAYER);
-		printf("Interal Set Cell Value %d\n", *board[position.y][position.x]);
+		board[position.y][position.x] = board_PLAYER;
 		return TRUE;
 	}
 }
@@ -149,7 +136,6 @@ void board_Display(Board board)
 	{
 		printf("---");
 	}
-
 	putchar(10);
 }
 

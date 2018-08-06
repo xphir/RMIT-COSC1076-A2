@@ -23,7 +23,9 @@ void exitProgram();
  * You should change the defines above related to student information and use
  * them when printing.
  */
-int showStudentInformation();
+
+void showStudentInformation();
+
 void test();
 void gameDisplayOptions();
 

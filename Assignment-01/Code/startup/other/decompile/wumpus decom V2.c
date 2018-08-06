@@ -806,12 +806,14 @@ int showStudentInformation()
 //----- (0000000000401BD2) ----------------------------------------------------
 __int64 __fastcall player_Initialise(__int64 a1, __int64 a2)
 {
+{
   __int64 result; // rax@1
 
   *(_QWORD *)a1 = a2;
   result = a1;
   *(_DWORD *)(a1 + 8) = 5;
   return result;
+}
 }
 
 //----- (0000000000401BF6) ----------------------------------------------------

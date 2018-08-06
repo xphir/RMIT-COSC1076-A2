@@ -15,22 +15,21 @@ void game_PlayGame()
 	game_DisplayOptions();
 
 	readInput(&input, 2, stdin);
-	if (game_AttemptLoadCommand(&board))
+
+	if (game_AttemptLoadCommand(board))
 	{
 
-		if (game_AttemptInitCommand(&board, &player))
+		if (game_AttemptInitCommand(board, player))
 		{
-			/* game_Hunt(board, player); */
+			game_Hunt(board, player);
 		}
 	}
-	printf("Set Cell Value %d\n", board[1][1]);
-	board_Display(board);
 }
 
 /* DONE */
-int game_DisplayOptions()
+void game_DisplayOptions()
 {
-	return printf(
+	printf(
 		"You can use the following commands to play the game: \n"
 		"\n"
 		"load <g> \n"
@@ -47,7 +46,7 @@ int game_DisplayOptions()
 		"Press enter to continue... ");
 }
 
-Boolean game_AttemptLoadCommand(Board *board)
+Boolean game_AttemptLoadCommand(Board board)
 {
 	char input;
 	char *promptMessage;
@@ -79,7 +78,7 @@ Boolean game_AttemptLoadCommand(Board *board)
 	return TRUE;
 }
 
-Boolean game_CommandLoad(char *loadSelection, Board *board)
+Boolean game_CommandLoad(char *loadSelection, Board board)
 {
 	Boolean result;
 	char *endptr;
@@ -99,13 +98,13 @@ Boolean game_CommandLoad(char *loadSelection, Board *board)
 		{
 			if (selectedBoard == 1)
 			{
-				board_Load(board, &BOARD_1);
+				board_Load(board, BOARD_1);
 			}
 			else
 			{
 				if (selectedBoard != 2)
 					assert(0);
-				board_Load(board, &BOARD_2);
+				board_Load(board, BOARD_2);
 			}
 			result = TRUE;
 		}
@@ -114,10 +113,11 @@ Boolean game_CommandLoad(char *loadSelection, Board *board)
 	{
 		result = FALSE;
 	}
+
 	return result;
 }
 
-Boolean game_AttemptInitCommand(Board *board, Player *player)
+Boolean game_AttemptInitCommand(Board board, Player player)
 {
 	char input;
 	int selectionInt;
@@ -140,12 +140,12 @@ Boolean game_AttemptInitCommand(Board *board, Player *player)
 	return TRUE;
 }
 
-Boolean game_CommandInit(char *input, Board *board, Player *player)
+Boolean game_CommandInit(char *input, Board board, Player player)
 {
 	Boolean placePlayerResult;
 	Boolean result;
 	Position selectedPosition;
-	Player *localPlayer;
+	Player localPlayer;
 	char *endptr;
 	char *nptr;
 
@@ -190,7 +190,7 @@ Boolean game_CommandInit(char *input, Board *board, Player *player)
 					if (placePlayerResult)
 					{
 						printf("Debug Print 4.1: Placing Player Result: %d\n", placePlayerResult);
-						player_Initialise(localPlayer, selectedPosition);
+						player_Initialise(&localPlayer, selectedPosition);
 					}
 					else
 					{
@@ -213,4 +213,75 @@ Boolean game_CommandInit(char *input, Board *board, Player *player)
 		result = FALSE;
 	}
 	return result;
+}
+
+void game_Hunt(Board board, Player player)
+{
+	char input;
+	char *promptMessage;
+	unsigned int direction;
+	int ongoing;
+
+	ongoing = TRUE;
+	while (ongoing)
+	{
+		promptMessage = "At this stage of the program, only three commands are acceptable: \n"
+						" <direction> \n"
+						" shoot <direction> \n"
+						" quit \n"
+						"Where <direction> is one of: north,n,south,s,east,e,west,w\n"
+						"\n"
+						"Please enter your choice: ";
+
+		board_Display(board);
+		board_DisplayWarnings(board, player.position);
+		putchar(10);
+		getInput(promptMessage, &input, 52);
+
+		if (!strcmp(&input, "north") || !strcmp(&input, "n"))
+		{
+			direction = player_NORTH;
+			ongoing = game_AttemptMoveCommand(board, player, direction);
+		}
+		else if (!strcmp(&input, "south") || !strcmp(&input, "s"))
+		{
+			direction = player_SOUTH;
+			ongoing = game_AttemptMoveCommand(board, player, direction);
+		}
+		else if (!strcmp(&input, "east") || !strcmp(&input, "e"))
+		{
+			direction = player_EAST;
+			ongoing = game_AttemptMoveCommand(board, player, direction);
+		}
+		else if (!strcmp(&input, "west") || !strcmp(&input, "w"))
+		{
+			direction = player_WEST;
+			ongoing = game_AttemptMoveCommand(board, player, direction);
+		}
+		else if (!strncmp(&input, "shoot", 5))
+		{
+			ongoing = game_CommandShoot(&input, board, player) == 0;
+		}
+		else
+		{
+			if (!strcmp(&input, "quit"))
+			{
+				ongoing = FALSE;
+				return;
+			}
+			printInvalidInput();
+		}
+	}
+}
+
+/* TODO */
+Boolean game_AttemptMoveCommand(Board board, Player player, Direction direction)
+{
+	return TRUE;
+}
+
+/* TODO */
+Boolean game_CommandShoot(char *input, Board board, Player player)
+{
+	return TRUE;
 }
