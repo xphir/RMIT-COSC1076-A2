@@ -105,27 +105,27 @@ void board_Display(Board board)
 	int x, y;
 	/* Print x axis (top side) numbers */
 	printf("   ");
-	for (y = 0; y < BOARD_HEIGHT; ++y)
+	for (x = 0; x < BOARD_WIDTH; ++x)
 	{
-		printf("%d  ", y);
+		printf("%d  ", x);
 	}
 
 	putchar(10);
 
-	for (x = 0; x < BOARD_WIDTH; ++x)
+	for (y = 0; y < BOARD_HEIGHT; ++y)
 	{
 
 		/* Print line split */
 		printf("  -");
-		for (y = 0; y < BOARD_HEIGHT; ++y)
+		for (x = 0; x < BOARD_WIDTH; ++x)
 		{
 			printf("---");
 		}
 
 		/* Print y axis (left side) numbers */
-		printf("\n%d ", x);
+		printf("\n%d ", y);
 
-		for (y = 0; y < BOARD_HEIGHT; ++y)
+		for (x = 0; x < BOARD_WIDTH; ++x)
 		{
 			putchar(124);
 			/* Check what type of cell it is */
