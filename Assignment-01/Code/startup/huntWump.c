@@ -13,9 +13,11 @@ int main()
     */
 
     /* TODO not provided */
-    test();
+    printf("DEBUG main(): 1.1 - Starting program\n");
+    startMenu();
 
     /* return EXIT_SUCCESS; */
+    printf("DEBUG startMenu(): 1.2 - Ending program?\n");
     return 0;
 }
 
@@ -38,42 +40,6 @@ void showStudentInformation()
 #define NULL_SPACE 1
 #define EXTRA_SPACES (NEW_LINE_SPACE + NULL_SPACE)
 
-void startMenu()
-{
-    /*
-    char * result;
-    char line[INPUT_MAX_LENGTH + EXTRA_SPACES];
-    int inputResult;
-    int input[INPUT_MAX_LENGTH + EXTRA_SPACES];
-
-    showStartMenu();
-    result = getInput("Please enter your choice:", input, sizeof(input));
-    printf("\n%d\n", input);
-   
-
-    switch(input)
-    {
-        case 1: printf("You have entered choice 1\n");
-                    break;
-        case 2: printf("You have entered choice 2\n");
-                    showStudentInformation();
-                    break;
-        case 3: printf("You have entered choice 3\n");
-                    exitProgram();
-                    break;
-        default: printf("Invalid choice!\n");
-                    return;
-    };
-
-    
-    if(inputResult = 2) {
-
-    } else {
-       startMenu();
-    }
-    */
-}
-
 void showStartMenu()
 {
     printf(
@@ -92,7 +58,7 @@ void exitProgram()
     exit(0);
 }
 
-void test()
+void startMenu()
 {
     char *inputEndPtr;
     char input;
@@ -105,7 +71,7 @@ void test()
     while (ongoing)
     {
         showStartMenu();
-        readResult = readInput(&input, 3, stdin);
+        readResult = readInput(&input, 1 + EXTRA_SPACES, stdin);
         /*
         printf("Read Result: %d\n",readResult);
         printf("Input Char: %s\n", &input);
@@ -113,6 +79,7 @@ void test()
         putchar(10);
         if (readResult == ReadInputResultSuccess)
         {
+            printf("DEBUG startMenu(): 1.1 - Valid readResult\n");
             inputInt = strtol(&input, &inputEndPtr, 10);
             /*
             printf("Input Int: %d\n",inputInt);
@@ -121,14 +88,17 @@ void test()
 
             if (/* inputEndPtr == &input || *inputEndPtr  || */ inputInt <= 0 || inputInt > 3)
             {
+                printf("DEBUG startMenu(): 2.1 - Invalid inputInt\n");
                 printInvalidInput();
             }
             else if (inputInt == 2)
             {
+                printf("DEBUG startMenu(): 2.2 - Show student Info\n");
                 showStudentInformation();
             }
             else if (inputInt == 3)
             {
+                printf("DEBUG startMenu(): 2.3 - Starting Quit\n");
                 ongoing = FALSE;
             }
             else
@@ -138,14 +108,22 @@ void test()
                     assert(0);
                 }
                 /* printf("Play The Game!"); */
+                printf("DEBUG startMenu(): 2.3 - Play Game\n");
                 game_PlayGame();
             }
         }
         else
         {
+            printf("DEBUG startMenu(): 1.1 - Invalid readResult\n");
             printInvalidInput();
         }
     }
     puts("Good bye! \n");
     exit(EXIT_SUCCESS);
+}
+
+void Test(){
+
+    /* Used for testing */
+
 }

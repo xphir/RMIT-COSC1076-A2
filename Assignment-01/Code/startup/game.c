@@ -10,17 +10,19 @@ void game_PlayGame()
 	char input;
 	Board board;
 	Player player;
-
+	/* COMPLETE Sets no random variation */
 	srand(0);
+	/* COMPLETE Shows game options */
 	game_DisplayOptions();
-
+	/* COMPLETE Takes an enter input - ie no vales */
 	readInput(&input, 2, stdin);
-
+	/* COMPLETE tries to load the game then calls subcalls > game_CommandLoad()*/
 	if (game_AttemptLoadCommand(board))
 	{
-
+		/* tries to initialise the player then calls > game_CommandInit */
 		if (game_AttemptInitCommand(board, player))
 		{
+			/* starts the game (eg movement, shooting, quit */
 			game_Hunt(board, player);
 		}
 	}
