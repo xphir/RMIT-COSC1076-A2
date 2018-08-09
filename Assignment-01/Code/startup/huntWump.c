@@ -118,8 +118,7 @@ void startMenu()
             printInvalidInput();
         }
     }
-    puts("Good bye! \n");
-    exit(EXIT_SUCCESS);
+    exitProgram();
 }
 
 void Test(){

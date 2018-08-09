@@ -10,6 +10,8 @@ void game_PlayGame()
 	char input;
 	Board board;
 	Player player;
+
+	printf("DEBUG game_PlayGame(): 1.1 - Method Start\n");
 	/* COMPLETE Sets no random variation */
 	srand(0);
 	/* COMPLETE Shows game options */
@@ -20,10 +22,10 @@ void game_PlayGame()
 	if (game_AttemptLoadCommand(board))
 	{
 		/* tries to initialise the player then calls > game_CommandInit */
-		if (game_AttemptInitCommand(board, player))
+		if (game_AttemptInitCommand(board, &player))
 		{
 			/* starts the game (eg movement, shooting, quit */
-			game_Hunt(board, player);
+			game_Hunt(board, &player);
 		}
 	}
 }
@@ -119,7 +121,7 @@ Boolean game_CommandLoad(char *loadSelection, Board board)
 	return moveResult;
 }
 
-Boolean game_AttemptInitCommand(Board board, Player player)
+Boolean game_AttemptInitCommand(Board board, Player * player)
 {
 	char input;
 	int selectionInt;
@@ -137,23 +139,22 @@ Boolean game_AttemptInitCommand(Board board, Player player)
 				break;
 			printInvalidInput();
 		}
+		printf("DEBUG game_AttemptInitCommand(): 1.1 &Input = %s\n", &input);
 		selectionInt = game_CommandInit(&input, board, player);
 	} while (selectionInt != 1);
 	return TRUE;
 }
 
-Boolean game_CommandInit(char *input, Board board, Player player)
+Boolean game_CommandInit(char *input, Board board, Player * player)
 {
 	Boolean placePlayermoveResult;
 	Boolean moveResult;
 	Position selectedPosition;
-	Player localPlayer;
 	char *endptr;
 	char *nptr;
 
 	printf("Debug Print 1.1: Input = %s\n", input);
 
-	localPlayer = player;
 	strtok(input, " ");
 
 	printf("Debug Print 1.2: Input = %s\n", input);
@@ -192,7 +193,7 @@ Boolean game_CommandInit(char *input, Board board, Player player)
 					if (placePlayermoveResult)
 					{
 						printf("Debug Print 4.1: Placing Player moveResult: %d\n", placePlayermoveResult);
-						player_Initialise(&localPlayer, selectedPosition);
+						player_Initialise(player, selectedPosition);
 					}
 					else
 					{
@@ -217,7 +218,7 @@ Boolean game_CommandInit(char *input, Board board, Player player)
 	return moveResult;
 }
 
-void game_Hunt(Board board, Player player)
+void game_Hunt(Board board, Player * player)
 {
 	char input;
 	char *promptMessage;
@@ -236,10 +237,11 @@ void game_Hunt(Board board, Player player)
 						"Please enter your choice: ";
 
 		board_Display(board);
-		board_DisplayWarnings(board, player.position);
+		board_DisplayWarnings(board, player->position);
 		putchar(10);
 		getInput(promptMessage, &input, 52);
-
+		
+		printf("DEBUG game_Hunt(): 1.1 Player info x = %d, y = %d, arrows = %u\n", player->position.x, player->position.y, player->numArrows);
 		if (!strcmp(&input, "north") || !strcmp(&input, "n"))
 		{
 			direction = player_NORTH;
@@ -277,7 +279,7 @@ void game_Hunt(Board board, Player player)
 }
 
 /* TODO */
-PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction direction)
+PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direction)
 {
 	Position nextPosition;
 	Position nextPositionCopy;
@@ -290,11 +292,11 @@ PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction directi
 	directionCopy = direction;
 	do
 	{
-		printf("Current Position: x = %d, y = %d\n", player.position.x, player.position.y);
-		nextPosition = player_GetNextPosition(player.position, directionCopy);
+		printf("Current Position: x = %d, y = %d\n", player->position.x, player->position.y);
+		nextPosition = player_GetNextPosition(player->position, directionCopy);
 		printf("Next Position: x = %d, y = %d\n", nextPosition.x, nextPosition.y);
 		nextPositionCopy = nextPosition;
-		moveType = board_MovePlayer(board, player.position, nextPosition);
+		moveType = board_MovePlayer(board, player->position, nextPosition);
 		printf("Move Type: %d\n", moveType);
 		moveResult = moveType;
 		if (moveType == board_PLAYER_KILLED)
@@ -304,7 +306,7 @@ PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction directi
 		else if (moveType == board_PLAYER_MOVED)
 		{
 			message = "Player moved.";
-			player.position = nextPositionCopy;
+			player->position = nextPositionCopy;
 		}
 		else if (moveType == board_BAT_CELL)
 		{
@@ -314,7 +316,7 @@ PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction directi
 				batDragPosition.x = rand() % 5;
 				batDragPosition.y = rand() % 5;
 			} while (!board_PlacePlayer(board, batDragPosition));
-			player.position = batDragPosition;
+			player->position = batDragPosition;
 			moveResult = board_PLAYER_MOVED;
 		}
 		else if (moveType == board_OUTSIDE_BOUNDS)
@@ -331,16 +333,14 @@ PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction directi
 }
 
 /* TODO */
-Boolean game_CommandShoot(char *inputTODO, Board board, Player player)
+Boolean game_CommandShoot(char *inputTODO, Board board, Player * player)
 {
 	Boolean result;
 	Position arrowTarget;
 	ArrowHit arrowResult;
-	Player currentPlayer;
 	char *inputTok;
 	Direction arrowDirection;
 
-	currentPlayer = player;
 	result = FALSE;
 	strtok(inputTODO, " ");
 	inputTok = strtok(NULL, " ");
@@ -370,20 +370,20 @@ Boolean game_CommandShoot(char *inputTODO, Board board, Player player)
 		printInvalidInput();
 		return FALSE;
 	}
-	if (currentPlayer.numArrows)
+	if (player->numArrows)
 	{
-		arrowTarget = player_GetNextPosition(currentPlayer.position, arrowDirection);
+		arrowTarget = player_GetNextPosition(player->position, arrowDirection);
 		arrowResult = board_FireArrow(board, arrowTarget);
 		if (arrowResult == board_WUMPUS_KILLED)
 		{
-			--currentPlayer.numArrows;
+			--player->numArrows;
 			puts("You killed the Wumpus!\n");
 			result = TRUE;
 		}
 		else if (arrowResult == board_ARROW_MISSED)
 		{
-			--currentPlayer.numArrows;
-			printf("Missed. You now have %d arrows\n\n", currentPlayer.numArrows);
+			--player->numArrows;
+			printf("Missed. You now have %d arrows\n\n", player->numArrows);
 		}
 		else if (arrowResult == board_ARROW_OUTSIDE_BOUNDS)
 		{

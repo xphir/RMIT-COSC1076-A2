@@ -42,15 +42,15 @@ void game_PlayGame();
 void game_DisplayOptions();
 
 Boolean game_AttemptLoadCommand(Board board);
-Boolean game_AttemptInitCommand(Board board, Player player);
+Boolean game_AttemptInitCommand(Board board, Player * player);
 
 Boolean game_CommandLoad(char *loadSelection, Board board);
-Boolean game_CommandInit(char *input, Board board, Player player);
+Boolean game_CommandInit(char *input, Board board, Player * player);
 
-PlayerMove game_AttemptMoveCommand(Board board, Player player, Direction direction);
-Boolean game_CommandShoot(char *input, Board board, Player player);
+PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direction);
+Boolean game_CommandShoot(char *input, Board board, Player * player);
 
-void game_Hunt(Board board, Player player);
+void game_Hunt(Board board, Player * player);
 
 /* TODO not provided */
 
