@@ -15,8 +15,10 @@ void game_PlayGame()
 	srand(0);
 	/* COMPLETE Shows game options */
 	game_DisplayOptions();
+	
 	/* COMPLETE Takes an enter input - ie no vales */
-	readInput(&input, 2, stdin);
+	getInput("\nPress enter to continue... ", &input, 2);
+
 	/* COMPLETE tries to load the game then calls subcalls > game_CommandLoad()*/
 	if (game_AttemptLoadCommand(board))
 	{
@@ -27,9 +29,10 @@ void game_PlayGame()
 			game_Hunt(board, &player);
 		}
 	}
+	/* NOTE IF ANY OF THE IF STATEMENTS END THE PROGRAM WILL GO TO CLOSE */
 }
 
-/* DONE */
+/* COMPLETE Prints the game options */
 void game_DisplayOptions()
 {
 	printf(
@@ -45,32 +48,38 @@ void game_DisplayOptions()
 		"east (or e) \n"
 		"west (or w) \n"
 		"quit \n"
-		"\n"
-		"Press enter to continue... ");
+		);
 }
 
+/* COMPLETE takes inputs to load the game*/
 Boolean game_AttemptLoadCommand(Board board)
 {
 	char input;
 	char *promptMessage;
 
+	/* Tries to load the inputs given by the user, 
+	if it fails ask again, 
+	if it works load game_CommandLoad() */
 	promptMessage = "At this stage of the program, only two commands are acceptable: \nload <g> \nquit \n\n";
 	while (TRUE)
 	{
 		while (TRUE)
 		{
-			getInput(promptMessage, &input, 52);
+			/*NEEDS input validation loop*/
+			getInput(promptMessage, &input, 8);
 			putchar(10);
 			if (!strcmp(&input, "quit"))
 				return FALSE;
 			if (!strncmp(&input, "load", 4))
+			{
 				break;
+			}
 			printInvalidInput();
 		}
-		/*break;*/
 
 		if (game_CommandLoad(&input, board))
 		{
+			/* This is when a board load is successful */
 			break;
 		}
 
@@ -81,13 +90,16 @@ Boolean game_AttemptLoadCommand(Board board)
 	return TRUE;
 }
 
+/* COMPLETE attemps loads the game*/
 Boolean game_CommandLoad(char *loadSelection, Board board)
 {
-	Boolean moveResult;
+	Boolean loadResult;
 	char *endptr;
 	char *nptr;
 	int selectedBoard;
 
+	/*Splits the input string loadSelection
+	attempting to select the number given*/
 	strtok(loadSelection, " ");
 	nptr = strtok(NULL, "\0");
 	if (nptr)
@@ -95,7 +107,7 @@ Boolean game_CommandLoad(char *loadSelection, Board board)
 		selectedBoard = strtol(nptr, &endptr, 10);
 		if (nptr == endptr || *endptr || selectedBoard <= 0 || selectedBoard > BOARD_AMMOUNT)
 		{
-			moveResult = FALSE;
+			loadResult = FALSE;
 		}
 		else
 		{
@@ -103,27 +115,32 @@ Boolean game_CommandLoad(char *loadSelection, Board board)
 			{
 				board_Load(board, BOARD_1);
 			}
-			else
+			else if (selectedBoard == 2)
 			{
-				if (selectedBoard != 2)
-					assert(0);
 				board_Load(board, BOARD_2);
 			}
-			moveResult = TRUE;
+			else
+			{
+				/* THIS SHOULD NEVER HAPPEN */
+				assert(0);		
+			}
+			/* This is when a board load is successful */
+			loadResult = TRUE;
 		}
 	}
 	else
 	{
-		moveResult = FALSE;
+		loadResult = FALSE;
 	}
 
-	return moveResult;
+	return loadResult;
 }
 
-Boolean game_AttemptInitCommand(Board board, Player * player)
+/* COMPLETE takes inputs to load the player*/
+Boolean game_AttemptInitCommand(Board board, Player *player)
 {
 	char input;
-	int selectionInt;
+	Boolean initResult;
 	char *promptMessage;
 
 	promptMessage = "At this stage of the program, only two commands are acceptable: \ninit <x>,<y> \nquit \n\n";
@@ -131,19 +148,32 @@ Boolean game_AttemptInitCommand(Board board, Player * player)
 	{
 		while (TRUE)
 		{
-			getInput(promptMessage, &input, 52);
+			getInput(promptMessage, &input, 10);
 			if (!strcmp(&input, "quit"))
+			{
+				/* quit was selected */
 				return FALSE;
-			if (!strncmp(&input, "init", 4))
+			}
+			else if (!strncmp(&input, "init", 4))
+			{
+				/* init was selected */
 				break;
-			printInvalidInput();
+			}
+			else
+			{
+				printInvalidInput();
+			}
 		}
-		selectionInt = game_CommandInit(&input, board, player);
-	} while (selectionInt != 1);
+
+		/* will only get to here when init was selected */
+		initResult = game_CommandInit(&input, board, player);
+	} while (initResult != TRUE);
+	/* will only get to here if selectionInt is TRUE*/
 	return TRUE;
 }
 
-Boolean game_CommandInit(char *input, Board board, Player * player)
+/* COMPLETE attempts to loads the player*/
+Boolean game_CommandInit(char *input, Board board, Player *player)
 {
 	Boolean placePlayermoveResult;
 	Boolean moveResult;
@@ -151,12 +181,13 @@ Boolean game_CommandInit(char *input, Board board, Player * player)
 	char *endptr;
 	char *nptr;
 
+	/* Splits the string up and tries to get the x value */
 	strtok(input, " ");
-
 	nptr = strtok(NULL, ",");
 
 	if (nptr)
 	{
+		/* checking the value is valid */
 		selectedPosition.x = strtol(nptr, &endptr, 10);
 		if (nptr == endptr || *endptr || selectedPosition.x < 0 || selectedPosition.x > BOARD_WIDTH)
 		{
@@ -165,9 +196,11 @@ Boolean game_CommandInit(char *input, Board board, Player * player)
 		}
 		else
 		{
+			/* Splits the string up and tries to get the y value */
 			nptr = strtok(NULL, ",");
 			if (nptr)
 			{
+				/* checking the value is valid */
 				selectedPosition.y = strtol(nptr, &endptr, 10);
 				if (nptr == endptr || *endptr || selectedPosition.y < 0 || selectedPosition.y > BOARD_HEIGHT)
 				{
@@ -176,13 +209,18 @@ Boolean game_CommandInit(char *input, Board board, Player * player)
 				}
 				else
 				{
+					/* once here the x,y values should be valid
+					so it attemps to place the placer */
 					placePlayermoveResult = board_PlacePlayer(board, selectedPosition);
 					if (placePlayermoveResult)
 					{
+						/* places the player */
 						player_Initialise(player, selectedPosition);
 					}
 					else
 					{
+						/* not a good location, it will cause a reloop back to game_AttemptInitCommand() and try again*/
+						puts("Unable to place player at that position. \n");
 					}
 					moveResult = placePlayermoveResult;
 				}
@@ -202,7 +240,8 @@ Boolean game_CommandInit(char *input, Board board, Player * player)
 	return moveResult;
 }
 
-void game_Hunt(Board board, Player * player)
+/* COMPLETE called after everything is initialised. Its the function the game is 'played in' */
+void game_Hunt(Board board, Player *player)
 {
 	char input;
 	char *promptMessage;
@@ -224,7 +263,7 @@ void game_Hunt(Board board, Player * player)
 		board_DisplayWarnings(board, player->position);
 		putchar(10);
 		getInput(promptMessage, &input, 52);
-		
+
 		if (!strcmp(&input, "north") || !strcmp(&input, "n"))
 		{
 			direction = player_NORTH;
@@ -261,7 +300,7 @@ void game_Hunt(Board board, Player * player)
 	}
 }
 
-PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direction)
+PlayerMove game_AttemptMoveCommand(Board board, Player *player, Direction direction)
 {
 	Position nextPosition;
 	Position nextPositionCopy;
@@ -311,7 +350,7 @@ PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direc
 	return moveResult != board_PLAYER_KILLED;
 }
 
-Boolean game_CommandShoot(char *inputTODO, Board board, Player * player)
+Boolean game_CommandShoot(char *inputTODO, Board board, Player *player)
 {
 	Boolean result;
 	Position arrowTarget;
