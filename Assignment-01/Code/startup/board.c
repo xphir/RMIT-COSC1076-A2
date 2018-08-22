@@ -96,8 +96,21 @@ PlayerMove board_MovePlayer(Board board, Position playerPosition,
 
 ArrowHit board_FireArrow(Board board, Position position)
 {
-	/* TODO */
-	return board_ARROW_MISSED;
+	if (position.x >= 0 && position.x <= BOARD_WIDTH && position.y >= 0 && position.y <= BOARD_HEIGHT)
+	{
+		if (board[position.y][position.x] == board_WUMPUS)
+		{
+			return board_WUMPUS_KILLED;
+		}
+		else
+		{
+			return board_ARROW_MISSED;
+		}
+	}
+	else
+	{
+		return board_ARROW_OUTSIDE_BOUNDS;
+	}
 }
 
 void board_Display(Board board)
