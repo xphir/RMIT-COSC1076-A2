@@ -11,7 +11,6 @@ void game_PlayGame()
 	Board board;
 	Player player;
 
-	printf("DEBUG game_PlayGame(): 1.1 - Method Start\n");
 	/* COMPLETE Sets no random variation */
 	srand(0);
 	/* COMPLETE Shows game options */
@@ -21,10 +20,10 @@ void game_PlayGame()
 	/* COMPLETE tries to load the game then calls subcalls > game_CommandLoad()*/
 	if (game_AttemptLoadCommand(board))
 	{
-		/* tries to initialise the player then calls > game_CommandInit */
+		/* COMPLETE tries to initialise the player then calls > game_CommandInit */
 		if (game_AttemptInitCommand(board, &player))
 		{
-			/* starts the game (eg movement, shooting, quit */
+			/* COMPLETE starts the game (eg movement, shooting, quit */
 			game_Hunt(board, &player);
 		}
 	}
@@ -139,7 +138,6 @@ Boolean game_AttemptInitCommand(Board board, Player * player)
 				break;
 			printInvalidInput();
 		}
-		printf("DEBUG game_AttemptInitCommand(): 1.1 &Input = %s\n", &input);
 		selectionInt = game_CommandInit(&input, board, player);
 	} while (selectionInt != 1);
 	return TRUE;
@@ -153,58 +151,44 @@ Boolean game_CommandInit(char *input, Board board, Player * player)
 	char *endptr;
 	char *nptr;
 
-	printf("Debug Print 1.1: Input = %s\n", input);
-
 	strtok(input, " ");
 
-	printf("Debug Print 1.2: Input = %s\n", input);
 	nptr = strtok(NULL, ",");
 
-	printf("Debug Print 1.3: nptr = %s\n", nptr);
 	if (nptr)
 	{
 		selectedPosition.x = strtol(nptr, &endptr, 10);
-		printf("Debug Print 2: X = %d\n", selectedPosition.x);
 		if (nptr == endptr || *endptr || selectedPosition.x < 0 || selectedPosition.x > BOARD_WIDTH)
 		{
-			printf("Debug Print 2.2: %s, %s, %d, %d\n", nptr, endptr, selectedPosition.x, BOARD_WIDTH);
-			printf("Debug Print 2.3: Exit 1\n");
 			printInvalidInput();
 			moveResult = FALSE;
 		}
 		else
 		{
 			nptr = strtok(NULL, ",");
-			printf("Debug Print 2.4: nptr = %s\n", nptr);
 			if (nptr)
 			{
 				selectedPosition.y = strtol(nptr, &endptr, 10);
-				printf("Debug Print 3: Y = %d\n", selectedPosition.y);
 				if (nptr == endptr || *endptr || selectedPosition.y < 0 || selectedPosition.y > BOARD_HEIGHT)
 				{
-					printf("Debug Print 3.1: Exit 1\n");
 					printInvalidInput();
 					moveResult = FALSE;
 				}
 				else
 				{
-					printf("Debug Print 4: Placing Player\n");
 					placePlayermoveResult = board_PlacePlayer(board, selectedPosition);
 					if (placePlayermoveResult)
 					{
-						printf("Debug Print 4.1: Placing Player moveResult: %d\n", placePlayermoveResult);
 						player_Initialise(player, selectedPosition);
 					}
 					else
 					{
-						printf("Unable to place player at position x: %d, y: %d \n", selectedPosition.x, selectedPosition.y);
 					}
 					moveResult = placePlayermoveResult;
 				}
 			}
 			else
 			{
-				printf("Debug Print 5: Exit 1\n");
 				printInvalidInput();
 				moveResult = FALSE;
 			}
@@ -241,7 +225,6 @@ void game_Hunt(Board board, Player * player)
 		putchar(10);
 		getInput(promptMessage, &input, 52);
 		
-		printf("DEBUG game_Hunt(): 1.1 Player info x = %d, y = %d, arrows = %u\n", player->position.x, player->position.y, player->numArrows);
 		if (!strcmp(&input, "north") || !strcmp(&input, "n"))
 		{
 			direction = player_NORTH;
@@ -278,7 +261,6 @@ void game_Hunt(Board board, Player * player)
 	}
 }
 
-/* TODO */
 PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direction)
 {
 	Position nextPosition;
@@ -292,12 +274,9 @@ PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direc
 	directionCopy = direction;
 	do
 	{
-		printf("Current Position: x = %d, y = %d\n", player->position.x, player->position.y);
 		nextPosition = player_GetNextPosition(player->position, directionCopy);
-		printf("Next Position: x = %d, y = %d\n", nextPosition.x, nextPosition.y);
 		nextPositionCopy = nextPosition;
 		moveType = board_MovePlayer(board, player->position, nextPosition);
-		printf("Move Type: %d\n", moveType);
 		moveResult = moveType;
 		if (moveType == board_PLAYER_KILLED)
 		{
@@ -321,7 +300,7 @@ PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direc
 		}
 		else if (moveType == board_OUTSIDE_BOUNDS)
 		{
-			message = "Unable to moveType - outside bounds.";
+			message = "Unable to move - outside bounds.";
 		}
 		else
 		{
@@ -332,7 +311,6 @@ PlayerMove game_AttemptMoveCommand(Board board, Player * player, Direction direc
 	return moveResult != board_PLAYER_KILLED;
 }
 
-/* TODO */
 Boolean game_CommandShoot(char *inputTODO, Board board, Player * player)
 {
 	Boolean result;

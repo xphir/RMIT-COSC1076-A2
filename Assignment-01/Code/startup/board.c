@@ -145,14 +145,8 @@ void board_Display(Board board)
 			switch (board[y][x])
 			{
 			case board_EMPTY:
-				printf("EE"); /* DEBUG TO REMOVE */
-				break;		  /* DEBUG TO REMOVE */
 			case board_BATS:
-				printf("BB"); /* DEBUG TO REMOVE */
-				break;		  /* DEBUG TO REMOVE */
 			case board_PIT:
-				printf("PT"); /* DEBUG TO REMOVE */
-				break;		  /* DEBUG TO REMOVE */
 			case board_WUMPUS:
 				printf(EMPTY_OUTPUT);
 				break;
@@ -218,10 +212,10 @@ void board_DisplayWarnings(Board board, Position position)
 		}
 	}
 	if (breeze)
-		printf("You feel a breeze! DEBUG: x = %d, y = %d", position.x, position.y);
+		printf("You feel a breeze!");
 	if (flapping)
-		printf("You hear flapping! DEBUG: x = %d, y = %d", position.x, position.y);
+		printf("You hear flapping!");
 	if (wumpus)
-		printf("You smell a wumpus! DEBUG: x = %d, y = %d", position.x, position.y);
+		printf("You smell a wumpus!");
 	putchar(10);
 }

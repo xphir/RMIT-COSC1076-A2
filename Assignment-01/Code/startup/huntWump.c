@@ -12,12 +12,9 @@ int main()
     * here or you can make separate functions - up to you.
     */
 
-    /* TODO not provided */
-    printf("DEBUG main(): 1.1 - Starting program\n");
     startMenu();
 
     /* return EXIT_SUCCESS; */
-    printf("DEBUG startMenu(): 1.2 - Ending program?\n");
     return 0;
 }
 
@@ -72,33 +69,22 @@ void startMenu()
     {
         showStartMenu();
         readResult = readInput(&input, 1 + EXTRA_SPACES, stdin);
-        /*
-        printf("Read Result: %d\n",readResult);
-        printf("Input Char: %s\n", &input);
-        */
+
         putchar(10);
         if (readResult == ReadInputResultSuccess)
         {
-            printf("DEBUG startMenu(): 1.1 - Valid readResult\n");
             inputInt = strtol(&input, &inputEndPtr, 10);
-            /*
-            printf("Input Int: %d\n",inputInt);
-            printf("inputEndPtr Int: %s\n",inputEndPtr);
-            */
 
             if (/* inputEndPtr == &input || *inputEndPtr  || */ inputInt <= 0 || inputInt > 3)
             {
-                printf("DEBUG startMenu(): 2.1 - Invalid inputInt\n");
                 printInvalidInput();
             }
             else if (inputInt == 2)
             {
-                printf("DEBUG startMenu(): 2.2 - Show student Info\n");
                 showStudentInformation();
             }
             else if (inputInt == 3)
             {
-                printf("DEBUG startMenu(): 2.3 - Starting Quit\n");
                 ongoing = FALSE;
             }
             else
@@ -108,21 +94,13 @@ void startMenu()
                     assert(0);
                 }
                 /* printf("Play The Game!"); */
-                printf("DEBUG startMenu(): 2.3 - Play Game\n");
                 game_PlayGame();
             }
         }
         else
         {
-            printf("DEBUG startMenu(): 1.1 - Invalid readResult\n");
             printInvalidInput();
         }
     }
     exitProgram();
-}
-
-void Test(){
-
-    /* Used for testing */
-
 }
