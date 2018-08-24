@@ -286,7 +286,7 @@ void game_Hunt(Board board, Player *player)
 		}
 		else if (!strncmp(&input, "shoot", 5))
 		{
-			ongoing = game_CommandShoot(&input, board, player) == 0;
+			ongoing = game_CommandShoot(&input, board, player) == FALSE;
 		}
 		else
 		{
@@ -299,6 +299,7 @@ void game_Hunt(Board board, Player *player)
 		}
 	}
 }
+
 
 PlayerMove game_AttemptMoveCommand(Board board, Player *player, Direction direction)
 {
@@ -387,6 +388,7 @@ Boolean game_CommandShoot(char *inputTODO, Board board, Player *player)
 		printInvalidInput();
 		return FALSE;
 	}
+
 	if (player->numArrows)
 	{
 		arrowTarget = player_GetNextPosition(player->position, arrowDirection);
