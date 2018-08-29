@@ -1,2 +1,3 @@
-gcc -ansi -pedantic -Wall -o wumpus *.c 
-./wumpus
+gcc -ansi -pedantic -Wall -o wumpus.exe *.c 
+.\wumpus
+./wumpus.exe

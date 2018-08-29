@@ -83,6 +83,7 @@ PlayerMove board_MovePlayer(Board board, Position playerPosition,
 			printf(PLAYER_OUTPUT);
 			break;
 		default:
+			/* This shouldnt happen */
 			assert(0);
 			break;
 		}

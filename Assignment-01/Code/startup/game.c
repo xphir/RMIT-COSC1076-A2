@@ -397,6 +397,7 @@ Boolean game_CommandShoot(char *inputTODO, Board board, Player *player)
 		{
 			--player->numArrows;
 			puts("You killed the Wumpus!\n");
+			/* this ends the loop in game_Hunt if the wumpus is killed */
 			result = TRUE;
 		}
 		else if (arrowResult == board_ARROW_MISSED)
