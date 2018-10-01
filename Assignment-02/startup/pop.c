@@ -6,9 +6,29 @@
 
 #include "pop.h"
 
-Boolean pop_init(Pop_list **pop){
-	/* TO DO */
-	return FALSE;
+Boolean pop_init(Pop_list **popList){
+    Pop_list *initPopList;
+    Boolean result;
+
+    initPopList = malloc(sizeof(*initPopList));
+
+    if (initPopList != NULL)
+    {
+        initPopList->head = NULL;
+        initPopList->count = 0;
+        initPopList->create_rand_chrom = NULL;
+        initPopList->mutate_gene = NULL;
+        initPopList->crossover_genes = NULL;
+        initPopList->evaluate_fn = NULL;
+        *popList = initPopList;
+        result = TRUE;
+    }
+    else
+    {
+        fwrite("pop_init: memory allocation failed", 1, 34, stderr);
+        result = FALSE;
+    }
+    return result;
 }
 
 void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef){
