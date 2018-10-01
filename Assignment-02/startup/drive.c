@@ -62,14 +62,137 @@ void test_minfn(void){
 }
 
 int main(int argc, char *argv[]){
+	double v3;
+	int result;
+	int inputVectorWidth;
+	int inputVectorNumber;
+	int numGen;
+	int popSize;
+	int alleleSize;
+	int counter;
+	InVTable inputVectorTable;
+	Pop_list *populationList;
+	char *endptr;
+	FILE *stream;
 
-	/* TO DO */
-	test_minfn();
-	test_pcbmill();
-	
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
-	return EXIT_SUCCESS;
+	/* Argument examples */
+	/* ./ga [1]geneType  [2]alleleSize [3]popSize [4]numGen [5]inputFile [6-Optional]outputFile  */
+
+	/* Check if there is the correct number of arguments */
+	if (argc <= 5 || argc > 7)
+	{
+		fwrite("main: incorrect number of arguments\n", 1, 36, stderr);
+		return EXIT_FAILURE;
+	}
+
+	/* Initialise populationList */
+	if (pop_init(&populationList) == FALSE)
+	{
+		return EXIT_FAILURE;
+	}
+
+	/* Initialise inputVectorTable */
+	invector_init(&inputVectorTable);
+
+	/* Get 5th argument */
+	/* Load inputFile (input vector) */
+	if (!invector_load(&inputVectorTable, argv[5]))
+	{
+		pop_free(populationList);
+		return EXIT_FAILURE;
+	}
+
+	/* Get 2nd argument */
+	alleleSize = strtol(argv[2], &endptr, 10);
+
+	/* Invalid integer argument */
+	if (argv[2] == endptr || *endptr || (signed int)alleleSize <= 0)
+	{
+		fwrite("invalid integer argument\n", 1, 25, stderr);
+		/* TODO */
+		return EXIT_FAILURE;
+	}
+
+	/* Check to see minfn or pcbmill is selected */
+	if (!strncmp(argv[1], "minfn", 6))
+	{
+		/* minfn was selected */
+		
+		/* Set inputVectorWidth */
+		/* TODO */
+
+		/* Check minfn width*/
+		if (inputVectorWidth - 1 != alleleSize)
+		{
+			fwrite("allelesize mismatch with vector size\n", 1, 37, stderr);
+			/* TODO */
+			return EXIT_FAILURE;
+		}
+		/* Check minfn width*/
+		/* TODO */
+	}
+	else
+	{
+		/* 2nd argument is neither minfn or pcbmill */
+		if (strncmp(argv[1], "pcbmill", 8))
+		{
+			fwrite("incorrect 2nd argument\n", 1, 23, stderr);
+			return EXIT_FAILURE;
+		}
+
+		/* pcbmill was selected */
+		/* gets the number of input vectors */
+		/* TODO */
+
+		/* allelesize mismatch with num vectors */
+		if (inputVectorNumber != alleleSize)
+		{
+			fwrite("allelesize mismatch with num vectors\n", 1, 37, stderr);
+			/* TODO */
+			return EXIT_FAILURE;
+		}
+
+		/* Set the function pointers of a population list */
+		/* TODO */
+	}
+
+	/* Get 3rd argument */
+	popSize = strtol(argv[3], &endptr, 10);
+
+	if (argv[3] == endptr || *endptr || popSize <= 1)
+	{
+		/* 3rd argument is not a correct integer */
+		fwrite("invalid integer argument\n", 1, 25, stderr);
+		/* TODO */
+		return EXIT_FAILURE;
+	}
+	else
+	{
+		/* Get 4th argument */
+		numGen = strtol(argv[4], &endptr, 10);
+
+		if (argv[4] == endptr || *endptr || numGen < 0)
+		{
+			fwrite("invalid integer argument\n", 1, 25, stderr);
+			/* TODO */
+			return EXIT_FAILURE;
+		}
+		else if (argc != 7 || (stream = freopen(argv[6], "w", stdout)) != FALSE)
+		{
+			/* Get 6th argument */
+			/* SAVE FILE EXTERNALY */
+			/* TODO */
+		}
+		else
+		{
+			fwrite("Unable to open output file \n", 1, 28, stderr);
+			/* TODO */
+			return EXIT_FAILURE;
+		}
+	}
+	return result;
 }
 
