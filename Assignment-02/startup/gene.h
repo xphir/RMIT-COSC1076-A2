@@ -82,4 +82,7 @@ double gene_get_fitness(Gene *gene);
  * a gene, either to file or to standard output */
 void gene_print(Gene*);
 
+/* TO DO - other functions as appropriate */
+int * gene_get_chrom(Gene *gene);
+
 #endif

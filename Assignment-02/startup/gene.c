@@ -73,3 +73,6 @@ void gene_print(Gene *gene) {
 	/* TO DO */
 }
 
+int * gene_get_chrom(Gene *gene){
+	return gene->chromosome;
+}

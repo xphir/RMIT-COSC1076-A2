@@ -9,7 +9,8 @@
 #include "pop.h"
 #include "gene.h"
 
-void test_pcbmill(void){
+void test_pcbmill(void)
+{
 	/* TO DO */
 
 	printf("PCBMILL gene:\n");
@@ -35,7 +36,8 @@ void test_pcbmill(void){
 	/* TO DO - free both parents and the child gene */
 }
 
-void test_minfn(void){
+void test_minfn(void)
+{
 	/* TO DO */
 
 	printf("MINFN gene:\n");
@@ -61,7 +63,8 @@ void test_minfn(void){
 	/* TO DO - free both parents and the child gene */
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
 	double v3;
 	int result;
 	int inputVectorWidth;
@@ -99,11 +102,7 @@ int main(int argc, char *argv[]){
 
 	/* Get 5th argument */
 	/* Load inputFile (input vector) */
-	if (!invector_load(&inputVectorTable, argv[5]))
-	{
-		pop_free(populationList);
-		return EXIT_FAILURE;
-	}
+	/* TODO */
 
 	/* Get 2nd argument */
 	alleleSize = strtol(argv[2], &endptr, 10);
@@ -120,7 +119,7 @@ int main(int argc, char *argv[]){
 	if (!strncmp(argv[1], "minfn", 6))
 	{
 		/* minfn was selected */
-		
+
 		/* Set inputVectorWidth */
 		/* TODO */
 
@@ -145,7 +144,7 @@ int main(int argc, char *argv[]){
 
 		/* pcbmill was selected */
 		/* gets the number of input vectors */
-		/* TODO */
+		inputVectorNumber = invector_get_num_invector(&inputVectorTable);
 
 		/* allelesize mismatch with num vectors */
 		if (inputVectorNumber != alleleSize)
@@ -195,4 +194,3 @@ int main(int argc, char *argv[]){
 	}
 	return result;
 }
-
