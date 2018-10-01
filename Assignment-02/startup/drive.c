@@ -64,7 +64,9 @@ void test_minfn(void){
 int main(int argc, char *argv[]){
 
 	/* TO DO */
-
+	test_minfn();
+	test_pcbmill();
+	
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
