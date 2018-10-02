@@ -4,6 +4,10 @@
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
-#include "utility.h"
+#include "invector.h"
 
-/* TO DO - other functions as appropriate */
+void invector_init(InVTable *invt) {
+	/* TO DO */
+}
+
+

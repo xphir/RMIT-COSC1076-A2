@@ -78,10 +78,11 @@ void gene_free(Gene*);
 
 double gene_get_fitness(Gene *gene);
 
-int gene_get_chromosome(Gene *gene);
-
 /* The following function should be the only code for printing out
  * a gene, either to file or to standard output */
 void gene_print(Gene*);
+
+/* TO DO - other functions as appropriate */
+int * gene_get_chrom(Gene *gene);
 
 #endif

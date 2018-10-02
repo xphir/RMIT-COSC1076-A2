@@ -13,151 +13,92 @@ void invector_init(InVTable *invt)
 	return;
 }
 
-Boolean invector_load(InVTable *invt, char *inputFile)
+/* TODO */
+int invector_get_num_invector(InVTable *invt)
 {
-	Boolean result;
-	InVTable localTable;
-	FILE *stream;
+	/* TODO */
+	return 0;
 }
 
+int invector_get_width(InVTable invt)
+{
+	return invt.width;
+}
+
+/* TODO */
+int invector_get_table_row(InVTable *invt, int a2)
+{
+	/* TODO */
+	return 0;
+}
+
+/* TODO */
+int invector_get_table_pos(InVTable *invt, int a2, int a3)
+{
+	/* TODO */
+	return 0;
+}
+
+/* TODO */
 Boolean invector_load(InVTable *invt, char *inputFile)
 {
 	Boolean result;
-	InVTable localTable;
+	InVTable * localTable;
 	FILE *stream;
 	char s[88];
-
-
-	localTable = &invt;
-
+	printf("DEBUG invector_load(): 01\n");
+	localTable = invt;
+	printf("DEBUG invector_load(): 02\n");
 	/* Open inputFile for reading */
 	stream = fopen(inputFile, "r");
-
+	printf("DEBUG invector_load(): 03\n");
 	/* Try to open file */
 	if (stream)
 	{
+		printf("DEBUG invector_load(): 04\n");
 		/* Read in inputFile */
 		while (fgets(s, 82, stream))
 		{
+			printf("DEBUG invector_load(): 05\n");
 			/* Check line length */
 			if (s[strlen(s) - 1] != 10)
 			{
 				/* line was to long */
-				fwrite("Error: invector line too long\n", 1uLL, 0x1EuLL, stderr);
+				fwrite("Error: invector line too long\n", 1, 30, stderr);
 				fclose(stream);
 				return FALSE;
 			}
 			/* Read in inputFile */
-			if (!invector_add(localTable, s))
+			if (invector_add(localTable, s) == FALSE)
 			{
+				printf("DEBUG invector_load(): 06\n");
 				fclose(stream);
 				return FALSE;
 			}
 		}
-
+		printf("DEBUG invector_load(): 07\n");
 		fclose(stream);
-		if (*(_DWORD *)(localTable + 1000) > 0)
+		if (localTable->tot > 0)
 		{
+			printf("DEBUG invector_load(): 08\n");
 			result = TRUE;
 		}
 		else
 		{
-			fwrite("Error: must have at least 1 invector\n", 1uLL, 0x25uLL, stderr);
+			fwrite("Error: must have at least 1 invector\n", 1, 37, stderr);
 			result = FALSE;
 		}
 	}
 	else
 	{
-		fwrite("Failed to open invector file\n", 1uLL, 0x1DuLL, stderr);
+		fwrite("Failed to open invector file\n", 1, 29, stderr);
 		result = FALSE;
 	}
+	printf("DEBUG invector_load(): 010\n");
 	return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-int test(int argc, char **argv)
+Boolean invector_add(InVTable *invt, char *todo)
 {
-	FILE *fp;
-	char line[MAX_LINE_LENGTH + NULL_SPACE];
-	int numbers[MAX_NUMBERS];
-	int numbersLength;
-	char *token;
-	int sum, i;
-
-	if (argc != 2)
-	{
-		printf("Must pass a file name as a command line parameter. \n\n");
-		exit(EXIT_FAILURE);
-	}
-
-	fp = fopen(argv[1], "r");
-	if (fp == NULL)
-	{
-		printf("File '%s' could not be opened for reading. \n\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	if (fgets(line, sizeof(line), fp) == NULL)
-	{
-		printf("Unable to read from file. \n\n");
-		exit(EXIT_FAILURE);
-	}
-	fclose(fp);
-
-	numbersLength = 0;
-	token = strtok(line, ",");
-	while (token != NULL)
-	{
-		char *tokenEndPtr;
-
-		numbersLength++;
-		if (numbersLength > MAX_NUMBERS)
-		{
-			printf("Too many tokens in file. \n\n");
-			exit(EXIT_FAILURE);
-		}
-
-		numbers[numbersLength - 1] = strtol(token, &tokenEndPtr, 10);
-		if (token == tokenEndPtr || *tokenEndPtr != '\0')
-		{
-			printf("Encountered corrupt data. \n\n");
-			exit(EXIT_FAILURE);
-		}
-
-		token = strtok(NULL, ",");
-	}
-
-	sum = 0;
-	for (i = 0; i < numbersLength; i++)
-	{
-		sum += numbers[i];
-	}
-
-	fp = fopen(argv[1], "w");
-	if (fp == NULL)
-	{
-		printf("File '%s' could not be opened for writing. \n\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-
-	for (i = 0; i < numbersLength; i++)
-	{
-		fprintf(fp, "%d,", numbers[i]);
-	}
-	fprintf(fp, "%d", sum);
-	fclose(fp);
-
-	printf("Finished. \n\n");
-
-	return EXIT_SUCCESS;
+	return FALSE;
 }

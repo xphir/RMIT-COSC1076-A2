@@ -78,81 +78,73 @@ int main(int argc, char *argv[])
 	char *endptr;
 	FILE *stream;
 
+	printf("DEBUG main(): 01\n");
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
 	/* Argument examples */
 	/* ./ga [1]geneType  [2]alleleSize [3]popSize [4]numGen [5]inputFile [6-Optional]outputFile  */
-
+	printf("DEBUG main(): 02\n");
 	/* Check if there is the correct number of arguments */
 	if (argc <= 5 || argc > 7)
 	{
-		fwrite("main: incorrect number of arguments\n", 1uLL, 0x24uLL, stderr);
+		fwrite("main: incorrect number of arguments\n", 1, 36, stderr);
 		return EXIT_FAILURE;
 	}
-
+	printf("DEBUG main(): 03\n");
 	/* Initialise populationList */
 	if (pop_init(&populationList) == FALSE)
 	{
 		return EXIT_FAILURE;
 	}
-
+	printf("DEBUG main(): 04\n");
 	/* Initialise inputVectorTable */
 	invector_init(&inputVectorTable);
-
+	printf("DEBUG main(): 05\n");
 	/* Get 5th argument */
 	/* Load inputFile (input vector) */
-	if (!invector_load(&inputVectorTable, argv[5]))
+	if (invector_load(&inputVectorTable, argv[5]) == FALSE)
 	{
-		pop_free(populationList);
+		printf("DEBUG main(): 06\n");
+		free(populationList);
 		return EXIT_FAILURE;
 	}
-
+	printf("DEBUG main(): 07\n");
 	/* Get 2nd argument */
 	alleleSize = strtol(argv[2], &endptr, 10);
 
 	/* Invalid integer argument */
 	if (argv[2] == endptr || *endptr || (signed int)alleleSize <= 0)
 	{
-		fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
-		pop_free(populationList);
+		fwrite("invalid integer argument\n", 1, 25, stderr);
+		/* TODO */
 		return EXIT_FAILURE;
 	}
-
+	printf("DEBUG main(): 07\n");
 	/* Check to see minfn or pcbmill is selected */
 	if (!strncmp(argv[1], "minfn", 6))
 	{
 		/* minfn was selected */
 
-		inputVectorWidth = invector_get_width(&inputVectorTable);
+		/* Set inputVectorWidth */
+		inputVectorWidth = invector_get_width(inputVectorTable);
 
 		/* Check minfn width*/
 		if (inputVectorWidth - 1 != alleleSize)
 		{
-			fwrite("allelesize mismatch with vector size\n", 1uLL, 0x25uLL, stderr);
-			pop_free(populationList);
+			fwrite("allelesize mismatch with vector size\n", 1, 37, stderr);
+			/* TODO */
 			return EXIT_FAILURE;
 		}
 		/* Check minfn width*/
-		if ((unsigned int)invector_get_num_invector(&inputVectorTable) != 1)
-		{
-			fwrite("too many input vectors for minfn data file\n", 1uLL, 0x2BuLL, stderr);
-			pop_free(populationList);
-			return EXIT_FAILURE;
-		}
-		pop_set_fns(
-			populationList,
-			create_minfn_chrom,
-			mutate_minfn,
-			crossover_minfn,
-			eval_minfn);
+		/* TODO */
 	}
 	else
 	{
 		/* 2nd argument is neither minfn or pcbmill */
 		if (strncmp(argv[1], "pcbmill", 8))
 		{
-			fwrite("incorrect 2nd argument\n", 1uLL, 0x17uLL, stderr);
+			fwrite("incorrect 2nd argument\n", 1, 23, stderr);
 			return EXIT_FAILURE;
 		}
 
@@ -163,18 +155,13 @@ int main(int argc, char *argv[])
 		/* allelesize mismatch with num vectors */
 		if (inputVectorNumber != alleleSize)
 		{
-			fwrite("allelesize mismatch with num vectors\n", 1uLL, 0x25uLL, stderr);
-			pop_free(populationList);
+			fwrite("allelesize mismatch with num vectors\n", 1, 37, stderr);
+			/* TODO */
 			return EXIT_FAILURE;
 		}
 
 		/* Set the function pointers of a population list */
-		pop_set_fns(
-			populationList,
-			create_pcbmill_chrom,
-			mutate_pcbmill,
-			crossover_pcbmill,
-			eval_pcbmill);
+		/* TODO */
 	}
 
 	/* Get 3rd argument */
@@ -183,8 +170,8 @@ int main(int argc, char *argv[])
 	if (argv[3] == endptr || *endptr || popSize <= 1)
 	{
 		/* 3rd argument is not a correct integer */
-		fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
-		pop_free(populationList);
+		fwrite("invalid integer argument\n", 1, 25, stderr);
+		/* TODO */
 		return EXIT_FAILURE;
 	}
 	else
@@ -194,31 +181,20 @@ int main(int argc, char *argv[])
 
 		if (argv[4] == endptr || *endptr || numGen < 0)
 		{
-			fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
-			pop_free(populationList);
+			fwrite("invalid integer argument\n", 1, 25, stderr);
+			/* TODO */
 			return EXIT_FAILURE;
 		}
 		else if (argc != 7 || (stream = freopen(argv[6], "w", stdout)) != FALSE)
 		{
 			/* Get 6th argument */
-			populationList = pop_run(populationList, popSize, alleleSize, numGen, &inputVectorTable, v3);
-			if (populationList)
-			{
-				pop_free(populationList);
-				if (stream)
-					fclose(stream);
-				return EXIT_SUCCESS;
-			}
-			else
-			{
-				pop_free(0LL);
-				return EXIT_FAILURE;
-			}
+			/* SAVE FILE EXTERNALY */
+			/* TODO */
 		}
 		else
 		{
-			fwrite("Unable to open output file \n", 1uLL, 0x1CuLL, stderr);
-			pop_free(populationList);
+			fwrite("Unable to open output file \n", 1, 28, stderr);
+			/* TODO */
 			return EXIT_FAILURE;
 		}
 	}
