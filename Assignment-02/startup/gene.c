@@ -6,42 +6,93 @@
 
 #include "gene.h"
 
-int * create_pcbmill_chrom(int numAlleles){
+int *create_pcbmill_chrom(int numAlleles)
+{
+	int *result;
+	int *alleles;
+	int alleleA;
+	int alleleB;
+
+	int i;
+	int j;
+
+	alleles = malloc(sizeof(numAlleles));
+	if (alleles != NULL)
+	{
+		for (i = 0; i < numAlleles; ++i)
+		{
+			alleles[i] = i;
+		}
+		for (j = 0; j < numAlleles; j = alleleA + 1)
+		{
+			alleleA = rand() % numAlleles;
+			alleleB = rand() % numAlleles;
+			gene_swap_alleles(alleles, alleleA, alleleB);
+		}
+		result = alleles;
+	}
+	else
+	{
+		fwrite("Unable to allocate chromosome memory", 1, 36, stderr);
+		result = NULL;
+	}
+	return result;
+}
+
+int *create_minfn_chrom(int numAlleles)
+{
+	int *result;
+	int *alleles;
+	int i;
+
+	alleles = malloc(sizeof(numAlleles));
+	if (alleles)
+	{
+		for (i = 0; i < numAlleles; ++i) {
+			alleles[i] = rand() % 30;
+		}
+		result = alleles;
+	}
+	else
+	{
+		fwrite("Unable to allocate chromosome memory", 1, 36, stderr);
+		result = NULL;
+	}
+	return result;
+}
+
+Gene *mutate_pcbmill(Gene *g)
+{
 	/* TO DO */
 	return NULL;
 }
 
-int * create_minfn_chrom(int numAlleles){
+Gene *mutate_minfn(Gene *g)
+{
 	/* TO DO */
 	return NULL;
 }
 
-Gene * mutate_pcbmill(Gene *g){
+Gene *crossover_pcbmill(Gene *g1, Gene *g2)
+{
 	/* TO DO */
 	return NULL;
 }
 
-Gene * mutate_minfn(Gene *g){
+Gene *crossover_minfn(Gene *g1, Gene *g2)
+{
 	/* TO DO */
 	return NULL;
 }
 
-Gene * crossover_pcbmill(Gene *g1, Gene *g2){
-	/* TO DO */
-	return NULL;
-}
-
-Gene * crossover_minfn(Gene *g1, Gene *g2){
-	/* TO DO */
-	return NULL;
-}
-
-double eval_pcbmill(InVTable *invt, Gene *gene){
+double eval_pcbmill(InVTable *invt, Gene *gene)
+{
 	/* TO DO */
 	return 0.0;
 }
 
-double eval_minfn(InVTable *invt, Gene *gene){
+double eval_minfn(InVTable *invt, Gene *gene)
+{
 	/* TO DO */
 	return 0.0;
 }
