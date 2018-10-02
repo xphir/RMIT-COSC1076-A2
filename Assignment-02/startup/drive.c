@@ -15,13 +15,24 @@ void test_pcbmill(void){
 	printf("PCBMILL gene:\n");
 	/* TO DO - create a random pcbmill gene by calling create_rand_gene
 	   The length of the gene's chromosome should be TEST_ALLELE_LEN */
-
+	
+	Gene * pcbGene;
+	CreateFn chrom_pointer = &create_pcbmill_chrom;
+	pcbGene = gene_create_rand_gene(TEST_ALLELE_LEN, chrom_pointer);
+	
 	/* TO DO - print the gene using gene_print */
+	gene_print(pcbGene);
+	
+
 	printf("\nMutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
+	mutate_minfn(pcbGene);
 	/* TO DO - print the mutant gene using gene_print */
+	gene_print(pcbGene);
+
 	printf("\n");
 	/* TO DO - free the original gene and the mutant */
+	free(pcbGene)
 	printf("PCBMILL genes:\n");
 	/* TO DO - create 2 random pcbmill 'parent' genes using calls
 	   to create_rand_gene
