@@ -27,7 +27,8 @@ int *create_pcbmill_chrom(int numAlleles)
 		{
 			alleleA = rand() % numAlleles;
 			alleleB = rand() % numAlleles;
-			gene_swap_alleles(alleles, alleleA, alleleB);
+			/* TO DO */
+			/* gene_swap_alleles(alleles, alleleA, alleleB); */
 		}
 		result = alleles;
 	}
@@ -64,7 +65,6 @@ int *create_minfn_chrom(int numAlleles)
 
 Gene *mutate_pcbmill(Gene *g)
 {
-	/* TO DO */
 	Gene *new_gene;
 	Gene *result_gene;
 	int randomInt;
@@ -74,6 +74,7 @@ Gene *mutate_pcbmill(Gene *g)
 	{
 		randomInt = rand();
 		/* TO DO */
+		/* gene_swap_alleles(g, v2 % *(_DWORD *)(a1 + 8), (v2 % *(_DWORD *)(a1 + 8) + 1) % *(_DWORD *)(a1 + 8)) */
 		result_gene = new_gene;
 	}
 	else
@@ -115,7 +116,6 @@ double eval_minfn(InVTable *invt, Gene *gene)
 
 Gene *gene_create_rand_gene(int numAlleles, CreateFn create_chrom)
 {
-	/* TO DO */
 	int chromosome;
 	Gene *result_gene;
 	Gene *new_gene = malloc(sizeof(*new_gene));
@@ -173,55 +173,4 @@ void gene_print(Gene *gene)
 			
 	}
 	return fprintf(stdout, " fit:%6.3f raw:%7.3f", gene->fitness, gene->raw_score);
-}
-
-void gene_swap_alleles(__int64 g, int alleleA, int alleleB)
-{
-	unsigned int v3; // ST1C_4@1
-	__int64 result;  // rax@1
-
-	v3 = *(_DWORD *)(4LL * alleleA + g);
-	*(_DWORD *)(g + 4LL * alleleA) = *(_DWORD *)(4LL * alleleB + g);
-	result = v3;
-	*(_DWORD *)(g + 4LL * alleleB) = v3;
-	return result;
-}
-
-Gene *gene_copy(Gene *g)
-{
-
-	Gene *result_gene;
-	Gene *new_gene;
-	void *v2;
-
-	new_gene = malloc(sizeof(new_gene));
-	if (new_gene)
-	{
-		v2 = malloc(sizeof(v2));
-		if (v2)
-		{
-			new_gene->chromosome = v2;
-			new_gene->num_alleles = numAlleles;
-			new_gene->raw_score = 0;
-			new_gene->fitness = 0;
-			*(_QWORD *)new_gene = v2;
-			new_gene[2] = *(_DWORD *)(g + 8);
-			*((_QWORD *)new_gene + 3) = *(_QWORD *)(g + 24);
-			*((_QWORD *)new_gene + 2) = *(_QWORD *)(g + 16);
-			memcpy(*(void **)new_gene, *(const void **)g, 4LL * *(_DWORD *)(g + 8));
-			result_gene = new_gene;
-		}
-		else
-		{
-			fwrite("Unable to allocate memory in gene_copy\n", 1, 39, stderr);
-			free(new_gene);
-			result_gene = NULL;
-		}
-	}
-	else
-	{
-		fwrite("Unable to allocate memory in gene_copy\n", 1, 39, stderr);
-		result_gene = NULL;
-	}
-	return result_gene;
 }
