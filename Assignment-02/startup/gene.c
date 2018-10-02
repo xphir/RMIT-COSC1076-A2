@@ -161,7 +161,18 @@ double gene_get_fitness(Gene *gene)
 
 void gene_print(Gene *gene)
 {
-	/* TO DO */
+	int i;
+
+	fwrite("chrom:", 1, 6, stdout);
+	for (i = 0; gene->num_alleles > i; ++i)
+	{
+		fprintf(stdout, "%2d", gene->chromosome[i]);
+		if (gene->num_alleles - 1 != i) {
+			fputc(44, stdout);
+		}
+			
+	}
+	return fprintf(stdout, " fit:%6.3f raw:%7.3f", gene->fitness, gene->raw_score);
 }
 
 void gene_swap_alleles(__int64 g, int alleleA, int alleleB)
