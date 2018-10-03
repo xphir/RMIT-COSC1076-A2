@@ -10,8 +10,8 @@ int *create_pcbmill_chrom(int numAlleles)
 {
 	int *result;
 	int *alleles;
-	int alleleA;
-	int alleleB;
+	int allele1;
+	int allele2;
 
 	int i;
 	int j;
@@ -23,12 +23,11 @@ int *create_pcbmill_chrom(int numAlleles)
 		{
 			alleles[i] = i;
 		}
-		for (j = 0; j < numAlleles; j = alleleA + 1)
+		for (j = 0; j < numAlleles; j = allele1 + 1)
 		{
-			alleleA = rand() % numAlleles;
-			alleleB = rand() % numAlleles;
-			/* TO DO */
-			/* gene_swap_alleles(alleles, alleleA, alleleB); */
+			allele1 = rand() % numAlleles;
+			allele2 = rand() % numAlleles;
+			gene_swap_alleles(alleles, allele1, allele2);
 		}
 		result = alleles;
 	}
@@ -39,7 +38,6 @@ int *create_pcbmill_chrom(int numAlleles)
 	}
 	return result;
 }
-
 int *create_minfn_chrom(int numAlleles)
 {
 	int *result;
@@ -309,4 +307,18 @@ int *gene_get_chrom(Gene *g)
 int gene_get_num_alleles(Gene *g)
 {
 	return g->num_alleles;
+}
+
+void gene_swap_alleles(int *alleles, int allele1, int allele2)
+{
+	int alleleValue1;
+	int alleleValue2;
+
+	alleleValue1 = alleles[allele1];
+	alleleValue2 = alleles[allele2];
+
+	alleles[allele1] = alleleValue2;
+	alleles[allele2] = alleleValue1;
+
+	return;
 }
