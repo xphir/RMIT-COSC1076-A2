@@ -65,8 +65,25 @@ int *create_minfn_chrom(int numAlleles)
 
 Gene *mutate_pcbmill(Gene *g)
 {
-	/* TO DO */
-	return NULL;
+	Gene *result_gene;
+	int randomInt1;
+	int randomInt2;
+	Gene *new_gene;
+
+	new_gene = gene_copy(g);
+	if (new_gene != NULL)
+	{
+		randomInt1 = rand() % new_gene->num_alleles;
+		randomInt2 = rand() % new_gene->num_alleles % randomInt1;
+		new_gene->chromosome[randomInt1] = randomInt2;
+		new_gene->chromosome[randomInt2] = randomInt1;
+		result_gene = new_gene;
+	}
+	else
+	{
+		result_gene = NULL;
+	}
+	return result_gene;
 }
 
 Gene *mutate_minfn(Gene *g)
@@ -93,8 +110,14 @@ Gene *mutate_minfn(Gene *g)
 
 Gene *crossover_pcbmill(Gene *g1, Gene *g2)
 {
-	/* TO DO */
-	return NULL;
+	Gene *result_gene;
+	Gene *new_gene;
+
+	new_gene = gene_copy(g1);
+
+	result_gene = new_gene;
+
+	return result_gene;
 }
 
 Gene *crossover_minfn(Gene *g1, Gene *g2)

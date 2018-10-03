@@ -43,10 +43,9 @@ void test_pcbmill(void)
 	printf("\n");
 
 	/* TO DO - free the original gene and the mutant */
-	gene_free(pcbGene);
-	printf("\n");
-	gene_free(mutantGene);
-	printf("\n");
+	/* gene_free(pcbGene);*/
+	/* gene_free(mutantGene);*/
+
 	printf("PCBMILL genes:\n");
 	/* TO DO - create 2 random pcbmill 'parent' genes using calls
 	   to create_rand_gene
@@ -56,6 +55,7 @@ void test_pcbmill(void)
 
 	/* TO DO - print each gene */
 	gene_print(parentGeneA);
+	printf("\n");
 	gene_print(parentGeneB);
 
 	printf("\nCrossover: ");
@@ -71,9 +71,9 @@ void test_pcbmill(void)
 
 	printf("\n");
 	/* TO DO - free both parents and the child gene */
-	gene_free(parentGeneA);
-	gene_free(parentGeneB);
-	gene_free(childGene);
+	/*gene_free(parentGeneA);*/
+	/*gene_free(parentGeneB);*/
+	/*gene_free(childGene);*/
 }
 
 void test_minfn(void)
@@ -150,6 +150,7 @@ int main(int argc, char *argv[])
 	srand(SRAND_SEED);
 
 	test_minfn();
+	test_pcbmill();
 
 	return EXIT_SUCCESS;
 }
