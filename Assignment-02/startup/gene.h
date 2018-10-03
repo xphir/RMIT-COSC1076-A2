@@ -38,6 +38,8 @@ int * create_minfn_chrom(int num_alleles);
 typedef Gene * (*MutateFn)(Gene*);
 
 /* Create a mutated copy of a pcbmill gene */
+Gene * create_rand_gene(Gene*);
+
 Gene * mutate_pcbmill(Gene*);
 
 /* Create a mutated copy of a minfunct gene */
@@ -81,5 +83,10 @@ double gene_get_fitness(Gene *gene);
 /* The following function should be the only code for printing out
  * a gene, either to file or to standard output */
 void gene_print(Gene*);
+Gene *gene_copy(Gene *g);
+int * gene_get_chrom(Gene *gene);
+double pcbmill_distance(int *tableRow1, int *tableRow2);
+int gene_get_num_alleles(Gene *g);
 
 #endif
+
