@@ -219,6 +219,7 @@ void gene_normalise_fitness(Gene *gene, double total_fitness)
 
 void gene_free(Gene *gene)
 {
+	free(gene->chromosome);
 	free(gene);
 }
 
