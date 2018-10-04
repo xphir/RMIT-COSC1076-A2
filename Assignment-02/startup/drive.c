@@ -33,15 +33,13 @@ void test_pcbmill(void)
 	/* TO DO - print the gene using gene_print */
 	gene_print(pcbGene);
 
-	printf("\nMutate: ");
-	printf("\n");
+	printf("Mutate:\n");
 	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
 	mutate_pointer = &mutate_pcbmill;
 	mutantGene = mutate_pointer(pcbGene);
 
 	/* TO DO - print the mutant gene using gene_print */
 	gene_print(mutantGene);
-	printf("\n");
 
 	/* TO DO - free the original gene and the mutant */
 	gene_free(pcbGene);
@@ -56,11 +54,9 @@ void test_pcbmill(void)
 
 	/* TO DO - print each gene */
 	gene_print(parentGeneA);
-	printf("\n");
 	gene_print(parentGeneB);
 
-	printf("\nCrossover: ");
-	printf("\n");
+	printf("Crossover:\n");
 	/* TO DO produce a new gene by calling crossover_pcbmill
 	   with the parent genes */
 	crossover_pointer = &crossover_pcbmill;
@@ -69,8 +65,7 @@ void test_pcbmill(void)
 	/* TO DO - print the new gene */
 
 	gene_print(childGene);
-
-	printf("\n");
+	
 	/* TO DO - free both parents and the child gene */
 	gene_free(parentGeneA);
 	gene_free(parentGeneB);
@@ -102,20 +97,22 @@ void test_minfn(void)
 	pcbGene = gene_create_rand_gene(TEST_ALLELE_LEN, chrom_pointer);
 
 	/* TO DO - print the gene */
+	printf("DEBUG: gene_print(pcbGene);\n");
 	gene_print(pcbGene);
-	printf("\nMutate: ");
-	printf("\n");
+	printf("Mutate:\n");
 	/* TO DO - create a mutant copy of the gene using mutate_minfn */
 	mutate_pointer = &mutate_minfn;
 	mutantGene = mutate_pointer(pcbGene);
 	/* TO DO - print the mutant gene */
+	printf("DEBUG: gene_print(mutantGene);\n");
 	gene_print(mutantGene);
-	printf("\n");
+	printf("DEBUG: gene_print(pcbGene);\n");
+	gene_print(pcbGene);
 
 	/* TO DO - free the original gene and the mutant */
-	printf("\nDEBUG: gene_free(pcbGene);\n");
+	printf("DEBUG: gene_free(pcbGene);\n");
 	gene_free(pcbGene);
-	printf("\nDEBUG: gene_free(mutantGene);\n");
+	printf("DEBUG: gene_free(mutantGene);\n");
 	gene_free(mutantGene);
 
 	printf("MINFN genes:\n");
@@ -126,24 +123,24 @@ void test_minfn(void)
 	parentGeneB = gene_create_rand_gene(TEST_ALLELE_LEN, chrom_pointer);
 
 	/* TO DO - print each gene */
+	printf("DEBUG: gene_print(parentGeneA);\n");
 	gene_print(parentGeneA);
-	printf("\n");
+	printf("DEBUG: gene_print(parentGeneB);\n");
 	gene_print(parentGeneB);
 
-	printf("\nCrossover: ");
+	printf("Crossover:\n");
 	/* TO DO produce a new gene by calling crossover_minfn
 	   with the parent genes */
 	crossover_pointer = &crossover_minfn;
 	childGene = crossover_pointer(parentGeneA, parentGeneB);
 
 	/* TO DO - print the new gene */
-	printf("\n");
+	printf("DEBUG: gene_print(childGene);\n");
 	gene_print(childGene);
-	printf("\n");
 	/* TO DO - free both parents and the child gene */
-	gene_free(parentGeneA);
+	/* gene_free(parentGeneA);
 	gene_free(parentGeneB);
-	gene_free(childGene);
+	gene_free(childGene); */
 }
 #endif
 
@@ -157,7 +154,6 @@ int main(int argc, char *argv[])
 
 	/* Called on -DDEBUG make */
 	#ifdef DEBUG
-		printf("Debug Mode Called\n");
 		test_minfn();
 		test_pcbmill();
 	#endif
