@@ -43,8 +43,8 @@ void test_pcbmill(void)
 	printf("\n");
 
 	/* TO DO - free the original gene and the mutant */
-	/* gene_free(pcbGene);*/
-	/* gene_free(mutantGene);*/
+	gene_free(pcbGene);
+	gene_free(mutantGene);
 
 	printf("PCBMILL genes:\n");
 	/* TO DO - create 2 random pcbmill 'parent' genes using calls
@@ -71,9 +71,9 @@ void test_pcbmill(void)
 
 	printf("\n");
 	/* TO DO - free both parents and the child gene */
-	/*gene_free(parentGeneA);*/
-	/*gene_free(parentGeneB);*/
-	/*gene_free(childGene);*/
+	gene_free(parentGeneA);
+	gene_free(parentGeneB);
+	gene_free(childGene);
 }
 
 void test_minfn(void)
@@ -110,8 +110,8 @@ void test_minfn(void)
 	printf("\n");
 
 	/* TO DO - free the original gene and the mutant */
-	/* gene_free(pcbGene); */
-	/* gene_free(mutantGene); */
+	gene_free(pcbGene);
+	gene_free(mutantGene);
 
 	printf("MINFN genes:\n");
 	/* TO DO - create 2 random minfn 'parent' genes using calls
@@ -136,9 +136,9 @@ void test_minfn(void)
 	gene_print(childGene);
 	printf("\n");
 	/* TO DO - free both parents and the child gene */
-	/*gene_free(parentGeneA);*/
-	/*gene_free(parentGeneB);*/
-	/*gene_free(childGene);*/
+	gene_free(parentGeneA);
+	gene_free(parentGeneB);
+	gene_free(childGene);
 }
 
 int main(int argc, char *argv[])
