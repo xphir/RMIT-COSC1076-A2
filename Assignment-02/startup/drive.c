@@ -9,6 +9,7 @@
 #include "pop.h"
 #include "gene.h"
 
+#ifdef DEBUG
 void test_pcbmill(void)
 {
 	Gene *pcbGene;
@@ -75,7 +76,9 @@ void test_pcbmill(void)
 	gene_free(parentGeneB);
 	gene_free(childGene);
 }
+#endif
 
+#ifdef DEBUG
 void test_minfn(void)
 {
 	Gene *pcbGene;
@@ -110,7 +113,9 @@ void test_minfn(void)
 	printf("\n");
 
 	/* TO DO - free the original gene and the mutant */
+	printf("\nDEBUG: gene_free(pcbGene);\n");
 	gene_free(pcbGene);
+	printf("\nDEBUG: gene_free(mutantGene);\n");
 	gene_free(mutantGene);
 
 	printf("MINFN genes:\n");
@@ -140,6 +145,7 @@ void test_minfn(void)
 	gene_free(parentGeneB);
 	gene_free(childGene);
 }
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -149,12 +155,15 @@ int main(int argc, char *argv[])
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
-	test_minfn();
-	test_pcbmill();
+	/* Called on -DDEBUG make */
+	#ifdef DEBUG
+		printf("Debug Mode Called\n");
+		test_minfn();
+		test_pcbmill();
+	#endif
+
+	
+			
 
 	return EXIT_SUCCESS;
 }
-
-#ifdef DEBUG
-
-#endif
