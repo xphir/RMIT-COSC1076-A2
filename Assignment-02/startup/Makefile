@@ -20,5 +20,8 @@ all: $(SOURCES)
 DEBUG: CFLAGS += -DDEBUG
 DEBUG: all
 
+test: $(SOURCES)
+	valgrind ./$(EXECUTABLES) --leak-check=full --show-reachable=yes
+
 clean:
 	$(RM) $(EXECUTABLES)
