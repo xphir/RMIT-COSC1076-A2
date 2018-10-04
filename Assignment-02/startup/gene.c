@@ -277,7 +277,7 @@ Gene *gene_copy(Gene *g)
 	Gene *result_gene;
 	int *chromosome;
 	Gene *new_gene = malloc(sizeof(*g));
-	printf("DEBUG: Size of g: %d\n", sizeof(*g));
+	
 	if (new_gene != NULL)
 	{
 		chromosome = malloc(g->num_alleles * sizeof(int));
