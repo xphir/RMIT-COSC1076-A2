@@ -125,11 +125,10 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 	int randomInt;
 	int i;
 	int numAlleles;
-
-	numAlleles = g1->num_alleles;
 	new_gene = gene_copy(g1);
-	if (new_gene)
+	if (new_gene != NULL)
 	{
+		numAlleles = new_gene->num_alleles;
 		/* Select a random index */
 		randomInt = rand() % numAlleles;
 		/* Copy every chromosome less than and including randomInt from g1 */
@@ -138,7 +137,7 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 			new_gene->chromosome[i] = g1->chromosome[i];
 		}
 		/* Copy every chromosome greater than  */
-		for (i = (randomInt - 1); i <= numAlleles; i++)
+		for (i = (randomInt - 1); i < numAlleles; i++)
 		{
 			new_gene->chromosome[i] = g2->chromosome[i];
 		}
@@ -277,7 +276,7 @@ Gene *gene_copy(Gene *g)
 	Gene *result_gene;
 	int *chromosome;
 	Gene *new_gene = malloc(sizeof(*g));
-	
+
 	if (new_gene != NULL)
 	{
 		chromosome = malloc(g->num_alleles * sizeof(int));
@@ -288,7 +287,7 @@ Gene *gene_copy(Gene *g)
 			new_gene->fitness = g->fitness;
 			new_gene->raw_score = g->raw_score;
 			/* Copy Values */
-			memcpy(new_gene->chromosome, g->chromosome, sizeof(*g->chromosome));
+			memcpy(new_gene->chromosome, g->chromosome, g->num_alleles * sizeof(int));
 			result_gene = new_gene;
 		}
 	}
