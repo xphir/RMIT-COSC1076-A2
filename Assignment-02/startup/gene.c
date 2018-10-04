@@ -66,15 +66,20 @@ Gene *mutate_pcbmill(Gene *g)
 	Gene *result_gene;
 	int randomInt1;
 	int randomInt2;
+	int value1;
+	int value2;
 	Gene *new_gene;
 
 	new_gene = gene_copy(g);
 	if (new_gene != NULL)
 	{
 		randomInt1 = rand() % new_gene->num_alleles;
-		randomInt2 = rand() % new_gene->num_alleles % randomInt1;
-		new_gene->chromosome[randomInt1] = randomInt2;
-		new_gene->chromosome[randomInt2] = randomInt1;
+		randomInt2 = rand() % new_gene->num_alleles;
+		value1 = new_gene->chromosome[randomInt1];
+		value2 = new_gene->chromosome[randomInt2];
+		fprintf(stdout, "Index %d Index %d\n", randomInt1, randomInt2);
+		new_gene->chromosome[randomInt1] = value2;
+		new_gene->chromosome[randomInt2] = value1;
 		result_gene = new_gene;
 	}
 	else
@@ -94,8 +99,10 @@ Gene *mutate_minfn(Gene *g)
 	new_gene = gene_copy(g);
 	if (new_gene != NULL)
 	{
+
 		randomInt = rand() % MINFN_MAX;
 		randomIndex = rand() % new_gene->num_alleles;
+		fprintf(stdout, "Index %d\n", randomIndex);
 		new_gene->chromosome[randomIndex] = randomInt;
 		result_gene = new_gene;
 	}
@@ -110,11 +117,34 @@ Gene *crossover_pcbmill(Gene *g1, Gene *g2)
 {
 	Gene *result_gene;
 	Gene *new_gene;
+	int randomInt1;
+	int randomInt2;
+	int j;
+	int i;
 
 	new_gene = gene_copy(g1);
+	if (new_gene != NULL)
+	{
+		/* TO FIX */
+		randomInt1 = 2;
+		randomInt2 = 4;
 
+		for (i = 0; randomInt1 - randomInt2 >= i; i++)
+		{
+			new_gene->chromosome[i] = g1->chromosome[i];
+		}
+
+		for (j = 0; g2->num_alleles > j; j++)
+		{
+			if (!gene_chrom_contains(new_gene, randomInt1 - randomInt2, g2->chromosome[j]))
+			{
+				new_gene->chromosome[i++] = g2->chromosome[j];
+			}
+		}
+	}
+
+	fprintf(stdout, "Index %d Index %d\n", randomInt1, randomInt2);
 	result_gene = new_gene;
-
 	return result_gene;
 }
 
@@ -131,6 +161,7 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 		numAlleles = new_gene->num_alleles;
 		/* Select a random index */
 		randomInt = rand() % numAlleles;
+		fprintf(stdout, "Index %d\n", randomInt);
 		/* Copy every chromosome less than and including randomInt from g1 */
 		for (i = 0; i <= randomInt; i++)
 		{
@@ -245,19 +276,6 @@ void gene_print(Gene *gene)
 	return;
 }
 
-Boolean gene_chrom_contains(Gene *gene, int limit, int find)
-{
-	int i;
-	for (i = 0; i <= limit; ++i)
-	{
-		if (gene->chromosome[i] == find)
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
 double pcbmill_distance(int *tableRow1, int *tableRow2)
 {
 	int calcY;
@@ -273,7 +291,6 @@ double pcbmill_distance(int *tableRow1, int *tableRow2)
 Gene *gene_copy(Gene *g)
 {
 	/* TODO */
-	Gene *result_gene;
 	int *chromosome;
 	Gene *new_gene = malloc(sizeof(*g));
 
@@ -284,19 +301,17 @@ Gene *gene_copy(Gene *g)
 		{
 			new_gene->chromosome = chromosome;
 			new_gene->num_alleles = g->num_alleles;
-			new_gene->fitness = g->fitness;
-			new_gene->raw_score = g->raw_score;
+			new_gene->fitness = new_gene->raw_score = 0;
 			/* Copy Values */
 			memcpy(new_gene->chromosome, g->chromosome, g->num_alleles * sizeof(int));
-			result_gene = new_gene;
 		}
 	}
 	else
 	{
 		fwrite("Unable to allocate memory in gene_copy\n", 1, 39, stderr);
-		result_gene = NULL;
 	}
-	return result_gene;
+	
+	return new_gene;
 }
 
 int *gene_get_chrom(Gene *g)
@@ -321,4 +336,18 @@ void gene_swap_alleles(int *alleles, int allele1, int allele2)
 	alleles[allele2] = alleleValue1;
 
 	return;
+}
+
+Boolean gene_chrom_contains(Gene *g, int index, int value)
+{
+	int i;
+
+	for (i = 0; i <= index; ++i)
+	{
+		if (g->chromosome[i] == value)
+		{
+			return TRUE;
+		}
+	}
+	return FALSE;
 }

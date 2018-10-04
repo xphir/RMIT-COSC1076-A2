@@ -33,7 +33,7 @@ void test_pcbmill(void)
 	/* TO DO - print the gene using gene_print */
 	gene_print(pcbGene);
 
-	printf("Mutate:\n");
+	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_pcbmill */
 	mutate_pointer = &mutate_pcbmill;
 	mutantGene = mutate_pointer(pcbGene);
@@ -56,7 +56,7 @@ void test_pcbmill(void)
 	gene_print(parentGeneA);
 	gene_print(parentGeneB);
 
-	printf("Crossover:\n");
+	printf("Crossover: ");
 	/* TO DO produce a new gene by calling crossover_pcbmill
 	   with the parent genes */
 	crossover_pointer = &crossover_pcbmill;
@@ -98,7 +98,7 @@ void test_minfn(void)
 
 	/* TO DO - print the gene */
 	gene_print(pcbGene);
-	printf("Mutate:\n");
+	printf("Mutate: ");
 	/* TO DO - create a mutant copy of the gene using mutate_minfn */
 	mutate_pointer = &mutate_minfn;
 	mutantGene = mutate_pointer(pcbGene);
@@ -120,7 +120,7 @@ void test_minfn(void)
 	gene_print(parentGeneA);
 	gene_print(parentGeneB);
 
-	printf("Crossover:\n");
+	printf("Crossover: ");
 	/* TO DO produce a new gene by calling crossover_minfn
 	   with the parent genes */
 	crossover_pointer = &crossover_minfn;

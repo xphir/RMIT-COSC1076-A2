@@ -88,6 +88,7 @@ int * gene_get_chrom(Gene *gene);
 double pcbmill_distance(int *tableRow1, int *tableRow2);
 int gene_get_num_alleles(Gene *g);
 void gene_swap_alleles(int *alleles, int allele1, int allele2);
+Boolean gene_chrom_contains(Gene *g, int index, int value);
 
 #endif
 
