@@ -16,7 +16,7 @@ int *create_pcbmill_chrom(int numAlleles)
 	int i;
 	int j;
 
-	alleles = malloc(sizeof(numAlleles));
+	alleles = malloc(numAlleles * sizeof(alleles));
 	if (alleles != NULL)
 	{
 		for (i = 0; i < numAlleles; ++i)
@@ -44,7 +44,7 @@ int *create_minfn_chrom(int numAlleles)
 	int *alleles;
 	int i;
 
-	alleles = malloc(sizeof(numAlleles));
+	alleles = malloc(numAlleles * sizeof(alleles));
 	if (alleles)
 	{
 		for (i = 0; i < numAlleles; ++i)
@@ -219,6 +219,7 @@ void gene_normalise_fitness(Gene *gene, double total_fitness)
 
 void gene_free(Gene *gene)
 {
+	free(gene->chromosome);
 	free(gene);
 }
 
@@ -238,10 +239,10 @@ void gene_print(Gene *gene)
 		fprintf(stdout, "%2d", gene->chromosome[i]);
 		if (gene->num_alleles - 1 != i)
 		{
-			fputc(44, stdout);
+			fputc(',', stdout);
 		}
 	}
-	fprintf(stdout, " fit:%6.3f raw:%7.3f", gene->fitness, gene->raw_score);
+	fprintf(stdout, " fit:%6.3f raw:%7.3f\n", gene->fitness, gene->raw_score);
 	return;
 }
 
@@ -272,22 +273,22 @@ double pcbmill_distance(int *tableRow1, int *tableRow2)
 
 Gene *gene_copy(Gene *g)
 {
+	/* TODO */
 	Gene *result_gene;
-	Gene *new_gene;
 	int *chromosome;
-
-	new_gene = malloc(sizeof(new_gene));
+	Gene *new_gene = malloc(sizeof(*g));
+	printf("DEBUG: Size of g: %d\n", sizeof(*g));
 	if (new_gene != NULL)
 	{
-		chromosome = malloc(sizeof(chromosome));
+		chromosome = malloc(g->num_alleles * sizeof(int));
 		if (chromosome != NULL)
 		{
 			new_gene->chromosome = chromosome;
-			new_gene->chromosome = g->chromosome;
-			new_gene->raw_score = g->raw_score;
-			new_gene->fitness = g->fitness;
 			new_gene->num_alleles = g->num_alleles;
+			new_gene->fitness = g->fitness;
 			new_gene->raw_score = g->raw_score;
+			/* Copy Values */
+			memcpy(new_gene->chromosome, g->chromosome, sizeof(*g->chromosome));
 			result_gene = new_gene;
 		}
 	}
