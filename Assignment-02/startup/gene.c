@@ -63,7 +63,6 @@ int *create_minfn_chrom(int numAlleles)
 
 Gene *mutate_pcbmill(Gene *g)
 {
-	Gene *result_gene;
 	int randomInt1;
 	int randomInt2;
 	int value1;
@@ -73,25 +72,29 @@ Gene *mutate_pcbmill(Gene *g)
 	new_gene = gene_copy(g);
 	if (new_gene != NULL)
 	{
-		randomInt1 = rand() % new_gene->num_alleles;
-		randomInt2 = rand() % new_gene->num_alleles;
+		#ifdef DEBUG
+			randomInt1 = 2;
+			randomInt2 = 4;
+		#else
+			randomInt1 = rand() % new_gene->num_alleles;
+			randomInt2 = rand() % new_gene->num_alleles;
+		#endif
+
 		value1 = new_gene->chromosome[randomInt1];
 		value2 = new_gene->chromosome[randomInt2];
-		fprintf(stdout, "Index %d Index %d\n", randomInt1, randomInt2);
+		
 		new_gene->chromosome[randomInt1] = value2;
 		new_gene->chromosome[randomInt2] = value1;
-		result_gene = new_gene;
+		#ifdef DEBUG
+			fprintf(stdout, "index %d index %d\n", randomInt1, randomInt2);
+		#endif
 	}
-	else
-	{
-		result_gene = NULL;
-	}
-	return result_gene;
+
+	return new_gene;
 }
 
 Gene *mutate_minfn(Gene *g)
 {
-	Gene *result_gene;
 	int randomInt;
 	int randomIndex;
 	Gene *new_gene;
@@ -99,23 +102,24 @@ Gene *mutate_minfn(Gene *g)
 	new_gene = gene_copy(g);
 	if (new_gene != NULL)
 	{
+		#ifdef DEBUG
+			randomIndex = 2;
+		#else
+			randomIndex = rand() % new_gene->num_alleles;
+		#endif
 
 		randomInt = rand() % MINFN_MAX;
-		randomIndex = rand() % new_gene->num_alleles;
-		fprintf(stdout, "Index %d\n", randomIndex);
 		new_gene->chromosome[randomIndex] = randomInt;
-		result_gene = new_gene;
+
+		#ifdef DEBUG
+			fprintf(stdout, "index %d\n", randomIndex);
+		#endif
 	}
-	else
-	{
-		result_gene = NULL;
-	}
-	return result_gene;
+	return new_gene;
 }
 
 Gene *crossover_pcbmill(Gene *g1, Gene *g2)
 {
-	Gene *result_gene;
 	Gene *new_gene;
 	int randomInt1;
 	int randomInt2;
@@ -125,50 +129,55 @@ Gene *crossover_pcbmill(Gene *g1, Gene *g2)
 	new_gene = gene_copy(g1);
 	if (new_gene != NULL)
 	{
-		/* TO FIX */
-		randomInt1 = 2;
-		randomInt2 = 4;
-
-		for (i = 0; randomInt1 - randomInt2 >= i; i++)
+		#ifdef DEBUG
+			randomInt1 = 2;
+			randomInt2 = 4;
+		#else
+			randomInt1 = rand() % (new_gene->num_alleles - 1);
+			randomInt2 = randomInt1 + rand() % (new_gene->num_alleles + ~randomInt1) + 1;
+		#endif
+			
+		for (i = 0; randomInt2 - randomInt1 >= i; i++)
 		{
-			new_gene->chromosome[i] = g1->chromosome[i];
+			new_gene->chromosome[i] = g1->chromosome[i + randomInt1];
 		}
-
+		
 		for (j = 0; g2->num_alleles > j; j++)
 		{
-			if (!gene_chrom_contains(new_gene, randomInt1 - randomInt2, g2->chromosome[j]))
+			if (gene_chrom_contains(new_gene, randomInt2- randomInt1, g2->chromosome[j]) == FALSE)
 			{
 				new_gene->chromosome[i++] = g2->chromosome[j];
 			}
 		}
+		#ifdef DEBUG
+			fprintf(stdout, "index %d index %d\n", randomInt1, randomInt2);
+		#endif
 	}
-
-	fprintf(stdout, "Index %d Index %d\n", randomInt1, randomInt2);
-	result_gene = new_gene;
-	return result_gene;
+	return new_gene;
 }
 
 Gene *crossover_minfn(Gene *g1, Gene *g2)
 {
-	Gene *result_gene;
 	Gene *new_gene;
 	int randomInt;
 	int i;
-	int numAlleles;
+
 	new_gene = gene_copy(g1);
 	if (new_gene != NULL)
 	{
-		numAlleles = new_gene->num_alleles;
 		/* Select a random index */
-		randomInt = rand() % numAlleles;
-		fprintf(stdout, "Index %d\n", randomInt);
+		#ifdef DEBUG
+			randomInt = 2;
+		#else
+			randomInt = rand() % new_gene->num_alleles;
+		#endif
 		/* Copy every chromosome less than and including randomInt from g1 */
 		for (i = 0; i <= randomInt; i++)
 		{
 			new_gene->chromosome[i] = g1->chromosome[i];
 		}
-		/* Copy every chromosome greater than  */
-		for (i = (randomInt - 1); i < numAlleles; i++)
+		/* Copy every chromosome greater than randomInt from g2 */
+		for (i = (randomInt + 1); i < new_gene->num_alleles; i++)
 		{
 			new_gene->chromosome[i] = g2->chromosome[i];
 		}
@@ -176,13 +185,12 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 		new_gene->raw_score = 0;
 		new_gene->fitness = 0;
 		/* Set the result_gene  */
-		result_gene = new_gene;
+		#ifdef DEBUG
+			fprintf(stdout, "index %d\n", randomInt);
+		#endif
 	}
-	else
-	{
-		result_gene = NULL;
-	}
-	return result_gene;
+
+	return new_gene;
 }
 
 double eval_pcbmill(InVTable *invt, Gene *gene)
@@ -310,7 +318,7 @@ Gene *gene_copy(Gene *g)
 	{
 		fwrite("Unable to allocate memory in gene_copy\n", 1, 39, stderr);
 	}
-	
+
 	return new_gene;
 }
 

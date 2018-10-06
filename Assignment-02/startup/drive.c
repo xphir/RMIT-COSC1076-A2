@@ -70,6 +70,7 @@ void test_pcbmill(void)
 	gene_free(parentGeneA);
 	gene_free(parentGeneB);
 	gene_free(childGene);
+	printf("\n");
 }
 #endif
 
@@ -132,6 +133,7 @@ void test_minfn(void)
 	gene_free(parentGeneA);
 	gene_free(parentGeneB);
 	gene_free(childGene);
+	printf("\n");
 }
 #endif
 
