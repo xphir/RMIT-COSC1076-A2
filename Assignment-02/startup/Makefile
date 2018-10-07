@@ -7,13 +7,11 @@ CC = gcc
 RM = rm -rf
 CFLAGS = -Wall -pedantic -ansi
 LIBS = -lm
-
+ARGS =
+VALOPS =
 SOURCES=drive.c gene.c invector.c pop.c utility.c
 HEADERS=drive.h gene.h invector.h pop.h utility.h
 EXECUTABLES = ga
-ARGS = 
-
-
 
 
 all: $(SOURCES)
@@ -22,14 +20,24 @@ all: $(SOURCES)
 DEBUG: CFLAGS += -DDEBUG
 DEBUG: all
 
-PCBTEST: ARGS += pcbmill 12 20 50 pcbin.dat
-PCBTEST: TEST
+PCBTEST1: ARGS += pcbmill 12 20 50 pcbin.dat
+PCBTEST1: VALOPS += --leak-check=full --show-reachable=yes
+PCBTEST1: TEST
 
-MINTEST: ARGS += minfn 4 20 50 minfnin.dat
-MINTEST: TEST
+PCBTEST2: ARGS += pcbmill 12 20 50 pcbin.dat
+PCBTEST2: VALOPS += --track-origins=yes
+PCBTEST2: TEST
+
+MINTEST1: ARGS += minfn 4 20 50 minfnin.dat Requirement11a.txt
+MINTEST1: VALOPS += --leak-check=full --show-reachable=yes
+MINTEST1: TEST
+
+MINTEST2: ARGS += minfn 4 20 50 minfnin.dat Requirement11b.txt
+MINTEST2: VALOPS += --track-origins=yes
+MINTEST2: TEST
 
 TEST: $(SOURCES)
-	valgrind --track-origins=yes ./$(EXECUTABLES) $(ARGS)
+	valgrind $(VALOPS) ./$(EXECUTABLES) $(ARGS)
 
 clean:
 	$(RM) $(EXECUTABLES)

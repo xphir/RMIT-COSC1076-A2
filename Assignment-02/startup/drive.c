@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 		/* Get 6th argument */
 		pList = pop_run(pList, localPopSize, localAlleleSize, localNumGen, &inputVectorTable);
 		if (pList)
-		{
+		{;
 			pop_free(pList);
 			if (stream != NULL)
 			{

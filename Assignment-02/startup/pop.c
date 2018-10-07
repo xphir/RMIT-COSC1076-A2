@@ -325,4 +325,5 @@ Gene *pop_proportionate_select(Pop_list *pList)
 	{
 		return NULL;
 	}
+	return NULL;
 }
