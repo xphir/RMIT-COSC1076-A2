@@ -1,17 +1,24 @@
-#include<stdio.h> 
-  
-int main(int argc,char* argv[]) 
-{ 
-    int counter; 
-    printf("Program Name Is: %s",argv[0]); 
-    if(argc==1) 
-        printf("\nNo Extra Command Line Argument Passed Other Than Program Name"); 
-    if(argc>=2) 
-    { 
-        printf("\nNumber Of Arguments Passed: %d",argc); 
-        printf("\n----Following Are The Command Line Arguments Passed----"); 
-        for(counter=0;counter<argc;counter++) 
-            printf("\nargv[%d]: %s",counter,argv[counter]); 
-    } 
-    return 0; 
-} 
+void pop_print_fittest(Pop_list *pList)
+{
+    Gene *result;
+    double randomNum;
+    double count;
+	if (pList != NULL)
+	{
+		Pop_node *node = pList->head;
+        randomNum = (double)(rand() % 1000) / 1000.0;
+        count = 0.0;
+		while (node != NULL)
+		{
+			result = node->gene;
+			count += node->gene->fitness;
+			node = node->next;
+		}
+		fprintf(stdout, "\n");
+		generation++;
+	}
+	else
+	{
+		fwrite("pop_print_fittest: pop is empty\n", 1, 32, stderr);
+	}
+}

@@ -6,7 +6,6 @@
 
 #include <defs.h>
 
-
 //-------------------------------------------------------------------------
 // Function declarations
 
@@ -44,8 +43,8 @@ _DWORD *__fastcall crossover_pcbmill(__int64 a1, __int64 a2);
 _DWORD *__fastcall crossover_minfn(__int64 a1, __int64 a2);
 __int64 __fastcall eval_pcbmill(__int64 a1, __int64 a2);
 double __fastcall eval_minfn(__int64 a1, __int64 a2);
-_DWORD *__fastcall gene_create_rand_gene(unsigned int a1, int (__fastcall *a2)(_QWORD));
-__int64 __fastcall gene_calc_fitness(__int64 a1, void (__fastcall *a2)(__int64, __int64), __int64 a3, double a4);
+_DWORD *__fastcall gene_create_rand_gene(unsigned int a1, int(__fastcall *a2)(_QWORD));
+__int64 __fastcall gene_calc_fitness(__int64 a1, void(__fastcall *a2)(__int64, __int64), __int64 a3, double a4);
 __int64 __fastcall gene_normalise_fitness(__int64 a1, double a2);
 void __fastcall gene_free(void **a1);
 __int64 __fastcall gene_get_fitness(__int64 a1);
@@ -83,15 +82,14 @@ void term_proc();
 //-------------------------------------------------------------------------
 // Data declarations
 
-char asc_402C86[2] = "\n"; // weak
-__int64 (__fastcall *_frame_dummy_init_array_entry[2])() = { &frame_dummy, &_do_global_dtors_aux }; // weak
-__int64 (__fastcall *_do_global_dtors_aux_fini_array_entry)() = &_do_global_dtors_aux; // weak
-FILE *stdout; // idb
-FILE *stderr; // idb
-char completed_6354; // weak
-int gen_2205; // weak
+char asc_402C86[2] = "\n";                                                                       // weak
+__int64(__fastcall *_frame_dummy_init_array_entry[2])() = {&frame_dummy, &_do_global_dtors_aux}; // weak
+__int64(__fastcall *_do_global_dtors_aux_fini_array_entry)() = &_do_global_dtors_aux;            // weak
+FILE *stdout;                                                                                    // idb
+FILE *stderr;                                                                                    // idb
+char completed_6354;                                                                             // weak
+int gen_2205;                                                                                    // weak
 // extern _UNKNOWN _gmon_start__; weak
-
 
 //----- (0000000000400930) ----------------------------------------------------
 int init_proc()
@@ -99,7 +97,7 @@ int init_proc()
   void *v0; // rax@1
 
   v0 = &_gmon_start__;
-  if ( &_gmon_start__ )
+  if (&_gmon_start__)
     LODWORD(v0) = __gmon_start__();
   return (unsigned __int64)v0;
 }
@@ -125,7 +123,7 @@ signed int _do_global_dtors_aux()
 {
   signed int result; // eax@2
 
-  if ( !completed_6354 )
+  if (!completed_6354)
   {
     result = deregister_tm_clones();
     completed_6354 = 1;
@@ -144,85 +142,85 @@ int frame_dummy()
 //----- (0000000000400B9D) ----------------------------------------------------
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
-  double v3; // xmm0_8@0
-  int result; // eax@3
-  int v5; // eax@13
-  int v6; // eax@19
-  char *endptr; // [sp+18h] [bp-418h]@8
-  char v8; // [sp+20h] [bp-410h]@6
-  _QWORD *v9; // [sp+410h] [bp-20h]@4
-  int v10; // [sp+41Ch] [bp-14h]@27
-  int v11; // [sp+420h] [bp-10h]@23
+  double v3;        // xmm0_8@0
+  int result;       // eax@3
+  int v5;           // eax@13
+  int v6;           // eax@19
+  char *endptr;     // [sp+18h] [bp-418h]@8
+  char v8;          // [sp+20h] [bp-410h]@6
+  _QWORD *v9;       // [sp+410h] [bp-20h]@4
+  int v10;          // [sp+41Ch] [bp-14h]@27
+  int v11;          // [sp+420h] [bp-10h]@23
   unsigned int v12; // [sp+424h] [bp-Ch]@8
-  FILE *stream; // [sp+428h] [bp-8h]@1
+  FILE *stream;     // [sp+428h] [bp-8h]@1
 
   stream = 0LL;
   srand(2u);
-  if ( argc <= 5 || argc > 7 )
+  if (argc <= 5 || argc > 7)
   {
     fwrite("main: incorrect number of arguments\n", 1uLL, 0x24uLL, stderr);
     return 1;
   }
-  if ( !(unsigned int)pop_init(&v9) )
+  if (!(unsigned int)pop_init(&v9))
     return 1;
   invector_init((__int64)&v8);
-  if ( !(unsigned int)invector_load((__int64)&v8, argv[5]) )
+  if (!(unsigned int)invector_load((__int64)&v8, argv[5]))
   {
     pop_free(v9);
     return 1;
   }
   v12 = strtol(argv[2], &endptr, 10);
-  if ( argv[2] == endptr || *endptr || (signed int)v12 <= 0 )
+  if (argv[2] == endptr || *endptr || (signed int)v12 <= 0)
   {
     fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
     pop_free(v9);
     return 1;
   }
-  if ( !strncmp(argv[1], "minfn", 6uLL) )
+  if (!strncmp(argv[1], "minfn", 6uLL))
   {
     v5 = invector_get_width((__int64)&v8);
-    if ( v5 - 1 != v12 )
+    if (v5 - 1 != v12)
     {
       fwrite("allelesize mismatch with vector size\n", 1uLL, 0x25uLL, stderr);
       pop_free(v9);
       return 1;
     }
-    if ( (unsigned int)invector_get_num_invector((__int64)&v8) != 1 )
+    if ((unsigned int)invector_get_num_invector((__int64)&v8) != 1)
     {
       fwrite("too many input vectors for minfn data file\n", 1uLL, 0x2BuLL, stderr);
       pop_free(v9);
       return 1;
     }
     pop_set_fns(
-      (__int64)v9,
-      (__int64)create_minfn_chrom,
-      (__int64)mutate_minfn,
-      (__int64)crossover_minfn,
-      (__int64)eval_minfn);
+        (__int64)v9,
+        (__int64)create_minfn_chrom,
+        (__int64)mutate_minfn,
+        (__int64)crossover_minfn,
+        (__int64)eval_minfn);
   }
   else
   {
-    if ( strncmp(argv[1], "pcbmill", 8uLL) )
+    if (strncmp(argv[1], "pcbmill", 8uLL))
     {
       fwrite("incorrect 2nd argument\n", 1uLL, 0x17uLL, stderr);
       return 1;
     }
     v6 = invector_get_num_invector((__int64)&v8);
-    if ( v6 != v12 )
+    if (v6 != v12)
     {
       fwrite("allelesize mismatch with num vectors\n", 1uLL, 0x25uLL, stderr);
       pop_free(v9);
       return 1;
     }
     pop_set_fns(
-      (__int64)v9,
-      (__int64)create_pcbmill_chrom,
-      (__int64)mutate_pcbmill,
-      (__int64)crossover_pcbmill,
-      (__int64)eval_pcbmill);
+        (__int64)v9,
+        (__int64)create_pcbmill_chrom,
+        (__int64)mutate_pcbmill,
+        (__int64)crossover_pcbmill,
+        (__int64)eval_pcbmill);
   }
   v11 = strtol(argv[3], &endptr, 10);
-  if ( argv[3] == endptr || *endptr || v11 <= 1 )
+  if (argv[3] == endptr || *endptr || v11 <= 1)
   {
     fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
     pop_free(v9);
@@ -231,19 +229,19 @@ int __cdecl main(int argc, const char **argv, const char **envp)
   else
   {
     v10 = strtol(argv[4], &endptr, 10);
-    if ( argv[4] == endptr || *endptr || v10 < 0 )
+    if (argv[4] == endptr || *endptr || v10 < 0)
     {
       fwrite("invalid integer argument\n", 1uLL, 0x19uLL, stderr);
       pop_free(v9);
       result = 1;
     }
-    else if ( argc != 7 || (stream = freopen(argv[6], "w", stdout)) != 0LL )
+    else if (argc != 7 || (stream = freopen(argv[6], "w", stdout)) != 0LL)
     {
       v9 = pop_run((__int64)v9, v11, v12, v10, (__int64)&v8, v3);
-      if ( v9 )
+      if (v9)
       {
         pop_free(v9);
-        if ( stream )
+        if (stream)
           fclose(stream);
         result = 0;
       }
@@ -267,18 +265,18 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 _DWORD *__fastcall create_pcbmill_chrom(signed int a1)
 {
   _DWORD *result; // rax@2
-  int v2; // ST2C_4@7
-  int v3; // ST1C_4@7
-  _DWORD *v4; // [sp+20h] [bp-10h]@1
-  signed int i; // [sp+2Ch] [bp-4h]@3
-  int j; // [sp+2Ch] [bp-4h]@6
+  int v2;         // ST2C_4@7
+  int v3;         // ST1C_4@7
+  _DWORD *v4;     // [sp+20h] [bp-10h]@1
+  signed int i;   // [sp+2Ch] [bp-4h]@3
+  int j;          // [sp+2Ch] [bp-4h]@6
 
   v4 = malloc(4LL * a1);
-  if ( v4 )
+  if (v4)
   {
-    for ( i = 0; i < a1; ++i )
+    for (i = 0; i < a1; ++i)
       v4[i] = i;
-    for ( j = 0; j < a1; j = v2 + 1 )
+    for (j = 0; j < a1; j = v2 + 1)
     {
       v2 = rand() % a1;
       v3 = rand() % a1;
@@ -298,13 +296,13 @@ _DWORD *__fastcall create_pcbmill_chrom(signed int a1)
 _DWORD *__fastcall create_minfn_chrom(int a1)
 {
   _DWORD *result; // rax@2
-  _DWORD *v2; // [sp+10h] [bp-20h]@1
-  int i; // [sp+1Ch] [bp-14h]@3
+  _DWORD *v2;     // [sp+10h] [bp-20h]@1
+  int i;          // [sp+1Ch] [bp-14h]@3
 
   v2 = malloc(4LL * a1);
-  if ( v2 )
+  if (v2)
   {
-    for ( i = 0; i < a1; ++i )
+    for (i = 0; i < a1; ++i)
       v2[i] = rand() % 30;
     result = v2;
   }
@@ -320,11 +318,11 @@ _DWORD *__fastcall create_minfn_chrom(int a1)
 __int64 *__fastcall mutate_pcbmill(__int64 a1)
 {
   __int64 *result; // rax@2
-  int v2; // eax@3
-  __int64 *v3; // [sp+18h] [bp-8h]@1
+  int v2;          // eax@3
+  __int64 *v3;     // [sp+18h] [bp-8h]@1
 
   v3 = (__int64 *)gene_copy(a1);
-  if ( v3 )
+  if (v3)
   {
     v2 = rand();
     gene_swap_alleles(*v3, v2 % *(_DWORD *)(a1 + 8), (v2 % *(_DWORD *)(a1 + 8) + 1) % *(_DWORD *)(a1 + 8));
@@ -341,11 +339,11 @@ __int64 *__fastcall mutate_pcbmill(__int64 a1)
 _DWORD *__fastcall mutate_minfn(__int64 a1)
 {
   _DWORD *result; // rax@2
-  int *v2; // rbx@3
-  _DWORD *v3; // [sp+18h] [bp-18h]@1
+  int *v2;        // rbx@3
+  _DWORD *v3;     // [sp+18h] [bp-18h]@1
 
   v3 = gene_copy(a1);
-  if ( v3 )
+  if (v3)
   {
     v2 = (int *)(*(_QWORD *)v3 + 4LL * (rand() % v3[2]));
     *v2 = rand() % 30;
@@ -362,22 +360,22 @@ _DWORD *__fastcall mutate_minfn(__int64 a1)
 _DWORD *__fastcall crossover_pcbmill(__int64 a1, __int64 a2)
 {
   _DWORD *result; // rax@2
-  int v3; // [sp+18h] [bp-18h]@3
-  int v4; // [sp+1Ch] [bp-14h]@3
-  _DWORD *v5; // [sp+20h] [bp-10h]@1
-  int j; // [sp+28h] [bp-8h]@6
-  int i; // [sp+2Ch] [bp-4h]@3
+  int v3;         // [sp+18h] [bp-18h]@3
+  int v4;         // [sp+1Ch] [bp-14h]@3
+  _DWORD *v5;     // [sp+20h] [bp-10h]@1
+  int j;          // [sp+28h] [bp-8h]@6
+  int i;          // [sp+2Ch] [bp-4h]@3
 
   v5 = gene_copy(a1);
-  if ( v5 )
+  if (v5)
   {
     v4 = rand() % (*(_DWORD *)(a1 + 8) - 1);
     v3 = v4 + rand() % (*(_DWORD *)(a1 + 8) + ~v4) + 1;
-    for ( i = 0; v3 - v4 >= i; ++i )
+    for (i = 0; v3 - v4 >= i; ++i)
       *(_DWORD *)(*(_QWORD *)v5 + 4LL * i) = *(_DWORD *)(4LL * (i + v4) + *(_QWORD *)a1);
-    for ( j = 0; *(_DWORD *)(a2 + 8) > j; ++j )
+    for (j = 0; *(_DWORD *)(a2 + 8) > j; ++j)
     {
-      if ( !(unsigned int)gene_chrom_contains(*(_QWORD *)v5, v3 - v4, *(_DWORD *)(4LL * j + *(_QWORD *)a2)) )
+      if (!(unsigned int)gene_chrom_contains(*(_QWORD *)v5, v3 - v4, *(_DWORD *)(4LL * j + *(_QWORD *)a2)))
         *(_DWORD *)(*(_QWORD *)v5 + 4LL * i++) = *(_DWORD *)(4LL * j + *(_QWORD *)a2);
     }
     *((_QWORD *)v5 + 3) = 0LL;
@@ -395,17 +393,17 @@ _DWORD *__fastcall crossover_pcbmill(__int64 a1, __int64 a2)
 _DWORD *__fastcall crossover_minfn(__int64 a1, __int64 a2)
 {
   _DWORD *result; // rax@2
-  int v3; // [sp+1Ch] [bp-14h]@3
-  _DWORD *v4; // [sp+20h] [bp-10h]@1
-  int i; // [sp+2Ch] [bp-4h]@3
+  int v3;         // [sp+1Ch] [bp-14h]@3
+  _DWORD *v4;     // [sp+20h] [bp-10h]@1
+  int i;          // [sp+2Ch] [bp-4h]@3
 
   v4 = gene_copy(a1);
-  if ( v4 )
+  if (v4)
   {
     v3 = rand() % *(_DWORD *)(a1 + 8);
-    for ( i = 0; i <= v3; ++i )
+    for (i = 0; i <= v3; ++i)
       *(_DWORD *)(*(_QWORD *)v4 + 4LL * i) = *(_DWORD *)(4LL * i + *(_QWORD *)a1);
-    while ( *(_DWORD *)(a2 + 8) > i )
+    while (*(_DWORD *)(a2 + 8) > i)
     {
       *(_DWORD *)(*(_QWORD *)v4 + 4LL * i) = *(_DWORD *)(4LL * i + *(_QWORD *)a2);
       ++i;
@@ -426,15 +424,15 @@ __int64 __fastcall eval_pcbmill(__int64 a1, __int64 a2)
 {
   __int64 v2; // ST28_8@2
   __int64 v3; // ST20_8@2
-  int v5; // [sp+34h] [bp-1Ch]@1
+  int v5;     // [sp+34h] [bp-1Ch]@1
   __int64 v6; // [sp+38h] [bp-18h]@1
-  double v7; // [sp+40h] [bp-10h]@1
-  int i; // [sp+4Ch] [bp-4h]@1
+  double v7;  // [sp+40h] [bp-10h]@1
+  int i;      // [sp+4Ch] [bp-4h]@1
 
   v7 = 0.0;
   v6 = gene_get_chrom(a2);
   v5 = gene_get_num_alleles(a2);
-  for ( i = 0; v5 - 1 > i; ++i )
+  for (i = 0; v5 - 1 > i; ++i)
   {
     v2 = invector_get_table_row(a1, *(_DWORD *)(4LL * i + v6));
     v3 = invector_get_table_row(a1, *(_DWORD *)(4 * (i + 1LL) + v6));
@@ -446,30 +444,30 @@ __int64 __fastcall eval_pcbmill(__int64 a1, __int64 a2)
 //----- (00000000004015E1) ----------------------------------------------------
 double __fastcall eval_minfn(__int64 a1, __int64 a2)
 {
-  int v2; // eax@4
-  int v4; // [sp+2Ch] [bp-14h]@1
+  int v2;     // eax@4
+  int v4;     // [sp+2Ch] [bp-14h]@1
   __int64 v5; // [sp+30h] [bp-10h]@1
-  int i; // [sp+38h] [bp-8h]@1
-  int v7; // [sp+3Ch] [bp-4h]@1
+  int i;      // [sp+38h] [bp-8h]@1
+  int v7;     // [sp+3Ch] [bp-4h]@1
 
   v5 = gene_get_chrom(a2);
   v4 = *(_DWORD *)(a2 + 8);
   v7 = 0;
-  for ( i = 0; i < v4; ++i )
+  for (i = 0; i < v4; ++i)
     v7 += *(_DWORD *)(4LL * i + v5) * (unsigned __int64)invector_get_table_pos(a1, 0, i);
   v2 = invector_get_table_pos(a1, 0, i);
   return (double)(((v7 - v2) ^ ((v7 - v2) >> 31)) - ((v7 - v2) >> 31));
 }
 
 //----- (000000000040169A) ----------------------------------------------------
-_DWORD *__fastcall gene_create_rand_gene(unsigned int a1, int (__fastcall *a2)(_QWORD))
+_DWORD *__fastcall gene_create_rand_gene(unsigned int a1, int(__fastcall *a2)(_QWORD))
 {
-  __int64 v2; // rax@2
+  __int64 v2;     // rax@2
   _DWORD *result; // rax@3
-  _DWORD *v4; // [sp+18h] [bp-8h]@1
+  _DWORD *v4;     // [sp+18h] [bp-8h]@1
 
   v4 = malloc(0x20uLL);
-  if ( v4 && (LODWORD(v2) = a2(a1), v2) )
+  if (v4 && (LODWORD(v2) = a2(a1), v2))
   {
     v4[2] = a1;
     *(_QWORD *)v4 = v2;
@@ -486,7 +484,7 @@ _DWORD *__fastcall gene_create_rand_gene(unsigned int a1, int (__fastcall *a2)(_
 }
 
 //----- (000000000040172E) ----------------------------------------------------
-__int64 __fastcall gene_calc_fitness(__int64 a1, void (__fastcall *a2)(__int64, __int64), __int64 a3, double a4)
+__int64 __fastcall gene_calc_fitness(__int64 a1, void(__fastcall *a2)(__int64, __int64), __int64 a3, double a4)
 {
   __int64 result; // rax@1
 
@@ -526,10 +524,10 @@ int __fastcall gene_print(__int64 a1)
   int i; // [sp+1Ch] [bp-4h]@1
 
   fwrite("chrom:", 1uLL, 6uLL, stdout);
-  for ( i = 0; *(_DWORD *)(a1 + 8) > i; ++i )
+  for (i = 0; *(_DWORD *)(a1 + 8) > i; ++i)
   {
     fprintf(stdout, "%2d", *(_DWORD *)(4LL * i + *(_QWORD *)a1));
-    if ( *(_DWORD *)(a1 + 8) - 1 != i )
+    if (*(_DWORD *)(a1 + 8) - 1 != i)
       fputc(44, stdout);
   }
   return fprintf(stdout, " fit:%6.3f raw:%7.3f", *(double *)(a1 + 24), *(double *)(a1 + 16), *(_QWORD *)(a1 + 24));
@@ -551,14 +549,14 @@ __int64 __fastcall gene_get_num_alleles(__int64 a1)
 _DWORD *__fastcall gene_copy(__int64 a1)
 {
   _DWORD *result; // rax@2
-  void *v2; // [sp+10h] [bp-10h]@3
-  _DWORD *ptr; // [sp+18h] [bp-8h]@1
+  void *v2;       // [sp+10h] [bp-10h]@3
+  _DWORD *ptr;    // [sp+18h] [bp-8h]@1
 
   ptr = malloc(0x20uLL);
-  if ( ptr )
+  if (ptr)
   {
     v2 = malloc(4LL * *(_DWORD *)(a1 + 8));
-    if ( v2 )
+    if (v2)
     {
       *(_QWORD *)ptr = v2;
       ptr[2] = *(_DWORD *)(a1 + 8);
@@ -587,9 +585,9 @@ signed __int64 __fastcall gene_chrom_contains(__int64 a1, int a2, int a3)
 {
   int i; // [sp+1Ch] [bp-4h]@1
 
-  for ( i = 0; i <= a2; ++i )
+  for (i = 0; i <= a2; ++i)
   {
-    if ( *(_DWORD *)(4LL * i + a1) == a3 )
+    if (*(_DWORD *)(4LL * i + a1) == a3)
       return 1LL;
   }
   return 0LL;
@@ -599,7 +597,7 @@ signed __int64 __fastcall gene_chrom_contains(__int64 a1, int a2, int a3)
 __int64 __fastcall gene_swap_alleles(__int64 a1, int a2, int a3)
 {
   unsigned int v3; // ST1C_4@1
-  __int64 result; // rax@1
+  __int64 result;  // rax@1
 
   v3 = *(_DWORD *)(4LL * a2 + a1);
   *(_DWORD *)(a1 + 4LL * a2) = *(_DWORD *)(4LL * a3 + a1);
@@ -655,77 +653,77 @@ __int64 __fastcall invector_get_table_pos(__int64 a1, int a2, int a3)
 //----- (0000000000401BD1) ----------------------------------------------------
 signed __int64 __fastcall invector_add(__int64 a1, const char *a2)
 {
-  size_t v3; // rax@3
-  size_t v4; // rax@5
-  int v5; // ebx@21
-  int v6; // eax@21
+  size_t v3;    // rax@3
+  size_t v4;    // rax@5
+  int v5;       // ebx@21
+  int v6;       // eax@21
   char *endptr; // [sp+18h] [bp-38h]@13
-  int v8; // [sp+24h] [bp-2Ch]@13
-  char *s1; // [sp+28h] [bp-28h]@7
-  char *dest; // [sp+30h] [bp-20h]@3
-  int v11; // [sp+3Ch] [bp-14h]@1
+  int v8;       // [sp+24h] [bp-2Ch]@13
+  char *s1;     // [sp+28h] [bp-28h]@7
+  char *dest;   // [sp+30h] [bp-20h]@3
+  int v11;      // [sp+3Ch] [bp-14h]@1
 
   v11 = 0;
-  if ( *(_DWORD *)(a1 + 1000) > 49 )
+  if (*(_DWORD *)(a1 + 1000) > 49)
   {
     fwrite("Error: invector table full\n", 1uLL, 0x1BuLL, stderr);
     return 0LL;
   }
   v3 = strlen(a2);
   dest = (char *)malloc(v3 + 1);
-  if ( !dest )
+  if (!dest)
   {
     fwrite("Unable to duplicate string\n", 1uLL, 0x1BuLL, stderr);
     return 0LL;
   }
   v4 = strlen(a2);
-  if ( !strncpy(dest, a2, v4 + 1) )
+  if (!strncpy(dest, a2, v4 + 1))
   {
     fwrite("Unable to duplicate string\n", 1uLL, 0x1BuLL, stderr);
     free(dest);
     return 0LL;
   }
   s1 = strtok(dest, ":");
-  if ( !s1 )
+  if (!s1)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
-  if ( strncmp(s1, "InputVector", 0xCuLL) )
+  if (strncmp(s1, "InputVector", 0xCuLL))
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
   s1 = strtok(0LL, "(");
-  if ( !s1 )
+  if (!s1)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
   v8 = strtol(s1, &endptr, 10);
-  if ( *endptr )
+  if (*endptr)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
-  if ( *(_DWORD *)(a1 + 1000) != v8 )
+  if (*(_DWORD *)(a1 + 1000) != v8)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
-  while ( 1 )
+  while (1)
   {
     s1 = strtok(0LL, ",)");
-    if ( !s1 )
+    if (!s1)
       break;
-    if ( asc_402C86[0] != *s1 )
+    if (asc_402C86[0] != *s1)
     {
-      if ( v11 == 5 )
+      if (v11 == 5)
       {
         fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
         free(dest);
@@ -734,7 +732,7 @@ signed __int64 __fastcall invector_add(__int64 a1, const char *a2)
       v5 = v11++;
       v6 = strtol(s1, &endptr, 10);
       *(_DWORD *)(a1 + 4 * (v5 + 5LL * v8)) = v6;
-      if ( *endptr )
+      if (*endptr)
       {
         fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
         free(dest);
@@ -742,18 +740,18 @@ signed __int64 __fastcall invector_add(__int64 a1, const char *a2)
       }
     }
   }
-  if ( !v11 )
+  if (!v11)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
     return 0LL;
   }
   ++*(_DWORD *)(a1 + 1000);
-  if ( *(_DWORD *)(a1 + 1004) == -1 )
+  if (*(_DWORD *)(a1 + 1004) == -1)
   {
     *(_DWORD *)(a1 + 1004) = v11;
   }
-  else if ( *(_DWORD *)(a1 + 1004) != v11 )
+  else if (*(_DWORD *)(a1 + 1004) != v11)
   {
     fwrite("Error: invector string invalid\n", 1uLL, 0x1FuLL, stderr);
     free(dest);
@@ -767,30 +765,30 @@ signed __int64 __fastcall invector_add(__int64 a1, const char *a2)
 signed __int64 __fastcall invector_load(__int64 a1, const char *a2)
 {
   signed __int64 result; // rax@2
-  __int64 v3; // [sp+8h] [bp-68h]@1
-  char s[88]; // [sp+10h] [bp-60h]@4
-  FILE *stream; // [sp+68h] [bp-8h]@1
+  __int64 v3;            // [sp+8h] [bp-68h]@1
+  char s[88];            // [sp+10h] [bp-60h]@4
+  FILE *stream;          // [sp+68h] [bp-8h]@1
 
   v3 = a1;
   stream = fopen(a2, "r");
-  if ( stream )
+  if (stream)
   {
-    while ( fgets(s, 82, stream) )
+    while (fgets(s, 82, stream))
     {
-      if ( s[strlen(s) - 1] != 10 )
+      if (s[strlen(s) - 1] != 10)
       {
         fwrite("Error: invector line too long\n", 1uLL, 0x1EuLL, stderr);
         fclose(stream);
         return 0LL;
       }
-      if ( !(unsigned int)invector_add(v3, s) )
+      if (!(unsigned int)invector_add(v3, s))
       {
         fclose(stream);
         return 0LL;
       }
     }
     fclose(stream);
-    if ( *(_DWORD *)(v3 + 1000) > 0 )
+    if (*(_DWORD *)(v3 + 1000) > 0)
     {
       result = 1LL;
     }
@@ -813,10 +811,10 @@ signed __int64 __fastcall invector_load(__int64 a1, const char *a2)
 signed __int64 __fastcall pop_init(_QWORD *a1)
 {
   signed __int64 result; // rax@2
-  _DWORD *v2; // [sp+18h] [bp-8h]@1
+  _DWORD *v2;            // [sp+18h] [bp-8h]@1
 
   v2 = malloc(0x30uLL);
-  if ( v2 )
+  if (v2)
   {
     *(_QWORD *)v2 = 0LL;
     v2[2] = 0;
@@ -852,10 +850,10 @@ __int64 __fastcall pop_set_fns(__int64 a1, __int64 a2, __int64 a3, __int64 a4, _
 signed __int64 __fastcall pop_insert(__int64 a1, __int64 a2)
 {
   signed __int64 result; // rax@2
-  _QWORD *v3; // [sp+18h] [bp-8h]@1
+  _QWORD *v3;            // [sp+18h] [bp-8h]@1
 
   v3 = malloc(0x10uLL);
-  if ( v3 )
+  if (v3)
   {
     v3[1] = *(_QWORD *)a1;
     *(_QWORD *)a1 = v3;
@@ -875,14 +873,14 @@ signed __int64 __fastcall pop_insert(__int64 a1, __int64 a2)
 signed __int64 __fastcall pop_create_rand_pop(__int64 a1, int a2, unsigned int a3)
 {
   unsigned int v4; // [sp+0h] [bp-20h]@1
-  _DWORD *v5; // [sp+10h] [bp-10h]@2
-  int i; // [sp+1Ch] [bp-4h]@1
+  _DWORD *v5;      // [sp+10h] [bp-10h]@2
+  int i;           // [sp+1Ch] [bp-4h]@1
 
   v4 = a3;
-  for ( i = 0; i < a2; ++i )
+  for (i = 0; i < a2; ++i)
   {
-    v5 = gene_create_rand_gene(v4, *(int (__fastcall **)(_QWORD))(a1 + 16));
-    if ( !v5 )
+    v5 = gene_create_rand_gene(v4, *(int(__fastcall **)(_QWORD))(a1 + 16));
+    if (!v5)
     {
       pop_free((void *)a1);
       return 0LL;
@@ -895,23 +893,23 @@ signed __int64 __fastcall pop_create_rand_pop(__int64 a1, int a2, unsigned int a
 //----- (0000000000402326) ----------------------------------------------------
 __int64 __fastcall pop_evaluate(__int64 a1, __int64 a2, double a3)
 {
-  __int64 v3; // ST28_8@2
+  __int64 v3;     // ST28_8@2
   __int64 result; // rax@4
-  double v5; // [sp+30h] [bp-10h]@1
-  __int64 i; // [sp+38h] [bp-8h]@1
-  __int64 j; // [sp+38h] [bp-8h]@4
+  double v5;      // [sp+30h] [bp-10h]@1
+  __int64 i;      // [sp+38h] [bp-8h]@1
+  __int64 j;      // [sp+38h] [bp-8h]@4
 
   v5 = 0.0;
-  for ( i = *(_QWORD *)a1; i; i = *(_QWORD *)(i + 8) )
+  for (i = *(_QWORD *)a1; i; i = *(_QWORD *)(i + 8))
   {
     v3 = *(_QWORD *)i;
-    gene_calc_fitness(*(_QWORD *)i, *(void (__fastcall **)(__int64, __int64))(a1 + 40), a2, a3);
+    gene_calc_fitness(*(_QWORD *)i, *(void(__fastcall **)(__int64, __int64))(a1 + 40), a2, a3);
     gene_get_fitness(v3);
     a3 = a3 + v5;
     v5 = a3;
   }
   result = *(_QWORD *)a1;
-  for ( j = *(_QWORD *)a1; j; j = *(_QWORD *)(j + 8) )
+  for (j = *(_QWORD *)a1; j; j = *(_QWORD *)(j + 8))
   {
     gene_normalise_fitness(*(_QWORD *)j, v5);
     result = *(_QWORD *)(j + 8);
@@ -923,24 +921,23 @@ __int64 __fastcall pop_evaluate(__int64 a1, __int64 a2, double a3)
 _QWORD *__fastcall pop_sort(_QWORD *a1)
 {
   _QWORD *result; // rax@2
-  int v3; // [sp+1Ch] [bp-14h]@3
-  __int64 v4; // [sp+20h] [bp-10h]@1
-  __int64 i; // [sp+28h] [bp-8h]@3
+  int v3;         // [sp+1Ch] [bp-14h]@3
+  __int64 v4;     // [sp+20h] [bp-10h]@1
+  __int64 i;      // [sp+28h] [bp-8h]@3
 
   v4 = 0LL;
-  if ( a1 )
+  if (a1)
   {
     do
     {
       v3 = 0;
-      for ( i = *a1; *(_QWORD *)(i + 8) != v4; i = *(_QWORD *)(i + 8) )
+      for (i = *a1; *(_QWORD *)(i + 8) != v4; i = *(_QWORD *)(i + 8))
       {
         gene_get_fitness(*(_QWORD *)i);
         gene_get_fitness(**(_QWORD **)(i + 8));
       }
       v4 = i;
-    }
-    while ( v3 );
+    } while (v3);
     result = a1;
   }
   else
@@ -953,31 +950,30 @@ _QWORD *__fastcall pop_sort(_QWORD *a1)
 //----- (000000000040249C) ----------------------------------------------------
 __int64 __fastcall pop_proportionate_select(__int64 *a1)
 {
-  int v1; // eax@1
-  double v2; // xmm0_8@1
+  int v1;         // eax@1
+  double v2;      // xmm0_8@1
   __int64 result; // rax@2
-  double v4; // [sp+18h] [bp-18h]@1
-  double v5; // [sp+20h] [bp-10h]@1
-  __int64 v6; // [sp+28h] [bp-8h]@1
+  double v4;      // [sp+18h] [bp-18h]@1
+  double v5;      // [sp+20h] [bp-10h]@1
+  __int64 v6;     // [sp+28h] [bp-8h]@1
 
   v5 = 0.0;
   v1 = rand();
   v2 = (double)(v1 % 1000) / 1000.0;
   v4 = (double)(v1 % 1000) / 1000.0;
   v6 = *a1;
-  if ( *a1 )
+  if (*a1)
   {
     do
     {
       gene_get_fitness(*(_QWORD *)v6);
       v5 = v2 + v5;
-      if ( v4 > v5 )
+      if (v4 > v5)
         v6 = *(_QWORD *)(v6 + 8);
-      if ( !v6 )
+      if (!v6)
         break;
       v2 = v4;
-    }
-    while ( v4 > v5 );
+    } while (v4 > v5);
     result = *(_QWORD *)v6;
   }
   else
@@ -991,46 +987,46 @@ __int64 __fastcall pop_proportionate_select(__int64 *a1)
 void *__fastcall pop_reproduce(__int64 a1)
 {
   void *result; // rax@2
-  void **v2; // rax@13
-  void **v3; // rax@16
-  void *v4; // [sp+10h] [bp-30h]@3
-  void **v5; // [sp+18h] [bp-28h]@16
-  __int64 v6; // [sp+20h] [bp-20h]@10
-  __int64 v7; // [sp+28h] [bp-18h]@10
-  int i; // [sp+34h] [bp-Ch]@9
-  void **v9; // [sp+38h] [bp-8h]@5
+  void **v2;    // rax@13
+  void **v3;    // rax@16
+  void *v4;     // [sp+10h] [bp-30h]@3
+  void **v5;    // [sp+18h] [bp-28h]@16
+  __int64 v6;   // [sp+20h] [bp-20h]@10
+  __int64 v7;   // [sp+28h] [bp-18h]@10
+  int i;        // [sp+34h] [bp-Ch]@9
+  void **v9;    // [sp+38h] [bp-8h]@5
 
-  if ( a1 )
+  if (a1)
   {
-    if ( (unsigned int)pop_init(&v4) )
+    if ((unsigned int)pop_init(&v4))
     {
       pop_set_fns((__int64)v4, *(_QWORD *)(a1 + 16), *(_QWORD *)(a1 + 24), *(_QWORD *)(a1 + 32), *(_QWORD *)(a1 + 40));
       v9 = (void **)gene_copy(**(_QWORD **)a1);
-      if ( v9 )
+      if (v9)
       {
-        if ( (unsigned int)pop_insert((__int64)v4, (__int64)v9) )
+        if ((unsigned int)pop_insert((__int64)v4, (__int64)v9))
         {
-          for ( i = 1; *(_DWORD *)(a1 + 8) > i; ++i )
+          for (i = 1; *(_DWORD *)(a1 + 8) > i; ++i)
           {
             v7 = pop_proportionate_select((__int64 *)a1);
             v6 = pop_proportionate_select((__int64 *)a1);
-            if ( !v7 || !v6 )
+            if (!v7 || !v6)
             {
               pop_free(v4);
               return 0LL;
             }
-            LODWORD(v2) = (*(int (__fastcall **)(__int64, __int64))(a1 + 32))(v7, v6);
+            LODWORD(v2) = (*(int(__fastcall **)(__int64, __int64))(a1 + 32))(v7, v6);
             v9 = v2;
-            if ( !v2 )
+            if (!v2)
             {
               pop_free(v4);
               return 0LL;
             }
-            if ( rand() % 100 <= 4 )
+            if (rand() % 100 <= 4)
             {
-              LODWORD(v3) = (*(int (__fastcall **)(void **))(a1 + 24))(v9);
+              LODWORD(v3) = (*(int(__fastcall **)(void **))(a1 + 24))(v9);
               v5 = v3;
-              if ( !v3 )
+              if (!v3)
               {
                 pop_free(v4);
                 return 0LL;
@@ -1038,7 +1034,7 @@ void *__fastcall pop_reproduce(__int64 a1)
               gene_free(v9);
               v9 = v5;
             }
-            if ( !(unsigned int)pop_insert((__int64)v4, (__int64)v9) )
+            if (!(unsigned int)pop_insert((__int64)v4, (__int64)v9))
             {
               pop_free(v4);
               return 0LL;
@@ -1074,10 +1070,10 @@ void *__fastcall pop_reproduce(__int64 a1)
 size_t __fastcall pop_print_fittest(__int64 **a1)
 {
   size_t result; // rax@2
-  __int64 *v2; // [sp+18h] [bp-8h]@1
+  __int64 *v2;   // [sp+18h] [bp-8h]@1
 
   v2 = *a1;
-  if ( *a1 )
+  if (*a1)
   {
     fprintf(stdout, "Gen:%4d ", (unsigned int)gen_2205);
     gene_print(*v2);
@@ -1096,9 +1092,9 @@ size_t __fastcall pop_print_fittest(__int64 **a1)
 void __fastcall pop_free(void *a1)
 {
   __int64 v1; // ST10_8@2
-  __int64 i; // [sp+18h] [bp-8h]@1
+  __int64 i;  // [sp+18h] [bp-8h]@1
 
-  for ( i = *(_QWORD *)a1; i; i = v1 )
+  for (i = *(_QWORD *)a1; i; i = v1)
   {
     v1 = *(_QWORD *)(i + 8);
     pop_node_free((void ***)i);
@@ -1110,30 +1106,30 @@ void __fastcall pop_free(void *a1)
 _QWORD *__fastcall pop_run(__int64 a1, int a2, unsigned int a3, int a4, __int64 a5, double a6)
 {
   _QWORD *result; // rax@2
-  __int64 v7; // [sp+0h] [bp-30h]@1
-  int v8; // [sp+Ch] [bp-24h]@1
-  _QWORD *v9; // [sp+18h] [bp-18h]@1
-  __int64 **v10; // [sp+18h] [bp-18h]@4
-  _QWORD *v11; // [sp+20h] [bp-10h]@6
-  int i; // [sp+2Ch] [bp-4h]@3
+  __int64 v7;     // [sp+0h] [bp-30h]@1
+  int v8;         // [sp+Ch] [bp-24h]@1
+  _QWORD *v9;     // [sp+18h] [bp-18h]@1
+  __int64 **v10;  // [sp+18h] [bp-18h]@4
+  _QWORD *v11;    // [sp+20h] [bp-10h]@6
+  int i;          // [sp+2Ch] [bp-4h]@3
 
   v9 = (_QWORD *)a1;
   v8 = a4;
   v7 = a5;
-  if ( (unsigned int)pop_create_rand_pop(a1, a2, a3) )
+  if ((unsigned int)pop_create_rand_pop(a1, a2, a3))
   {
-    for ( i = 0; i < v8; ++i )
+    for (i = 0; i < v8; ++i)
     {
       pop_evaluate((__int64)v9, v7, a6);
       v10 = (__int64 **)pop_sort(v9);
-      if ( !v10 )
+      if (!v10)
       {
         puts("pop_sort failed");
         return 0LL;
       }
       pop_print_fittest(v10);
       v11 = pop_reproduce((__int64)v10);
-      if ( !v11 )
+      if (!v11)
       {
         puts("pop_reproduce failed");
         return 0LL;
@@ -1161,7 +1157,7 @@ void __fastcall pop_node_free(void ***a1)
 //----- (0000000000402956) ----------------------------------------------------
 __int64 *__fastcall pop_swap_gene(__int64 *a1, __int64 *a2)
 {
-  __int64 v2; // ST18_8@1
+  __int64 v2;      // ST18_8@1
   __int64 *result; // rax@1
 
   v2 = *a1;
@@ -1175,10 +1171,10 @@ __int64 *__fastcall pop_swap_gene(__int64 *a1, __int64 *a2)
 __int64 __fastcall pop_display(__int64 *a1)
 {
   __int64 result; // rax@1
-  __int64 i; // [sp+18h] [bp-8h]@1
+  __int64 i;      // [sp+18h] [bp-8h]@1
 
   result = *a1;
-  for ( i = *a1; i; i = *(_QWORD *)(i + 8) )
+  for (i = *a1; i; i = *(_QWORD *)(i + 8))
   {
     gene_print(*(_QWORD *)i);
     result = *(_QWORD *)(i + 8);
@@ -1189,19 +1185,19 @@ __int64 __fastcall pop_display(__int64 *a1)
 //----- (00000000004029D0) ----------------------------------------------------
 void __fastcall _libc_csu_init(unsigned int a1, __int64 a2, __int64 a3)
 {
-  __int64 v3; // r13@1
-  __int64 v4; // rbx@1
+  __int64 v3;        // r13@1
+  __int64 v4;        // rbx@1
   signed __int64 v5; // rbp@1
 
   v3 = a3;
   v4 = 0LL;
   v5 = &_do_global_dtors_aux_fini_array_entry - _frame_dummy_init_array_entry;
   init_proc();
-  if ( v5 )
+  if (v5)
   {
     do
-      ((void (__fastcall *)(_QWORD, __int64, __int64))_frame_dummy_init_array_entry[v4++])(a1, a2, v3);
-    while ( v4 != v5 );
+      ((void(__fastcall *)(_QWORD, __int64, __int64))_frame_dummy_init_array_entry[v4++])(a1, a2, v3);
+    while (v4 != v5);
   }
 }
 // 603E00: using guessed type __int64 (__fastcall *_frame_dummy_init_array_entry[2])();

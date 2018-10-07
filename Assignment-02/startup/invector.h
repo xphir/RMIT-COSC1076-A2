@@ -49,8 +49,11 @@ typedef struct invector_table
 void invector_init(InVTable *invt);
 
 /* TO DO - other functions as appropriate */
+Boolean invector_load(InVTable *invt, char *inputFile);
+Boolean invector_add(InVTable *invt, char *inputString);
+
 int invector_get_width(InVTable *invt);
 int invector_get_num_invector(InVTable *invt);
-int * invector_get_table_row(InVTable *invt, int allele);
+int *invector_get_table_row(InVTable *invt, int allele);
 
 #endif
