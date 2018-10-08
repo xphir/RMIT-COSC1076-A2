@@ -41,8 +41,28 @@ void pop_set_fns(Pop_list *p, CreateFn cf, MutateFn mf, CrossOverFn cof, EvalFn 
 	p->evaluate_fn = ef;
 }
 
-/* Print the pop list */
+/* Print the fittest pop */
 void pop_print_fittest(Pop_list *pList)
+{
+	if (pList != NULL)
+	{
+		Pop_node *node = pList->head;
+		/* Go throught each node */
+		if (node != NULL)
+		{
+			fprintf(stdout, "Gen:%4d ", generation);
+			gene_print(node->gene);
+		}
+		generation++;
+	}
+	else
+	{
+		fwrite("pop_print_fittest: pop is empty\n", 1, 32, stderr);
+	}
+}
+
+/* Print the pop list */
+void pop_print_all(Pop_list *pList)
 {
 	if (pList != NULL)
 	{
@@ -59,7 +79,7 @@ void pop_print_fittest(Pop_list *pList)
 	}
 	else
 	{
-		fwrite("pop_print_fittest: pop is empty\n", 1, 32, stderr);
+		fwrite("pop_print_all: pop is empty\n", 1, 32, stderr);
 	}
 }
 

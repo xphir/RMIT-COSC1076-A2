@@ -1,6 +1,6 @@
 ########################################################################
-# Student name: 	...
-# Student number: 	...
+# Student name: 	Elliot Schot
+# Student number: 	S3530160
 # Course: 			Advanced Programming Techniques - S2 2018
 ########################################################################
 CC = gcc

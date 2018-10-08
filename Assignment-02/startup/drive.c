@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -154,23 +154,14 @@ int main(int argc, char *argv[])
 	/* The only point at which srand should be called */
 	srand(SRAND_SEED);
 
-/* Called on -DDEBUG make */
+	/* Called on -DDEBUG make */
 	#ifdef DEBUG
 		test_minfn();
 		test_pcbmill();
 		return EXIT_SUCCESS;
 	#endif
-	/*
-	argc = 6;
-	argv[geneType] = CMD_ARG_PCBMILL;
-	argv[alleleSize] = "12";
-	argv[popSize] = "10";
-	argv[numGen] = "20";
-	argv[inputFile] = "pcbin.dat";
-	argv[outputFile] = "output.txt";*/
-	
 
-	fprintf(stdout, "argc: %d | argv[geneType]: %s | argv[alleleSize]: %s | argv[popSize]: %s | argv[numGen]: %s | argv[inputFile]: %s | argv[outputFile]: %s\n", argc, argv[geneType], argv[alleleSize], argv[popSize], argv[numGen], argv[inputFile], argv[outputFile]);
+	/* fprintf(stdout, "argc: %d | argv[geneType]: %s | argv[alleleSize]: %s | argv[popSize]: %s | argv[numGen]: %s | argv[inputFile]: %s | argv[outputFile]: %s\n", argc, argv[geneType], argv[alleleSize], argv[popSize], argv[numGen], argv[inputFile], argv[outputFile]); */
 	
 	/* Check if there is the correct number of arguments */
 	if (argc < CMD_ARG_MIN || argc > CMD_ARG_MAX)
@@ -196,7 +187,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	invector_print(&inputVectorTable);
+	/* invector_print(&inputVectorTable); */
 
 	/* Get 2nd argument */
 	localAlleleSize = strtol(argv[alleleSize], &endptr, DECIMAL);

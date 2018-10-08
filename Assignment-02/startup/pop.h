@@ -31,6 +31,8 @@ typedef struct pop_list {
 	EvalFn evaluate_fn;
 } Pop_list;
 
+int generation;
+
 /* Create and initialise the population list to a safe state.
  * Returns TRUE on success */
 Boolean pop_init(Pop_list **);
@@ -44,8 +46,8 @@ void pop_set_fns(Pop_list *p,CreateFn cf,MutateFn mf,CrossOverFn cof,EvalFn ef);
  * This function must not be able to access any generation value outside
  * of the function. */
 void pop_print_fittest(Pop_list *pList);
+void pop_print_all(Pop_list *pList);
 
-int generation;
 
 /* TO DO - other functions as appropriate */
 void pop_free(Pop_list *pList);
