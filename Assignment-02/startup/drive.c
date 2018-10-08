@@ -197,9 +197,9 @@ int main(int argc, char *argv[])
 	}
 
 	invector_print(&inputVectorTable);
-	
+
 	/* Get 2nd argument */
-	localAlleleSize = strtol(argv[alleleSize], &endptr, 10);
+	localAlleleSize = strtol(argv[alleleSize], &endptr, DECIMAL);
 
 	/* Invalid integer argument */
 	if (argv[alleleSize] == endptr || *endptr || localAlleleSize <= 0)
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 	if (!strncmp(argv[geneType], CMD_ARG_MINFN, 6))
 	{
 		/* minfn was selected */
-		inputVectorWidth = invector_get_width(&inputVectorTable);
+		inputVectorWidth = inputVectorTable.width;
 
 		/* Check minfn width*/
 		if (inputVectorWidth - 1 != localAlleleSize)
@@ -223,7 +223,7 @@ int main(int argc, char *argv[])
 			return EXIT_FAILURE;
 		}
 		/* Check minfn width*/
-		if (invector_get_num_invector(&inputVectorTable) != 1)
+		if (inputVectorTable.tot != 1)
 		{
 			fwrite("too many input vectors for minfn data file\n", 1, 43, stderr);
 			pop_free(pList);
@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
 	else if (!strncmp(argv[geneType], CMD_ARG_PCBMILL, 8))
 	{
 		/* pcbmill was selected */
-		inputVectorNumber = invector_get_num_invector(&inputVectorTable);
+		inputVectorNumber = inputVectorTable.tot;
 
 		/* Check pcbmill width*/
 		if (inputVectorNumber != localAlleleSize)
@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Get 3rd argument popSize */
-	localPopSize = strtol(argv[popSize], &endptr, 10);
+	localPopSize = strtol(argv[popSize], &endptr, DECIMAL);
 
 	if (argv[popSize] == endptr || *endptr || localPopSize <= 1)
 	{
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Get 4th argument numGen */
-	localNumGen = strtol(argv[numGen], &endptr, 10);
+	localNumGen = strtol(argv[numGen], &endptr, DECIMAL);
 
 	if (argv[numGen] == endptr || *endptr || localNumGen < 0)
 	{

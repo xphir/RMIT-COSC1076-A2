@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -51,10 +51,6 @@ void invector_init(InVTable *invt);
 /* TO DO - other functions as appropriate */
 Boolean invector_load(InVTable *invt, char *inputFile);
 Boolean invector_add(InVTable *invt, char *inputString);
-
-int invector_get_width(InVTable *invt);
-int invector_get_num_invector(InVTable *invt);
-int *invector_get_table_row(InVTable *invt, int allele);
 void invector_print(InVTable *invt);
 
 #endif

@@ -21,6 +21,8 @@
 /* The minimum number of command line arguments expected */
 #define CMD_ARG_MIN 6
 
+#define DECIMAL 10
+
 /* The number of alleles for use in the two test functions 
  * test_pcbmill() and test_minfn() */
 #define TEST_ALLELE_LEN 6

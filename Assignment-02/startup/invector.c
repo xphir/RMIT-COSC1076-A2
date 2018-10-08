@@ -1,11 +1,12 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
 #include "invector.h"
 
+/* Initialise the programs invtable */
 void invector_init(InVTable *invt)
 {
 	invt->tot = 0;
@@ -13,48 +14,37 @@ void invector_init(InVTable *invt)
 	return;
 }
 
-int invector_get_width(InVTable *invt)
-{
-	return invt->width;
-}
-
-int invector_get_num_invector(InVTable *invt)
-{
-	return invt->tot;
-}
-
-int *invector_get_table_row(InVTable *invt, int allele)
-{
-	return invt->table[allele];
-}
-
+/* Load in the input vector information */
 Boolean invector_load(InVTable *invt, char *inputFile)
 {
 
 	Boolean result;
-	InVTable *localinvt;
-	char s[88];
+	char s[INV_LEN + EXTRA_SPACES];
 	FILE *stream;
-	localinvt = invt;
+	/* read the input file */
 	stream = fopen(inputFile, "r");
 	if (stream)
-	{
-		while (fgets(s, 82, stream))
+	{	
+		/* loop read the input file line by line with fgets */
+		while (fgets(s, INV_LEN + EXTRA_SPACES, stream))
 		{
+			/* Check if the line "s" is the correct length */
 			if (s[strlen(s) - 1] != 10)
 			{
 				fwrite("Error: invector line too long\n", 1, 30, stderr);
 				fclose(stream);
 				return FALSE;
 			}
-			if (!invector_add(localinvt, s))
+			/* Create the invector for this line */
+			if (!invector_add(invt, s))
 			{
 				fclose(stream);
 				return FALSE;
 			}
 		}
 		fclose(stream);
-		if (localinvt->tot > 0)
+		/* if tot-> 0 then invector has been loaded */
+		if (invt->tot > 0)
 		{
 			result = TRUE;
 		}
@@ -72,6 +62,7 @@ Boolean invector_load(InVTable *invt, char *inputFile)
 	return result;
 }
 
+/* Add a value to the invector table */
 Boolean invector_add(InVTable *invt, char *inputString)
 {
 	char *endptr;
@@ -87,6 +78,7 @@ Boolean invector_add(InVTable *invt, char *inputString)
 		fwrite("Error: invector table full\n", 1, 27, stderr);
 		return FALSE;
 	}
+
 	dest = (char *)malloc(strlen(inputString) + 1);
 	/* Filter out invalid invector values */
 	if (dest == NULL)
@@ -100,6 +92,8 @@ Boolean invector_add(InVTable *invt, char *inputString)
 		free(dest);
 		return FALSE;
 	}
+
+	/* check the INV_DELIM1 value */
 	stringToken = strtok(dest, INV_DELIM1);
 	if (!stringToken)
 	{
@@ -113,6 +107,8 @@ Boolean invector_add(InVTable *invt, char *inputString)
 		free(dest);
 		return FALSE;
 	}
+
+	/* check the INV_DELIM2 value */
 	stringToken = strtok(NULL, INV_DELIM2);
 	if (!stringToken)
 	{
@@ -120,7 +116,9 @@ Boolean invector_add(InVTable *invt, char *inputString)
 		free(dest);
 		return FALSE;
 	}
-	invtValue = strtol(stringToken, &endptr, 10);
+
+	/* check the invtValue value is correct */
+	invtValue = strtol(stringToken, &endptr, DECIMAL);
 	if (*endptr)
 	{
 		fwrite("Error: invector string invalid\n", 1, 31, stderr);
@@ -135,20 +133,24 @@ Boolean invector_add(InVTable *invt, char *inputString)
 	}
 	while (TRUE)
 	{
+		/* Start working on the invector values */
 		stringToken = strtok(NULL, INV_DELIM3);
+		/* break the loop when it reaches the end of the invector eg INV_DELIM3 */
 		if (stringToken == NULL)
 		{
 			break;
 		}
 		if (newLine[0] != *stringToken)
 		{
+			/* Check the invector width is correct */
 			if (widthCount == INVT_WIDTH)
 			{
 				fwrite("Error: invector string invalid\n", 1, 31, stderr);
 				free(dest);
 				return FALSE;
 			}
-			invt->table[invtValue][widthCount] = strtol(stringToken, &endptr, 10);
+			/* Add the value from the file into the system */
+			invt->table[invtValue][widthCount] = strtol(stringToken, &endptr, DECIMAL);
 			widthCount++;
 			if (*endptr)
 			{
@@ -158,13 +160,16 @@ Boolean invector_add(InVTable *invt, char *inputString)
 			}
 		}
 	}
-	if (!widthCount)
+	/* Check width count */
+	if (widthCount == 0 )
 	{
 		fwrite("Error: invector string invalid\n", 1, 31, stderr);
 		free(dest);
 		return FALSE;
 	}
+	/* Add 1 to total invectors */
 	invt->tot++;
+	/* Check if invt->width has been used yet (-1 means initialised) */
 	if (invt->width == -1)
 	{
 		invt->width = widthCount;
@@ -179,11 +184,7 @@ Boolean invector_add(InVTable *invt, char *inputString)
 	return TRUE;
 }
 
-int invector_get_table_pos(InVTable *invt, int a2, int a3)
-{
-	return invt->table[a3][a2];
-}
-
+/* Print the programs invtable */
 void invector_print(InVTable *invt)
 {
 	int i, j;
