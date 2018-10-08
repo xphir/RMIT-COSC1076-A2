@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -82,13 +82,11 @@ double gene_get_fitness(Gene *gene);
 
 /* The following function should be the only code for printing out
  * a gene, either to file or to standard output */
-void gene_print(Gene*);
-Gene *gene_copy(Gene *g);
-int * gene_get_chrom(Gene *gene);
 double pcbmill_distance(int *tableRow1, int *tableRow2);
-int gene_get_num_alleles(Gene *g);
-void gene_swap_alleles(int *alleles, int allele1, int allele2);
+
+Gene *gene_copy(Gene *g);
 Boolean gene_chrom_contains(Gene *g, int index, int value);
+void gene_swap_alleles(int *alleles, int allele1, int allele2);
+void gene_print(Gene*);
 
 #endif
-

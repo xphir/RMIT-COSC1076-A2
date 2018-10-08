@@ -1,6 +1,6 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
@@ -188,7 +188,7 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 		/* Fill raw and fitness at 0  */
 		new_gene->raw_score = 0;
 		new_gene->fitness = 0;
-		
+
 		#ifdef DEBUG
 			fprintf(stdout, "index %d\n", randomInt);
 		#endif
@@ -196,6 +196,7 @@ Gene *crossover_minfn(Gene *g1, Gene *g2)
 	return new_gene;
 }
 
+/* evaluate PCBMILL - see specs for more info */
 double eval_pcbmill(InVTable *invt, Gene *gene)
 {
 	int *tableRow1;
@@ -205,20 +206,24 @@ double eval_pcbmill(InVTable *invt, Gene *gene)
 	int i;
 
 	totalRawScore = 0.0;
-	numAlleles = gene_get_num_alleles(gene);
+	numAlleles = gene->num_alleles;
+	/* calculate the distance between each allele */
 	for (i = 0; numAlleles - 1 > i; ++i)
 	{
-		tableRow1 = invector_get_table_row(invt, gene->chromosome[i]);
-		tableRow2 = invector_get_table_row(invt, gene->chromosome[i + 1]);
+		tableRow1 = invt->table[gene->chromosome[i]];
+		tableRow2 = invt->table[gene->chromosome[i+1]];
 		totalRawScore = pcbmill_distance(tableRow1, tableRow2) + totalRawScore;
 	}
+	/* return the combined total distance */
 	return totalRawScore;
 }
 
+/* evaluate MINFN - see specs for more info */
 double eval_minfn(InVTable *invt, Gene *gene)
 {
 	double totalRawScore;
 	int i;
+
 	totalRawScore = 0;
 	for (i = 0; i < invt->tot; i++)
 	{
@@ -227,22 +232,27 @@ double eval_minfn(InVTable *invt, Gene *gene)
 		double rawScore;
 
 		rawScore = 0;
+		/* calculate the rawScore */
 		for (j = 0; j < gene->num_alleles; j++)
 		{
 			rawScore += vector[j] * gene->chromosome[j];
 		}
+		/* minius the last vector value */
 		rawScore -= vector[gene->num_alleles];
+		/* make rawscore positive */
 		totalRawScore += fabs(rawScore);
 	}
 	return totalRawScore;
 }
 
+/* Create a random gene */
 Gene *gene_create_rand_gene(int numAlleles, CreateFn create_chrom)
 {
 	Gene *new_gene = malloc(sizeof(*new_gene));
 
 	if (new_gene != NULL)
 	{
+		/* create the gene default values */
 		new_gene->chromosome = create_chrom(numAlleles);
 		new_gene->num_alleles = numAlleles;
 		new_gene->raw_score = 0;
@@ -255,28 +265,33 @@ Gene *gene_create_rand_gene(int numAlleles, CreateFn create_chrom)
 	return new_gene;
 }
 
+/* Self-explanatory */
 void gene_calc_fitness(Gene *gene, EvalFn evaluate_fn, InVTable *invTab)
 {
 	gene->raw_score = evaluate_fn(invTab, gene);
 	gene->fitness = gene_get_fitness(gene);
 }
 
+/* Self-explanatory */
 void gene_normalise_fitness(Gene *gene, double total_fitness)
 {
 	gene->fitness /= total_fitness;
 }
 
+/* Self-explanatory */
 void gene_free(Gene *gene)
 {
 	free(gene->chromosome);
 	free(gene);
 }
 
+/* Self-explanatory */
 double gene_get_fitness(Gene *gene)
 {
 	return 1 / (gene->raw_score + 1);
 }
 
+/* Print the genes values */
 void gene_print(Gene *gene)
 {
 	int i;
@@ -294,6 +309,7 @@ void gene_print(Gene *gene)
 	return;
 }
 
+/* The PCBMILL calcuation function - see PCBMILL specs for more info */
 double pcbmill_distance(int *tableRow1, int *tableRow2)
 {
 	int calcY;
@@ -305,6 +321,7 @@ double pcbmill_distance(int *tableRow1, int *tableRow2)
 	return result;
 }
 
+/* Copy a gene to a new gene with a different memory address */
 Gene *gene_copy(Gene *g)
 {
 	int *chromosome;
@@ -318,7 +335,7 @@ Gene *gene_copy(Gene *g)
 			new_gene->chromosome = chromosome;
 			new_gene->num_alleles = g->num_alleles;
 			new_gene->fitness = new_gene->raw_score = 0;
-			/* Copy Values */
+			/* Copy values from g */
 			memcpy(new_gene->chromosome, g->chromosome, g->num_alleles * sizeof(int));
 		}
 	}
@@ -330,30 +347,22 @@ Gene *gene_copy(Gene *g)
 	return new_gene;
 }
 
-int *gene_get_chrom(Gene *g)
+/* Swap the values in the chromosone  */
+void gene_swap_alleles(int *chromosome, int allele1, int allele2)
 {
-	return g->chromosome;
-}
+	int av1;
+	int av2;
 
-int gene_get_num_alleles(Gene *g)
-{
-	return g->num_alleles;
-}
+	av1 = chromosome[allele1];
+	av2 = chromosome[allele2];
 
-void gene_swap_alleles(int *alleles, int allele1, int allele2)
-{
-	int alleleValue1;
-	int alleleValue2;
-
-	alleleValue1 = alleles[allele1];
-	alleleValue2 = alleles[allele2];
-
-	alleles[allele1] = alleleValue2;
-	alleles[allele2] = alleleValue1;
+	chromosome[allele1] = av2;
+	chromosome[allele2] = av1;
 
 	return;
 }
 
+/* Check if a gene contains a specific value less than index */
 Boolean gene_chrom_contains(Gene *g, int index, int value)
 {
 	int i;
