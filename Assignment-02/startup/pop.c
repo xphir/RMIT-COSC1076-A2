@@ -1,11 +1,12 @@
 /******************************************************************************
-** Student name: 	...
-** Student number: 	...
+** Student name: 	Elliot Schot
+** Student number: 	S3530160
 ** Course: 			Advanced Programming Techniques - S2 2018
 ******************************************************************************/
 
 #include "pop.h"
 
+/* Initialise pop_list*/
 Boolean pop_init(Pop_list **pop)
 {
 	Boolean result;
@@ -31,6 +32,7 @@ Boolean pop_init(Pop_list **pop)
 	return result;
 }
 
+/* Set pop_list pointers */
 void pop_set_fns(Pop_list *p, CreateFn cf, MutateFn mf, CrossOverFn cof, EvalFn ef)
 {
 	p->create_rand_chrom = cf;
@@ -39,18 +41,17 @@ void pop_set_fns(Pop_list *p, CreateFn cf, MutateFn mf, CrossOverFn cof, EvalFn 
 	p->evaluate_fn = ef;
 }
 
-/* TO DO - other functions as appropriate */
+/* Print the pop list */
 void pop_print_fittest(Pop_list *pList)
 {
 	if (pList != NULL)
 	{
-		double totalFitness = 0;
 		Pop_node *node = pList->head;
+		/* Go throught each node */
 		while (node != NULL)
 		{
 			fprintf(stdout, "Gen:%4d ", generation);
 			gene_print(node->gene);
-			totalFitness += node->gene->fitness;
 			node = node->next;
 		}
 		fprintf(stdout, "\n");
@@ -62,6 +63,7 @@ void pop_print_fittest(Pop_list *pList)
 	}
 }
 
+/* Add a new pop to pop_list */
 Boolean pop_insert(Pop_list *pList, Gene *gene)
 {
 	Boolean result;
@@ -84,6 +86,7 @@ Boolean pop_insert(Pop_list *pList, Gene *gene)
 	return result;
 }
 
+/* Free the malloc Pop_list */
 void pop_free(Pop_list *pList)
 {
 	Pop_node *node = pList->head;
@@ -96,51 +99,60 @@ void pop_free(Pop_list *pList)
 	free(pList);
 }
 
+/* Free the malloc Pop_node */
 void pop_node_free(Pop_node *node)
 {
 	gene_free(node->gene);
 	free(node);
 }
 
+/* Evolution of the population */
 Pop_list *pop_run(Pop_list *pList, int popSize, int numAlleles, int numGen, InVTable *invt)
 {
-	Pop_list *pListResult;
-	Pop_list *pListNew;
-	Pop_list *pListChild;
-	int i;
-	pListNew = pList;
-	if (pop_create_rand_pop(pList, popSize, numAlleles) != FALSE)
-	{
-		for (i = 0; i < numGen; ++i)
-		{
-
-			pop_evaluate(pListNew, invt);
-			pop_sort(pListNew->head);
-			if (!pListNew)
-			{
-				puts("pop_sort failed");
-				return NULL;
-			}
-			pop_print_fittest(pListNew);
-			pListChild = pop_reproduce(pListNew);
-			if (!pListChild)
-			{
-				puts("pop_reproduce failed");
-				return NULL;
-			}
-			pop_free(pListNew);
-			pListNew = pListChild;
-		}
-		pListResult = pListNew;
-	}
-	else
-	{
-		puts("pop_create_rand_pop failed");
-		pListResult = NULL;
-	}
-	return pListResult;
+    Pop_list *pListResult;
+    Pop_list *pListNew;
+    Pop_list *pListChild;
+    int i;
+    pListNew = pList;
+    if (pop_create_rand_pop(pList, popSize, numAlleles) != FALSE)
+    {
+        for (i = 0; i < numGen; ++i)
+        {
+			/* evaluate + normalise pListNew */
+            pop_evaluate(pListNew, invt);
+			/* sort pListNew */
+            pop_sort(pListNew->head);
+            if (!pListNew)
+            {
+                fwrite("pop_sort failed\n", 1, 16, stderr);
+                return NULL;
+            }
+			/* print pListNew */
+            pop_print_fittest(pListNew);
+			/* reproduct pListNew */
+            pListChild = pop_reproduce(pListNew);
+            if (!pListChild)
+            {
+                fwrite("pop_reproduce failed\n", 1, 21, stderr);
+                return NULL;
+            }
+			/* free pListNew */
+            pop_free(pListNew);
+			/* set pListChild as pListNew for the next loop */
+            pListNew = pListChild;
+        }
+        pListResult = pListNew;
+    }
+    else
+    {
+        fwrite("pop_create_rand_pop failed\n", 1, 27, stderr);
+        pListResult = NULL;
+    }
+	/* pListResult is freed on return */
+    return pListResult;
 }
 
+/* Create a random pop */
 Boolean pop_create_rand_pop(Pop_list *pList, int popSize, int numAlleles)
 {
 	Gene *randomGene;
@@ -159,6 +171,7 @@ Boolean pop_create_rand_pop(Pop_list *pList, int popSize, int numAlleles)
 	return TRUE;
 }
 
+/* Swaps two nodes around */
 void swap_node(Pop_node *a, Pop_node *b)
 {
 	Gene *tempGene = a->gene;
@@ -166,6 +179,7 @@ void swap_node(Pop_node *a, Pop_node *b)
 	b->gene = tempGene;
 }
 
+/* Simple buble sort on the genes */
 void pop_sort(Pop_node *start)
 {
 	Boolean swapped;
@@ -185,6 +199,7 @@ void pop_sort(Pop_node *start)
 		{
 			if (ptr1->gene->fitness < ptr1->next->gene->fitness)
 			{
+				/* Swap the nodes for the sort */
 				swap_node(ptr1, ptr1->next);
 				swapped = TRUE;
 			}
@@ -194,6 +209,7 @@ void pop_sort(Pop_node *start)
 	} while (swapped);
 }
 
+/* evaluate the genes in the Pop_list */
 void pop_evaluate(Pop_list *pList, InVTable *invt)
 {
 	Pop_node *node;
@@ -201,6 +217,7 @@ void pop_evaluate(Pop_list *pList, InVTable *invt)
 
 	totalFitness = 0;
 	node = pList->head;
+	/* evaluate the genes */
 	while (node != NULL)
 	{
 		gene_calc_fitness(node->gene, pList->evaluate_fn, invt);
@@ -208,6 +225,8 @@ void pop_evaluate(Pop_list *pList, InVTable *invt)
 		node = node->next;
 	}
 	node = pList->head;
+
+	/* normalise the genes */
 	while (node != NULL)
 	{
 		gene_normalise_fitness(node->gene, totalFitness);
@@ -215,6 +234,7 @@ void pop_evaluate(Pop_list *pList, InVTable *invt)
 	}
 }
 
+/* Product a child Pop_list from an adult Pop_list */
 Pop_list *pop_reproduce(Pop_list *pList)
 {
 	Pop_list *resultList;
@@ -226,43 +246,42 @@ Pop_list *pop_reproduce(Pop_list *pList)
 	Gene *newGene;
 	int i;
 
-	if (pList)
+	if (pList != NULL)
 	{
-		if (pop_init(&pListChild))
+		/* Create the pListChild and set the correct pointer values */
+		if (pop_init(&pListChild) == TRUE)
 		{
 			pop_set_fns(pListChild, pList->create_rand_chrom, pList->mutate_gene, pList->crossover_genes, pList->evaluate_fn);
 			newGene = gene_copy(pList->head->gene);
 
-			if (newGene)
+			if (newGene != NULL)
 			{
-				if (pop_insert(pListChild, newGene))
+				if (pop_insert(pListChild, newGene) == TRUE)
 				{
+					/* Create the child genes */
 					for (i = 1; pList->count > i; ++i)
 					{
+						/* Select 2 genes to reproduce - pop_proportionate_select makes it more likely to be higher fitness genes */
 						g2 = pop_proportionate_select(pList);
 						g1 = pop_proportionate_select(pList);
-						if (g2 == NULL)
-						{
-						}
-						if (g1 == NULL)
-						{
-						}
 						if (g2 == NULL || g1 == NULL)
 						{
 							pop_free(pListChild);
 							return NULL;
 						}
+						/* Reproduce the two select genes to make a child gene */
 						crossoverGene = pList->crossover_genes(g2, g1);
 						newGene = crossoverGene;
-						if (!crossoverGene)
+						if (crossoverGene == NULL)
 						{
 							pop_free(pListChild);
 							return NULL;
 						}
+						/* Check if the child gene is going have a mutation */
 						if (rand() % 100 < MUTATE_RATE)
 						{
 							mutateGene = pList->mutate_gene(newGene);
-							if (!mutateGene)
+							if (mutateGene == NULL)
 							{
 								pop_free(pListChild);
 								return NULL;
@@ -270,7 +289,8 @@ Pop_list *pop_reproduce(Pop_list *pList)
 							gene_free(newGene);
 							newGene = mutateGene;
 						}
-						if (!pop_insert(pListChild, newGene))
+						/* Add the new child gene to the child Pop_list */
+						if (pop_insert(pListChild, newGene) == FALSE)
 						{
 							pop_free(pListChild);
 							return NULL;
@@ -302,6 +322,7 @@ Pop_list *pop_reproduce(Pop_list *pList)
 	return resultList;
 }
 
+/* Select a population node for reproduction */
 Gene *pop_proportionate_select(Pop_list *pList)
 {
 	double randomNum;
@@ -309,15 +330,19 @@ Gene *pop_proportionate_select(Pop_list *pList)
 	if (pList != NULL)
 	{
 		Pop_node *node = pList->head;
+		/* Get a random double between 0 and 1 */
 		randomNum = (double)(rand() % 1000) / 1000.0;
 		count = 0.0;
 		while (node != NULL)
 		{
+			/* add the normalised fitness to count */
 			count += node->gene->fitness;
+			/* if this gene's normalised fitness makes count > than randomNum then return said gene */
 			if (count > randomNum)
 			{
 				return node->gene;
 			}
+			/* if not then go to the next node */
 			node = node->next;
 		}
 	}

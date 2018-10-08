@@ -288,8 +288,8 @@ int main(int argc, char *argv[])
 	{
 		/* Get 6th argument */
 		pList = pop_run(pList, localPopSize, localAlleleSize, localNumGen, &inputVectorTable);
-		if (pList)
-		{;
+		if (pList != NULL)
+		{
 			pop_free(pList);
 			if (stream != NULL)
 			{
@@ -299,7 +299,6 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			/* pop_free(NULL); */
 			return EXIT_FAILURE;
 		}
 	}
