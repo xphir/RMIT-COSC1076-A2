@@ -28,11 +28,11 @@ PCBTEST2: ARGS += pcbmill 12 20 50 pcbin.dat
 PCBTEST2: VALOPS += --track-origins=yes
 PCBTEST2: TEST
 
-MINTEST1: ARGS += minfn 4 20 50 minfnin.dat Requirement11a.txt
+MINTEST1: ARGS += minfn 4 20 50 minfnin.dat
 MINTEST1: VALOPS += --leak-check=full --show-reachable=yes
 MINTEST1: TEST
 
-MINTEST2: ARGS += minfn 4 20 50 minfnin.dat Requirement11b.txt
+MINTEST2: ARGS += minfn 4 20 50 minfnin.dat
 MINTEST2: VALOPS += --track-origins=yes
 MINTEST2: TEST
 

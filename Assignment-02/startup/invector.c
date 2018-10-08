@@ -30,11 +30,11 @@ int *invector_get_table_row(InVTable *invt, int allele)
 
 Boolean invector_load(InVTable *invt, char *inputFile)
 {
+
 	Boolean result;
 	InVTable *localinvt;
 	char s[88];
 	FILE *stream;
-
 	localinvt = invt;
 	stream = fopen(inputFile, "r");
 	if (stream)
@@ -182,4 +182,23 @@ Boolean invector_add(InVTable *invt, char *inputString)
 int invector_get_table_pos(InVTable *invt, int a2, int a3)
 {
 	return invt->table[a3][a2];
+}
+
+void invector_print(InVTable *invt)
+{
+	int i, j;
+	fprintf(stdout, "Invector Print:\n");
+	for (i = 0; i < invt->tot; i++)
+	{
+		fprintf(stdout, "InputVector:%d(", i);
+		for (j = 0; j < invt->width; j++)
+		{
+			fprintf(stdout, "%d", invt->table[i][j]);
+			if (j < invt->width - 1)
+			{
+				fprintf(stdout, ",");
+			}
+		}
+		fprintf(stdout, ")\n");
+	}
 }

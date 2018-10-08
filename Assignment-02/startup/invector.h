@@ -55,5 +55,6 @@ Boolean invector_add(InVTable *invt, char *inputString);
 int invector_get_width(InVTable *invt);
 int invector_get_num_invector(InVTable *invt);
 int *invector_get_table_row(InVTable *invt, int allele);
+void invector_print(InVTable *invt);
 
 #endif

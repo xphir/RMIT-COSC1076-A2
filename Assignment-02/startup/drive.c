@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 	int localNumGen;
 	int localPopSize;
 	int localAlleleSize;
-	InVTable *inputVectorTable;
+	InVTable inputVectorTable;
 	Pop_list *pList;
 	char *endptr;
 	FILE *stream;
@@ -196,6 +196,8 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	invector_print(&inputVectorTable);
+	
 	/* Get 2nd argument */
 	localAlleleSize = strtol(argv[alleleSize], &endptr, 10);
 

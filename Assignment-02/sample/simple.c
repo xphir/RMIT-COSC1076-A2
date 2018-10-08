@@ -1,24 +1,20 @@
-void pop_print_fittest(Pop_list *pList)
+int *create_minfn_chrom(int numAlleles)
 {
-    Gene *result;
-    double randomNum;
-    double count;
-	if (pList != NULL)
+	int *resultChromosome;
+	int i;
+
+	resultChromosome = malloc(numAlleles * sizeof(resultChromosome));
+	if (resultChromosome)
 	{
-		Pop_node *node = pList->head;
-        randomNum = (double)(rand() % 1000) / 1000.0;
-        count = 0.0;
-		while (node != NULL)
+		/* This sets the chromosomes values to randomly from 0 to MINFN_MAX */
+		for (i = 0; i < numAlleles; ++i)
 		{
-			result = node->gene;
-			count += node->gene->fitness;
-			node = node->next;
+			resultChromosome[i] = rand() % MINFN_MAX;
 		}
-		fprintf(stdout, "\n");
-		generation++;
 	}
 	else
 	{
-		fwrite("pop_print_fittest: pop is empty\n", 1, 32, stderr);
+		fwrite("Unable to allocate chromosome memory", 1, 36, stderr);
 	}
+	return resultChromosome;
 }
