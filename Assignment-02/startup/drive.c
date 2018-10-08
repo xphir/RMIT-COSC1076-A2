@@ -275,14 +275,15 @@ int main(int argc, char *argv[])
 		pop_free(pList);
 		return EXIT_FAILURE;
 	}
-	else if (argc != CMD_ARG_MAX || (stream = freopen(argv[outputFile], "w", stdout)) != NULL)
+
+	if (argc != CMD_ARG_MAX || (stream = freopen(argv[outputFile], "w", stdout)) != NULL)
 	{
 		/* Get 6th argument */
 		pList = pop_run(pList, localPopSize, localAlleleSize, localNumGen, &inputVectorTable);
 		if (pList != NULL)
 		{
 			pop_free(pList);
-			if (stream != NULL)
+			if (argc == CMD_ARG_MAX)
 			{
 				fclose(stream);
 			}
